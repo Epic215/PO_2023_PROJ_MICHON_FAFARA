@@ -9,9 +9,8 @@ public enum MapDirection {
     SOUTH_WEST("SW"),
     WEST("W"),
     NORTH_WEST("NW");
-    public final String direction;
+
+  public final String direction;
     MapDirection(String direction){
         this.direction = direction;
     }
-
-}
