@@ -113,6 +113,20 @@ public class DarwinMap {
 
     }
     public void move(Animal animal, MapDirection mapDirection){
+        Vector2d supposedPosition = animal.getPosition().add(mapDirection.toUnitVector());
+
+        if(canMoveTo(supposedPosition)){
+            animals.get(animal.getPosition()).remove(animal);
+            if(supposedPosition.getX() > upperRight.getX()){
+                animal.crossEarth(bottomLeft.getX(), supposedPosition.getY());
+            } else if (supposedPosition.getX() < bottomLeft.getX()) {
+                animal.crossEarth(upperRight.getX(), supposedPosition.getY());
+            } else {
+                animal.move(mapDirection);
+            }
+            place(animal);
+
+        }
 
     }
     public Boundary getCurrentBounds(){
@@ -123,5 +137,8 @@ public class DarwinMap {
     }
     private boolean isOccupied(Vector2d position){
         return false;
+    }
+    public boolean canMoveTo(Vector2d vector2d){
+        return !(vector2d.getY() < bottomLeft.getX() || vector2d.getY() > upperRight.getY() || isOccupied(vector2d));
     }
 }
