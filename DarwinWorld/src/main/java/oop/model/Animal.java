@@ -6,12 +6,12 @@ public class Animal implements WorldElement{
     private Gene gene;
     private int energy;
     private int breedEnergy;
-    public Animal(Vector2d position, MapDirection facing, int geneSize, int energy, int breedEnergy){
+    public Animal(Vector2d position, MapDirection facing){ //int geneSize, int energy, int breedEnergy){
         this.facing = facing;
         this.position = position;
-        this.gene = new Gene(geneSize);
-        this.energy = energy;
-        this.breedEnergy = breedEnergy;
+//        this.gene = new Gene(geneSize);
+//        this.energy = energy;
+//        this.breedEnergy = breedEnergy;
     }
     public void decreaseEnergy(int lostEnergy){
         energy = energy - lostEnergy;
