@@ -18,6 +18,12 @@ public class Animal implements WorldElement{
     public void decreaseEnergy(int lostEnergy){
         energy = energy - lostEnergy;
     }
+    public void move(MapDirection mapDirection){
+        this.position = this.position.add(mapDirection.toUnitVector());
+    }
+    public void crossEarth(int x, int y){
+        this.position = new Vector2d(x,y);
+    }
     public String toString(){
         return position.toString() + " " + facing.direction;
     }
