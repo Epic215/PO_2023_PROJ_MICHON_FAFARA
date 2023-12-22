@@ -14,5 +14,7 @@ public class World {
         darwinMap.place(animal1);
         darwinMap.place(animal2);
         darwinMap.printAnimals();
+        darwinMap.printGrasses();
+
     }
 }
