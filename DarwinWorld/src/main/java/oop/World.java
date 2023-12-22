@@ -8,7 +8,11 @@ import oop.model.Vector2d;
 public class World {
 
     public static void main(String[] args){
-        Animal animal = new Animal(new Vector2d(1,1), MapDirection.NORTH, 7);
-        DarwinMap darwinMap = new DarwinMap(5,5,1);
+        DarwinMap darwinMap = new DarwinMap(10, 10, 0, 10, 10, 10, 10);
+        Animal animal1 = new Animal(new Vector2d(2,2), MapDirection.NORTH, 10 ,10, 10);
+        Animal animal2 = new Animal(new Vector2d(2,2), MapDirection.SOUTH, 10 ,10, 10);
+        darwinMap.place(animal1);
+        darwinMap.place(animal2);
+        darwinMap.printAnimals();
     }
 }
