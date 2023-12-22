@@ -16,6 +16,7 @@ public class DarwinMap {
     private final ArrayList<Vector2d> canPlaceGrassEquator = new ArrayList<>();
     private final ArrayList<Vector2d> canPlaceGrassSteppes = new ArrayList<>();
     private final boolean[] equator;
+  
     public DarwinMap(int width, int height,int grassCount,int grassGrowth){//  int energy, int grassGrowth, int animalCount)
         this.upperRight = new Vector2d(width,height);
         this.bottomLeft = new Vector2d(0,0);
@@ -111,11 +112,16 @@ public class DarwinMap {
         }
 
     }
+    public void move(Animal animal, MapDirection mapDirection){
+
+    }
     public Boundary getCurrentBounds(){
         return new Boundary(bottomLeft,upperRight);
     }
     public UUID getMapId(){
-        return mapId;
+        return this.mapId;
     }
-
+    private boolean isOccupied(Vector2d position){
+        return false;
+    }
 }

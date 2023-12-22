@@ -1,5 +1,7 @@
 package oop.model;
 
+import java.util.Map;
+
 public class Animal implements WorldElement{
     private MapDirection facing;
     private Vector2d position;
