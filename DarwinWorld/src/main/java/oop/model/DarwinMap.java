@@ -113,7 +113,8 @@ public class DarwinMap {
         }
 
     }
-    public void move(Animal animal, MapDirection mapDirection){
+    public void move(Animal animal){
+        MapDirection mapDirection = MapDirection.ERR;
         Vector2d supposedPosition = animal.getPosition().add(mapDirection.toUnitVector());
 
         if(canMoveTo(supposedPosition)){
@@ -132,7 +133,11 @@ public class DarwinMap {
         } else {
             animal.bounce(mapDirection);
         }
+        animal.moveGeneIndex();
         place(animal);
+    }
+    public Map<Vector2d, ArrayList<Animal>> getAnimals(){
+        return animals;
     }
     public Boundary getCurrentBounds(){
         return new Boundary(bottomLeft,upperRight);
