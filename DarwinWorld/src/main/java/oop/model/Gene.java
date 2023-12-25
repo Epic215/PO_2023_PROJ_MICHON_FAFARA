@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Gene {
-    private List<Integer> gene = new ArrayList<>();
+    private final List<Integer> gene = new ArrayList<>();
     private int geneIndex;
     public Gene(int geneSize){
         this.geneIndex = 0;
@@ -17,6 +17,10 @@ public class Gene {
         for(int i=0; i<geneSize; i++){
             gene.add(generateNumber(0,7));
         }
+    }
+
+    public List<Integer> getGene(){
+        return gene;
     }
     public void moveGeneIndex(){
         geneIndex = (geneIndex+1)%gene.size();
