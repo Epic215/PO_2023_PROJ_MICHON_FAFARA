@@ -10,6 +10,7 @@ public class DarwinMap {
     UUID mapId = UUID.randomUUID();
     private int grassCount;
     private int grassGrowth;
+    private int grassEnergy;
     private int animalCount;
     private final Map<Vector2d, ArrayList<Animal>> animals = new HashMap<>();
     private final Map<Vector2d, Grass> grasses = new HashMap<>();
@@ -117,17 +118,21 @@ public class DarwinMap {
 
         if(canMoveTo(supposedPosition)){
             animals.get(animal.getPosition()).remove(animal);
+            if(animals.get(animal.getPosition()).size() == 0) {
+                animals.remove(animal.getPosition());
+            }
             if(supposedPosition.getX() > upperRight.getX()){
-                animal.crossEarth(bottomLeft.getX(), supposedPosition.getY());
+                animal.crossEarth(bottomLeft.getX(), supposedPosition.getY(), mapDirection);
             } else if (supposedPosition.getX() < bottomLeft.getX()) {
-                animal.crossEarth(upperRight.getX(), supposedPosition.getY());
+                animal.crossEarth(upperRight.getX(), supposedPosition.getY(), mapDirection);
             } else {
                 animal.move(mapDirection);
             }
-            place(animal);
-
+//            place(animal);
+        } else {
+            animal.bounce(mapDirection);
         }
-
+        place(animal);
     }
     public Boundary getCurrentBounds(){
         return new Boundary(bottomLeft,upperRight);

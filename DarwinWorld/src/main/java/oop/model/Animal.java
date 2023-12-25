@@ -19,10 +19,15 @@ public class Animal implements WorldElement{
         energy = energy - lostEnergy;
     }
     public void move(MapDirection mapDirection){
+        this.facing.turn(mapDirection.direction);
         this.position = this.position.add(mapDirection.toUnitVector());
     }
-    public void crossEarth(int x, int y){
+    public void crossEarth(int x, int y, MapDirection mapDirection){
+        this.facing.turn(mapDirection.direction);
         this.position = new Vector2d(x,y);
+    }
+    public void bounce(MapDirection direction){
+        this.facing.turn(direction.direction);
     }
     public String toString(){
         return position.toString() + " " + facing.direction;

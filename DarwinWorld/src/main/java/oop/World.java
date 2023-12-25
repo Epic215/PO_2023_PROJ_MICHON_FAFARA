@@ -23,4 +23,7 @@ public class World {
         darwinMap.printAnimals();
 //        darwinMap.printGrasses();
     }
+    public void guiLaunch(){
+//        Application.launch(SimulationApp.class);
+    }
 }
