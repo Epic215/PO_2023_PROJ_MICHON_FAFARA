@@ -1,10 +1,11 @@
 package oop.model;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class Gene {
-    private final List<Integer> gene = new ArrayList<>();
+    private int[] gene;
     private int geneIndex;
     public Gene(int geneSize){
         this.geneIndex = 0;
@@ -14,18 +15,19 @@ public class Gene {
         return (int)Math.floor(Math.random() * (max - min + 1) + min);
     }
     private void generateGene(int geneSize){
+        gene = new int[geneSize];
         for(int i=0; i<geneSize; i++){
-            gene.add(generateNumber(0,7));
+            gene[i] = (generateNumber(0,7));
+//            System.out.println(gene[i]);
         }
     }
-
-    public List<Integer> getGene(){
-        return gene;
-    }
     public void moveGeneIndex(){
-        geneIndex = (geneIndex+1)%gene.size();
+        geneIndex = (geneIndex+1)%gene.length;
+    }
+    public int getCurrentGene(){
+        return gene[geneIndex];
     }
     public String toString(){
-        return gene.toString();
+        return Arrays.toString(gene);
     }
 }
