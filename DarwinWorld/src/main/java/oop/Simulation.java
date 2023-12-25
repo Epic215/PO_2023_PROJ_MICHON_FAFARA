@@ -10,6 +10,7 @@ public class Simulation{
     public Simulation(int animalCount, DarwinMap darwinMap){
         this.animalCount = animalCount;
         this.darwinMap = darwinMap;
+        animalGenerator(animalCount);
     }
     private void animalGenerator(int n){
         Random randomPosition = new Random();
@@ -28,13 +29,20 @@ public class Simulation{
     }
     public void moveAnimals(){
         Map<Vector2d, ArrayList<Animal>> animals = darwinMap.getAnimals();
-        darwinMap.printGrasses();
+//        darwinMap.printGrasses();
         animals.forEach((key, value) -> {
-            System.out.println(value.toString());
-
-            for(Animal animal : value){
-                System.out.println(animal.toString());
-                darwinMap.move(animal);
+            darwinMap.printAnimals();
+//            System.out.println(value.toString());
+            if(value.size() != 0){
+                for(Animal animal : value){
+                    if(animal != null){
+                        System.out.println("przed move");
+                        System.out.println(animal.toString());
+                        darwinMap.move(animal);
+                        System.out.println("przed move");
+                        System.out.println(animal.toString());
+                    }
+                }
             }
         });
     }
