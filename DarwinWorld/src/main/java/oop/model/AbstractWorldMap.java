@@ -110,6 +110,7 @@ public abstract class AbstractWorldMap{
             System.out.println("Key=" + key + ", Value=" + value.toString());
         });
     }
+    abstract public void move(Animal animal);
     public Map<Vector2d, ArrayList<Animal>> getAnimals(){
         Map<Vector2d, ArrayList<Animal>> newAnimals = new HashMap<>();
         animals.forEach((key,value) -> {
