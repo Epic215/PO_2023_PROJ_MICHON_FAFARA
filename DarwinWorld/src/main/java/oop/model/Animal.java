@@ -1,12 +1,14 @@
 package oop.model;
 
 import java.util.Map;
+import java.util.UUID;
 
 import static oop.model.MapDirection.*;
 
 public class Animal implements WorldElement{
     private MapDirection facing;
     private Vector2d position;
+    private UUID animalId;
     private Gene gene;
     private int energy;
     private int breedEnergy;
@@ -14,6 +16,7 @@ public class Animal implements WorldElement{
         this.facing = facing;
         this.position = position;
         this.gene = new Gene(geneSize);
+        this.animalId = UUID.randomUUID();
 //        this.energy = energy;
 //        this.breedEnergy = breedEnergy;
     }
@@ -30,7 +33,7 @@ public class Animal implements WorldElement{
 //    public MapDirection getCurrentGene(){
 //    }
     public void crossEarth(int x, int y, MapDirection mapDirection){
-        this.facing.turn(mapDirection.direction);
+        this.facing = this.facing.turn(mapDirection.direction);
         this.position = new Vector2d(x,y);
     }
     public MapDirection getCurrentGene(){
@@ -53,10 +56,13 @@ public class Animal implements WorldElement{
         this.facing.turn(direction.direction);
     }
     public String toString(){
-        return position.toString() + " " + facing.direction;
+        return position.toString() + " " + facing.direction + " " + gene.toString();
     }
     @Override
     public Vector2d getPosition() {
         return position;
+    }
+    public UUID getAnimalId(){
+        return animalId;
     }
 }

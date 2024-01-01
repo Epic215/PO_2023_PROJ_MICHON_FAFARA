@@ -1,14 +1,11 @@
 package oop.model;
 
-import java.util.*;
-
-import static java.lang.Math.*;
-
-public class DarwinMap extends AbstractWorldMap{
-    public DarwinMap(int width, int height,int grassCount,int grassGrowth){//  int energy, int grassGrowth, int animalCount)
+public class DarwinMapWater extends AbstractWorldMap{
+    public DarwinMapWater(int width, int height,int grassCount,int grassGrowth){//  int energy, int grassGrowth, int animalCount)
         super(width, height, grassCount, grassGrowth);
+//        this.animalCount = animalCount;
+        //generateWater
     }
-    @Override
     public void move(Animal animal){
         MapDirection mapDirection = animal.getCurrentGene();
         Vector2d supposedPosition = animal.getPosition().add(mapDirection.toUnitVector());
@@ -32,7 +29,7 @@ public class DarwinMap extends AbstractWorldMap{
         animal.moveGeneIndex();
         place(animal);
     }
-    protected boolean isOccupied(Vector2d position){
+    private boolean isOccupied(Vector2d position){
         return false;
     }
     public boolean canMoveTo(Vector2d vector2d){

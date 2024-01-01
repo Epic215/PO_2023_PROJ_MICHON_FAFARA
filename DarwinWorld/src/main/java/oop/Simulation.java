@@ -6,14 +6,15 @@ import java.util.*;
 
 public class Simulation{
     private int animalCount;
-    private DarwinMap darwinMap;
-    public Simulation(int animalCount, DarwinMap darwinMap){
+    private AbstractWorldMap abstractWorldMap;
+    public Simulation(int animalCount, AbstractWorldMap abstractWorldMap){
         this.animalCount = animalCount;
-        this.darwinMap = darwinMap;
+        this.abstractWorldMap = abstractWorldMap;
+        animalGenerator(animalCount);
     }
     private void animalGenerator(int n){
         Random randomPosition = new Random();
-        Boundary mapBoundary = darwinMap.getCurrentBounds();
+        Boundary mapBoundary = abstractWorldMap.getCurrentBounds();
         int height;
         int width;
         int direction;
@@ -21,20 +22,27 @@ public class Simulation{
             height=randomPosition.nextInt(mapBoundary.upperRight().getX());
             width = randomPosition.nextInt(mapBoundary.upperRight().getY());
             direction = randomPosition.nextInt(8);
-            darwinMap.place(new Animal(new Vector2d(width,height),OptionsParser.change(direction),6));
+            abstractWorldMap.place(new Animal(new Vector2d(width,height),OptionsParser.change(direction),6));
         }
-        darwinMap.printAnimals();
-        darwinMap.printGrasses();
+        abstractWorldMap.printAnimals();
+        abstractWorldMap.printGrasses();
     }
     public void moveAnimals(){
-        Map<Vector2d, ArrayList<Animal>> animals = darwinMap.getAnimals();
-        darwinMap.printGrasses();
+        Map<Vector2d, ArrayList<Animal>> animals = abstractWorldMap.getAnimals();
+//        darwinMap.printGrasses();
         animals.forEach((key, value) -> {
-            System.out.println(value.toString());
-
-            for(Animal animal : value){
-                System.out.println(animal.toString());
-                darwinMap.move(animal);
+            abstractWorldMap.printAnimals();
+//            System.out.println(value.toString());
+            if(!value.isEmpty()){
+                for(Animal animal : value){
+                    if(animal != null){
+                        System.out.println("przed move");
+                        System.out.println(animal.toString());
+                        abstractWorldMap.move(animal);
+                        System.out.println("po move");
+                        System.out.println(animal.toString());
+                    }
+                }
             }
         });
     }
