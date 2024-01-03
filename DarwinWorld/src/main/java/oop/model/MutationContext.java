@@ -8,7 +8,7 @@ public class MutationContext {
     public void setMutationStategy(MutationStategy mutationStategy) {
         this.mutationStategy = mutationStategy;
     }
-    public List<Integer> executeMutationStrategy(List<Integer> gene, int n){
+    public int[] executeMutationStrategy(int[] gene, int n){
         return mutationStategy.mutate(gene,n);
     }
 }
