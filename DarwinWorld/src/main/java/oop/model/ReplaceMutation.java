@@ -1,22 +1,18 @@
 package oop.model;
 
-import java.util.List;
-import java.util.Random;
-
 public class ReplaceMutation implements MutationStategy{
     @Override
-    public List<Integer> mutate(List<Integer> gene, int n) {
-        Random randomPosition = new Random();
+    public int[] mutate(int[] gene, int n) {
 
         for (int i=0 ;i<n;i++){
-            int position1=randomPosition.nextInt(gene.size());
+            int position1=Functions.randomNumberBetween(0,gene.length);
             int position2;
             do{
-                position2=randomPosition.nextInt(gene.size());
+                position2=Functions.randomNumberBetween(0,gene.length);
             }while(position2==position1);
-            int genotypeTmp=gene.get(position1);
-            gene.set(position1,gene.get(position2));
-            gene.set(position2,genotypeTmp);
+            int genotypeTmp=gene[position1];
+            gene[position1]=gene[position2];
+            gene[position2]=genotypeTmp;
         }
         return gene;
     }

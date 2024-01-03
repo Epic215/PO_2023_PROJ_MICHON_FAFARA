@@ -1,38 +1,38 @@
 package oop.model;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
 public class DarwinMapWater extends AbstractWorldMap{
+    private final Map<Vector2d, Water> waters=new HashMap<>();
+    private final ArrayList<Water> mainWaterPools=new ArrayList<>();
+    private int phase=0;
     public DarwinMapWater(int width, int height,int grassCount,int grassGrowth){//  int energy, int grassGrowth, int animalCount)
         super(width, height, grassCount, grassGrowth);
 //        this.animalCount = animalCount;
-        //generateWater
+        generateWater(width,height);
     }
-    public void move(Animal animal){
-        MapDirection mapDirection = animal.getCurrentGene();
-        Vector2d supposedPosition = animal.getPosition().add(mapDirection.toUnitVector());
+    private void generateWater(int width,int height){
 
-        if(canMoveTo(supposedPosition)){
-            animals.get(animal.getPosition()).remove(animal);
-//            if(animals.get(animal.getPosition()).size() == 0) {
-//                animals.remove(animal.getPosition());
-//            }
-            if(supposedPosition.getX() > upperRight.getX()){
-                animal.crossEarth(bottomLeft.getX(), supposedPosition.getY(), mapDirection);
-            } else if (supposedPosition.getX() < bottomLeft.getX()) {
-                animal.crossEarth(upperRight.getX(), supposedPosition.getY(), mapDirection);
-            } else {
-                animal.move(mapDirection);
-            }
-//            place(animal);
-        } else {
-            animal.bounce(mapDirection);
+        for (int i=0;i<2;i++){
+            Vector2d waterVector=new Vector2d(Functions.randomNumberBetween(0,width),Functions.randomNumberBetween(0,height));
+            waters.put(waterVector,new Water(waterVector));
+            mainWaterPools.add(new Water(waterVector));
         }
-        animal.moveGeneIndex();
-        place(animal);
     }
-    private boolean isOccupied(Vector2d position){
+    private void waterChange(){
+        phase+=1;
+        for(Water water : mainWaterPools) {
+            Vector2d mainWaterPoolPosition=water.getPosition();
+
+        }
+    }
+
+    @Override
+    public boolean isOccupied(Vector2d position){
         return false;
     }
-    public boolean canMoveTo(Vector2d vector2d){
-        return !(vector2d.getY() < bottomLeft.getX() || vector2d.getY() > upperRight.getY() || isOccupied(vector2d));
-    }
+
+
 }

@@ -6,16 +6,21 @@ import java.util.UUID;
 import static oop.model.MapDirection.*;
 
 public class Animal implements WorldElement{
+    private int childrenCount;
+    private int age;
     private MapDirection facing;
     private Vector2d position;
     private UUID animalId;
     private Gene gene;
     private int energy;
     private int breedEnergy;
-    public Animal(Vector2d position, MapDirection facing, int geneSize){ //int geneSize, int energy, int breedEnergy){
+    public Animal(Vector2d position, MapDirection facing, int geneSize,int energy,int test1,int test2){ //int geneSize, int energy, int breedEnergy){
         this.facing = facing;
         this.position = position;
         this.gene = new Gene(geneSize);
+        this.energy=energy;
+        this.age=test1;
+        this.childrenCount=test2;
         this.animalId = UUID.randomUUID();
 //        this.energy = energy;
 //        this.breedEnergy = breedEnergy;
@@ -24,8 +29,8 @@ public class Animal implements WorldElement{
         energy = energy - lostEnergy;
     }
     public void move(MapDirection mapDirection){
+        this.position = this.position.add(this.facing.toUnitVector());
         this.facing = this.facing.turn(mapDirection.direction);
-        this.position = this.position.add(mapDirection.toUnitVector());
     }
     public void printGene(){
         System.out.println(gene.toString());
@@ -35,6 +40,15 @@ public class Animal implements WorldElement{
     public void crossEarth(int x, int y, MapDirection mapDirection){
         this.facing = this.facing.turn(mapDirection.direction);
         this.position = new Vector2d(x,y);
+    }
+    public int getAge(){
+        return age;
+    }
+    public int getChildrenCount(){
+        return childrenCount;
+    }
+    public int getEnergyStatus(){
+        return energy;
     }
     public MapDirection getCurrentGene(){
         return switch(gene.getCurrentGene()){
