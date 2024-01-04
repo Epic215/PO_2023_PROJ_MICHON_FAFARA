@@ -1,4 +1,7 @@
-package oop.model;
+package oop.model.Mutation;
+
+import oop.model.Functions;
+import oop.model.Mutation.MutationStrategy;
 
 public class NormalMutation implements MutationStrategy {
 
@@ -7,7 +10,7 @@ public class NormalMutation implements MutationStrategy {
 
 
         for (int i=0 ;i<n;i++){
-            int position=Functions.randomNumberBetween(0,gene.length);
+            int position= Functions.randomNumberBetween(0,gene.length);
             int genotype;
             do{
                 genotype=Functions.randomNumberBetween(0,8);

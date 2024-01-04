@@ -1,11 +1,14 @@
-package oop.model;
+package oop.model.Mutation;
+
+import oop.model.Functions;
+import oop.model.Mutation.MutationStrategy;
 
 public class ReplaceMutation implements MutationStrategy {
     @Override
     public int[] mutate(int[] gene, int n) {
 
         for (int i=0 ;i<n;i++){
-            int position1=Functions.randomNumberBetween(0,gene.length);
+            int position1= Functions.randomNumberBetween(0,gene.length);
             int position2;
             do{
                 position2=Functions.randomNumberBetween(0,gene.length);
