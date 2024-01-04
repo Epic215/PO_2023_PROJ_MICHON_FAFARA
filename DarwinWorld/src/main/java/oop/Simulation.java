@@ -28,7 +28,7 @@ public class Simulation implements Runnable{
         abstractWorldMap.printAnimals();
         abstractWorldMap.printGrasses();
     }
-    public Animal resolveConflict(ArrayList<Animal> animals){
+    public Animal resolveConflictFirstStrongest(ArrayList<Animal> animals){
         int oldestAnimalAge=0;
         int mostChildren=0;
         int mostEnergy=0;
@@ -39,6 +39,50 @@ public class Simulation implements Runnable{
         for (Animal animal : animals){
             if (mostEnergy==animal.getEnergyStatus()){
                 conflictAnimals.add(animal);
+            }
+        }
+        if (conflictAnimals.size()!=1){
+            for (Animal animal : conflictAnimals){
+                oldestAnimalAge=Math.max(oldestAnimalAge,animal.getAge());
+            }
+            for (Animal animal :  new ArrayList<>(conflictAnimals)){
+                if (oldestAnimalAge!=animal.getAge()){
+                    conflictAnimals.remove(animal);
+                }
+            }
+            if (conflictAnimals.size()!=1){
+                for (Animal animal : conflictAnimals){
+                    mostChildren=Math.max(mostChildren,animal.getChildrenCount());
+                }
+                for (Animal animal : new ArrayList<>(conflictAnimals)){
+                    if (mostChildren!=animal.getChildrenCount()){
+                        conflictAnimals.remove(animal);
+                    }
+                }
+                if (conflictAnimals.size()!=1){
+                    int randomNumber=Functions.randomNumberBetween(0,conflictAnimals.size());
+                    return conflictAnimals.get(randomNumber);
+                }
+            }
+        }
+        return conflictAnimals.get(0);
+    }
+    public Animal resolveConflictSecondStrongest(ArrayList<Animal> animals,Animal firstStrongestAnimal){
+        int oldestAnimalAge=0;
+        int mostChildren=0;
+        int mostEnergy=0;
+        ArrayList<Animal> conflictAnimals=new ArrayList<>();
+        for (Animal animal : animals){
+            if (animal!=firstStrongestAnimal){
+                mostEnergy=Math.max(mostEnergy,animal.getEnergyStatus());
+            }
+
+        }
+        for (Animal animal : animals){
+            if (mostEnergy==animal.getEnergyStatus()){
+                if (animal!=firstStrongestAnimal){
+                    conflictAnimals.add(animal);
+                }
             }
         }
         if (conflictAnimals.size()!=1){
@@ -104,7 +148,7 @@ public class Simulation implements Runnable{
         Map<Vector2d, Grass> grasses = abstractWorldMap.getGrasses();
         grasses.forEach((key,value) -> {
             if(animals.containsKey(key)){
-                Animal animal = resolveConflict(animals.get(key));
+                Animal animal = resolveConflictFirstStrongest(animals.get(key));
                 animal.eatGrass(abstractWorldMap.getGrassEnergy());
                 //delete dead
             }

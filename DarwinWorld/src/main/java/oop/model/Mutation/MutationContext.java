@@ -1,4 +1,4 @@
-package oop.model;
+package oop.model.Mutation;
 
 public class MutationContext {
     private MutationStrategy mutationStategy;
