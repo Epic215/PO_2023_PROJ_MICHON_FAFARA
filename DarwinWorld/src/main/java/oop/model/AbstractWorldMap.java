@@ -1,9 +1,10 @@
 package oop.model;
 
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 
-import static java.lang.Math.abs;
-import static java.lang.Math.min;
+import static java.lang.Math.*;
 
 public abstract class AbstractWorldMap{
     protected final boolean[] equator;
@@ -13,16 +14,17 @@ public abstract class AbstractWorldMap{
     protected int grassCount;
     protected int grassGrowth;
     protected int grassEnergy;
-    protected int animalCount;
     protected final Map<Vector2d, ArrayList<Animal>> animals = new HashMap<>();
     protected final Map<Vector2d, Grass> grasses = new HashMap<>();
     protected final ArrayList<Vector2d> canPlaceGrassEquator = new ArrayList<>();
     protected final ArrayList<Vector2d> canPlaceGrassSteppes = new ArrayList<>();
-    public AbstractWorldMap(int width, int height,int grassCount,int grassGrowth){
+    private final List<MapChangeListener> listeners = new ArrayList<>();
+    public AbstractWorldMap(int width, int height,int grassCount,int grassGrowth, int grassEnergy){
         this.upperRight = new Vector2d(width,height);
         this.bottomLeft = new Vector2d(0,0);
         this.grassCount = grassCount;
         this.grassGrowth = grassGrowth;
+        this.grassEnergy = grassEnergy;
         this.equator = new boolean[height];
         initializeMapEquator(height,width);
         GrassGenerator(grassCount);
@@ -52,7 +54,7 @@ public abstract class AbstractWorldMap{
         }
         for (int j=0;j<height;j++){
             for (int k=0;k<width;k++){
-                if (equator[j]){
+                if (equator[k]){
                     canPlaceGrassEquator.add(new Vector2d(j,k));
                 }
                 else {
@@ -116,9 +118,9 @@ public abstract class AbstractWorldMap{
 
         if(canMoveTo(supposedPosition)){
             animals.get(animal.getPosition()).remove(animal);
-//            if(animals.get(animal.getPosition()).size() == 0) {
-//                animals.remove(animal.getPosition());
-//            }
+            if(animals.get(animal.getPosition()).size() == 0) {
+                animals.remove(animal.getPosition());
+            }
             if(supposedPosition.getX() > upperRight.getX()){
                 animal.crossEarth(bottomLeft.getX(), supposedPosition.getY(), mapDirection);
             } else if (supposedPosition.getX() < bottomLeft.getX()) {
@@ -136,12 +138,8 @@ public abstract class AbstractWorldMap{
     public boolean canMoveTo(Vector2d vector2d){
         return !(vector2d.getY() < bottomLeft.getX() || vector2d.getY() > upperRight.getY() || isOccupied(vector2d));
     }
-
-
     abstract boolean isOccupied(Vector2d vector2d);
-
-
-    public Map<Vector2d, ArrayList<Animal>> getAnimals(){
+    public Map<Vector2d, ArrayList<Animal>> getAnimals2(){
         Map<Vector2d, ArrayList<Animal>> newAnimals = new HashMap<>();
         animals.forEach((key,value) -> {
             newAnimals.put(key,new ArrayList<>());
@@ -151,10 +149,116 @@ public abstract class AbstractWorldMap{
         });
         return newAnimals;
     }
+    public ArrayList<Animal>  getAnimals(){
+        ArrayList<Animal> newAnimals = new ArrayList<>();
+        animals.forEach((key,value) -> {
+            value.forEach(animal -> {
+                newAnimals.add(animal);
+            });
+        });
+        return newAnimals;
+    }
+    public Map<Vector2d, Grass> getGrasses(){
+        Map<Vector2d, Grass> newGrasses = new HashMap<>();
+        newGrasses.putAll(grasses);
+        return newGrasses;
+    }
     public Boundary getCurrentBounds(){
         return new Boundary(bottomLeft,upperRight);
     }
     public UUID getMapId(){
         return this.mapId;
     }
+    public int getAnimalCount(){
+        return animals.size();
+    }
+    public int getGrassCount(){
+        return grasses.size();
+    }
+    public int getFreeFieldsCount(){
+        int count = 0;
+        for(int i=0; i<getCurrentBounds().upperRight().getY(); i++){
+            for(int j=0; j<getCurrentBounds().upperRight().getX(); j++){
+                if(animals.get(new Vector2d(i,j))!=null && grasses.get(new Vector2d(i,j))!=null){
+                    count+=1;
+                }
+            }
+        }
+        return count;
+    }
+    public int getMostPopularGeneType(){
+        Map<String, Integer> popularGene = new HashMap<>();
+        animals.forEach((key,value) -> {
+            value.forEach(animal -> {
+                String gene = animal.getGene().toString();
+                if(popularGene.get(gene)==null){
+                    popularGene.put(gene,1);
+                } else {
+                    popularGene.put(gene,popularGene.get(gene)+1);
+                }
+            });
+        });
+        AtomicInteger maxGene = new AtomicInteger(0);
+        AtomicReference<String> maxGeneArray = new AtomicReference<>();
+        popularGene.forEach((key,value) -> {
+            if(maxGene.get() < value){
+                maxGene.set(value);
+                maxGeneArray.set(key);
+            }
+        });
+        System.out.println(maxGeneArray);
+        System.out.println(maxGene.get());
+        System.out.println(popularGene.toString());
+        System.out.println(Collections.max(popularGene.entrySet(), (entry1, entry2) -> entry1.getValue() - entry2.getValue()).getKey());
+        return maxGene.get();
+    }
+    public int getMostPopularGeneType1(){
+        Map<Gene, Integer> popularGene = new HashMap<>();
+        animals.forEach((key,value) -> {
+            value.forEach(animal -> {
+                Gene gene = animal.getGene();
+                if(!popularGene.containsKey(gene)){
+                    popularGene.put(gene,1);
+                } else {
+                    popularGene.put(gene,popularGene.get(gene)+1);
+                }
+            });
+        });
+        AtomicInteger maxGene = new AtomicInteger(0);
+        AtomicReference<Gene> maxGeneArray = new AtomicReference<>();
+        popularGene.forEach((key,value) -> {
+            if(maxGene.get() < value){
+                maxGene.set(value);
+                maxGeneArray.set(key);
+            }
+        });
+        System.out.println(maxGeneArray);
+        System.out.println(maxGene.get());
+        System.out.println(popularGene.toString());
+        System.out.println(Collections.max(popularGene.entrySet(), (entry1, entry2) -> entry1.getValue() - entry2.getValue()).getKey());
+        return maxGene.get();
+    }
+    public void subscribe(MapChangeListener listener){
+        listeners.add(listener);
+    }
+    public void mapChanged(String message){
+        for (MapChangeListener listener : listeners){
+            listener.mapChanged(this, message);
+        }
+    }
+    public int getGrassEnergy(){
+        return grassEnergy;
+    }
+//    public Map<Vector2d,ArrayList<WorldElement>> getElements(){
+//        Map<Vector2d,ArrayList<WorldElement>> elements = new HashMap<>();
+//        if(!animals.isEmpty()){
+//            elements.putAll((Map<? extends Vector2d, ? extends ArrayList<WorldElement>>) animals);
+//        }
+//        if(!grasses.isEmpty()){
+//            grasses.forEach((key,value) -> {
+//                elements.get(key).add(value);
+//            });
+//        }
+//        return elements;
+//    }
 }
