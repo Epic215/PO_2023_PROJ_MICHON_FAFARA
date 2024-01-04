@@ -28,7 +28,7 @@ public class Simulation{
         abstractWorldMap.printAnimals();
         abstractWorldMap.printGrasses();
     }
-    public Animal resolveConflict(ArrayList<Animal> animals){
+    public Animal resolveConflictGrass(ArrayList<Animal> animals){
         int oldestAnimalAge=0;
         int mostChildren=0;
         int mostEnergy=0;
@@ -66,7 +66,50 @@ public class Simulation{
             }
         }
         return conflictAnimals.get(0);
+    }
+    public Animal resolveConflictAnimals(ArrayList<Animal> animals,Animal firstStrongestAnimal){
+        int oldestAnimalAge=0;
+        int mostChildren=0;
+        int mostEnergy=0;
+        ArrayList<Animal> conflictAnimals=new ArrayList<>();
+        for (Animal animal : animals){
+            if (animal!=firstStrongestAnimal){
+                mostEnergy=Math.max(mostEnergy,animal.getEnergyStatus());
+            }
 
+        }
+        for (Animal animal : animals){
+            if (mostEnergy==animal.getEnergyStatus()){
+                if (animal!=firstStrongestAnimal){
+                    conflictAnimals.add(animal);
+                }
+            }
+        }
+        if (conflictAnimals.size()!=1){
+            for (Animal animal : conflictAnimals){
+                oldestAnimalAge=Math.max(oldestAnimalAge,animal.getAge());
+            }
+            for (Animal animal :  new ArrayList<>(conflictAnimals)){
+                if (oldestAnimalAge!=animal.getAge()){
+                    conflictAnimals.remove(animal);
+                }
+            }
+            if (conflictAnimals.size()!=1){
+                for (Animal animal : conflictAnimals){
+                    mostChildren=Math.max(mostChildren,animal.getChildrenCount());
+                }
+                for (Animal animal : new ArrayList<>(conflictAnimals)){
+                    if (mostChildren!=animal.getChildrenCount()){
+                        conflictAnimals.remove(animal);
+                    }
+                }
+                if (conflictAnimals.size()!=1){
+                    int randomNumber=Functions.randomNumberBetween(0,conflictAnimals.size());
+                    return conflictAnimals.get(randomNumber);
+                }
+            }
+        }
+        return conflictAnimals.get(0);
     }
     public void moveAnimals(){
         Map<Vector2d, ArrayList<Animal>> animals = abstractWorldMap.getAnimals();

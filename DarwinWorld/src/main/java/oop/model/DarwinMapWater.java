@@ -21,8 +21,40 @@ public class DarwinMapWater extends AbstractWorldMap{
             mainWaterPools.add(new Water(waterVector));
         }
     }
+    private boolean isWaterOnPlace(Vector2d waterTemporaryPlace,Vector2d mainWaterPoolPosition){
+        return waterTemporaryPlace.follows(bottomLeft) && waterTemporaryPlace.precedes(upperRight) && !waterTemporaryPlace.equals(mainWaterPoolPosition) && waters.containsKey(waterTemporaryPlace);
+    }
     private void waterChange(){
         phase+=1;
+
+        if(phase<3)
+        {
+            for(Water water : mainWaterPools) {
+                Vector2d mainWaterPoolPosition=water.getPosition();
+                for (int i=mainWaterPoolPosition.getX()-phase;i<=mainWaterPoolPosition.getX()+phase;i++){
+                    for (int j=mainWaterPoolPosition.getY()-phase;i<=mainWaterPoolPosition.getY()+phase;j++){
+                        Vector2d waterTemporaryPlace=new Vector2d(i,j);
+                        if (isWaterOnPlace(waterTemporaryPlace,mainWaterPoolPosition)){
+                            waters.put(waterTemporaryPlace,new Water(waterTemporaryPlace));
+                        }
+                    }
+                }
+            }
+        }
+        if(phase<3)
+        {
+            for(Water water : mainWaterPools) {
+                Vector2d mainWaterPoolPosition=water.getPosition();
+                for (int i=mainWaterPoolPosition.getX()-phase;i<=mainWaterPoolPosition.getX()+phase;i++){
+                    for (int j=mainWaterPoolPosition.getY()-phase;i<=mainWaterPoolPosition.getY()+phase;j++){
+                        Vector2d waterTemporaryPlace=new Vector2d(i,j);
+                        if (isWaterOnPlace(waterTemporaryPlace,mainWaterPoolPosition)){
+                            waters.put(waterTemporaryPlace,new Water(waterTemporaryPlace));
+                        }
+                    }
+                }
+            }
+        }
         for(Water water : mainWaterPools) {
             Vector2d mainWaterPoolPosition=water.getPosition();
 
