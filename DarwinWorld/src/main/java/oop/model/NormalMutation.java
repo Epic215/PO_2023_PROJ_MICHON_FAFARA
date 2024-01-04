@@ -1,6 +1,6 @@
 package oop.model;
 
-public class NormalMutation implements MutationStategy{
+public class NormalMutation implements MutationStrategy {
 
     @Override
     public int[] mutate(int[] gene, int n) {

@@ -1,11 +1,9 @@
 package oop.model;
 
-import java.util.List;
-
 public class MutationContext {
-    private MutationStategy mutationStategy;
+    private MutationStrategy mutationStategy;
 
-    public void setMutationStategy(MutationStategy mutationStategy) {
+    public void setMutationStategy(MutationStrategy mutationStategy) {
         this.mutationStategy = mutationStategy;
     }
     public int[] executeMutationStrategy(int[] gene, int n){

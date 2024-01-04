@@ -3,6 +3,7 @@ package oop.model;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 public class Gene {
     private int[] gene;
@@ -30,4 +31,17 @@ public class Gene {
     public String toString(){
         return Arrays.toString(gene);
     }
+    public int[] getGene(){
+        return gene;
+    }
+    @Override
+    public boolean equals(Object other){
+        if (this == other)
+            return true;
+        if (!(other instanceof Gene that))
+            return false;
+        return (Arrays.equals(this.gene, that.gene));
+    }
+    @Override
+    public int hashCode(){return Objects.hash(gene);}
 }

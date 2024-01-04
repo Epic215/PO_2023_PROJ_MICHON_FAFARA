@@ -4,7 +4,7 @@ import oop.model.*;
 
 import java.util.*;
 
-public class Simulation{
+public class Simulation implements Runnable{
     private int animalCount;
     private final AbstractWorldMap abstractWorldMap;
     public Simulation(int animalCount, AbstractWorldMap abstractWorldMap){
@@ -20,10 +20,10 @@ public class Simulation{
         int width;
         int direction;
         for (int i=0; i<n;i++){
-            height=randomPosition.nextInt(mapBoundary.upperRight().getX());
+            height = randomPosition.nextInt(mapBoundary.upperRight().getX());
             width = randomPosition.nextInt(mapBoundary.upperRight().getY());
             direction = randomPosition.nextInt(8);
-            abstractWorldMap.place(new Animal(new Vector2d(width,height),OptionsParser.change(direction),6,0,0,0));
+            abstractWorldMap.place(new Animal(new Vector2d(width,height),OptionsParser.change(direction),1,0,0,0));
         }
         abstractWorldMap.printAnimals();
         abstractWorldMap.printGrasses();
@@ -66,14 +66,11 @@ public class Simulation{
             }
         }
         return conflictAnimals.get(0);
-
     }
     public void moveAnimals(){
-        Map<Vector2d, ArrayList<Animal>> animals = abstractWorldMap.getAnimals();
-//        darwinMap.printGrasses();
+        Map<Vector2d, ArrayList<Animal>> animals = abstractWorldMap.getAnimals2();
         animals.forEach((key, value) -> {
             abstractWorldMap.printAnimals();
-//            System.out.println(value.toString());
             if(!value.isEmpty()){
                 for(Animal animal : value){
                     if(animal != null){
@@ -86,9 +83,32 @@ public class Simulation{
                 }
             }
         });
+        abstractWorldMap.mapChanged("fhdjsklafh");
+    }
+    public void moveAnimals2(){
+        ArrayList<Animal> animals = abstractWorldMap.getAnimals();
+        animals.forEach(animal -> {
+            abstractWorldMap.printAnimals();
+
+                System.out.println("przed move");
+                System.out.println(animal.toString());
+                abstractWorldMap.move(animal);
+                System.out.println("po move");
+                System.out.println(animal.toString());
+
+        });
+        abstractWorldMap.mapChanged("fhdjsklafh");
     }
     private void eatGrass(){
-
+        Map<Vector2d, ArrayList<Animal>> animals = abstractWorldMap.getAnimals2();
+        Map<Vector2d, Grass> grasses = abstractWorldMap.getGrasses();
+        grasses.forEach((key,value) -> {
+            if(animals.containsKey(key)){
+                Animal animal = resolveConflict(animals.get(key));
+                animal.eatGrass(abstractWorldMap.getGrassEnergy());
+                //delete dead
+            }
+        });
     }
     private void breedAnimals(){
 
@@ -97,6 +117,13 @@ public class Simulation{
 
     }
     public void run(){
-
+        for(int i=0; i<10; i++){
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+            moveAnimals();
+        }
     }
 }

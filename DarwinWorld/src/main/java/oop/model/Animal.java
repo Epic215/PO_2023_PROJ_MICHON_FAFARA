@@ -29,14 +29,12 @@ public class Animal implements WorldElement{
         energy = energy - lostEnergy;
     }
     public void move(MapDirection mapDirection){
-        this.position = this.position.add(this.facing.toUnitVector());
         this.facing = this.facing.turn(mapDirection.direction);
+        this.position = this.position.add(this.facing.toUnitVector());
     }
     public void printGene(){
         System.out.println(gene.toString());
     }
-//    public MapDirection getCurrentGene(){
-//    }
     public void crossEarth(int x, int y, MapDirection mapDirection){
         this.facing = this.facing.turn(mapDirection.direction);
         this.position = new Vector2d(x,y);
@@ -72,11 +70,23 @@ public class Animal implements WorldElement{
     public String toString(){
         return position.toString() + " " + facing.direction + " " + gene.toString();
     }
+    public void eatGrass(int grassEnergy){
+        this.energy = this.energy + grassEnergy;
+    }
     @Override
     public Vector2d getPosition() {
         return position;
     }
     public UUID getAnimalId(){
         return animalId;
+    }
+    public int getEnergy(){
+        return this.energy;
+    }
+    public Gene getGene(){
+        return gene;
+    }
+    public MapDirection getFacing(){
+        return facing;
     }
 }
