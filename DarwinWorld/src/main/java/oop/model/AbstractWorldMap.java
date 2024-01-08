@@ -14,18 +14,24 @@ public abstract class AbstractWorldMap{
     protected int grassCount;
     protected int grassGrowth;
     protected int grassEnergy;
+    protected int dailyEnergy;
+    protected int overallAge;
+    protected int deadCount;
     protected final Map<Vector2d, ArrayList<Animal>> animals = new HashMap<>();
     protected final Map<Vector2d, Grass> grasses = new HashMap<>();
     protected final ArrayList<Vector2d> canPlaceGrassEquator = new ArrayList<>();
     protected final ArrayList<Vector2d> canPlaceGrassSteppes = new ArrayList<>();
     private final List<MapChangeListener> listeners = new ArrayList<>();
-    public AbstractWorldMap(int width, int height,int grassCount,int grassGrowth, int grassEnergy){
+    public AbstractWorldMap(int width, int height,int grassCount,int grassGrowth, int grassEnergy, int dailyEnergy){
         this.upperRight = new Vector2d(width,height);
         this.bottomLeft = new Vector2d(0,0);
         this.grassCount = grassCount;
         this.grassGrowth = grassGrowth;
         this.grassEnergy = grassEnergy;
         this.equator = new boolean[height];
+        this.dailyEnergy = dailyEnergy;
+        this.overallAge = 0;
+        this.deadCount = 0;
         initializeMapEquator(height,width);
         GrassGenerator(grassCount);
     }
@@ -118,7 +124,7 @@ public abstract class AbstractWorldMap{
 
         if(canMoveTo(supposedPosition)){
             animals.get(animal.getPosition()).remove(animal);
-            if(animals.get(animal.getPosition()).size() == 0) {
+            if(animals.get(animal.getPosition()).isEmpty()) {
                 animals.remove(animal.getPosition());
             }
             if(supposedPosition.getX() > upperRight.getX()){
@@ -134,6 +140,14 @@ public abstract class AbstractWorldMap{
         }
         animal.moveGeneIndex();
         place(animal);
+    }
+    public void deleteDead(Animal animal){
+        deadCount += 1;
+        overallAge += animal.getAge();
+        animals.get(animal.getPosition()).remove(animal);
+        if(animals.get(animal.getPosition()).isEmpty()){
+            animals.remove(animal.getPosition());
+        }
     }
     public boolean canMoveTo(Vector2d vector2d){
         return !(vector2d.getY() < bottomLeft.getX() || vector2d.getY() > upperRight.getY() || isOccupied(vector2d));
@@ -212,31 +226,14 @@ public abstract class AbstractWorldMap{
         System.out.println(Collections.max(popularGene.entrySet(), (entry1, entry2) -> entry1.getValue() - entry2.getValue()).getKey());
         return maxGene.get();
     }
-    public int getMostPopularGeneType1(){
-        Map<Gene, Integer> popularGene = new HashMap<>();
+    public int getAverageEnergy(){
+        final int[] energySum = {0};
         animals.forEach((key,value) -> {
             value.forEach(animal -> {
-                Gene gene = animal.getGene();
-                if(!popularGene.containsKey(gene)){
-                    popularGene.put(gene,1);
-                } else {
-                    popularGene.put(gene,popularGene.get(gene)+1);
-                }
+                energySum[0] += animal.getEnergy();
             });
         });
-        AtomicInteger maxGene = new AtomicInteger(0);
-        AtomicReference<Gene> maxGeneArray = new AtomicReference<>();
-        popularGene.forEach((key,value) -> {
-            if(maxGene.get() < value){
-                maxGene.set(value);
-                maxGeneArray.set(key);
-            }
-        });
-        System.out.println(maxGeneArray);
-        System.out.println(maxGene.get());
-        System.out.println(popularGene.toString());
-        System.out.println(Collections.max(popularGene.entrySet(), (entry1, entry2) -> entry1.getValue() - entry2.getValue()).getKey());
-        return maxGene.get();
+        return energySum[0];
     }
     public void subscribe(MapChangeListener listener){
         listeners.add(listener);
@@ -248,6 +245,21 @@ public abstract class AbstractWorldMap{
     }
     public int getGrassEnergy(){
         return grassEnergy;
+    }
+    public int getDailyEnergy(){return dailyEnergy;}
+    public int getAverageDeadAge(){
+        return overallAge/deadCount;
+    }
+    public int getAverageChildCount(){
+        final int[] childCount = {0};
+        final int[] animalCount = {0};
+        animals.forEach((key,value) -> {
+            value.forEach(animal -> {
+                childCount[0] += animal.getChildrenCount();
+                animalCount[0] += 1;
+            });
+        });
+        return childCount[0]/animalCount[0];
     }
 //    public Map<Vector2d,ArrayList<WorldElement>> getElements(){
 //        Map<Vector2d,ArrayList<WorldElement>> elements = new HashMap<>();

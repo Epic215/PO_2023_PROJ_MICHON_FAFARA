@@ -19,7 +19,7 @@ public class SimulationApp extends Application {
         loader.setLocation(getClass().getClassLoader().getResource("simulation.fxml")); //path to fxml file
         BorderPane viewRoot = loader.load();
 
-        DarwinMap grassField = new DarwinMap(10, 10, 10, 1,2);
+        DarwinMap grassField = new DarwinMap(10, 10, 10, 1,2, 2);
 
         SimulationPresenter presenter = loader.getController();
         presenter.setWorldMap(grassField);
