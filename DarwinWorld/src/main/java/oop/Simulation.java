@@ -3,15 +3,17 @@ package oop;
 import oop.model.*;
 
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class Simulation implements Runnable{
     private int animalCount;
+    private int daysCount;
     private final AbstractWorldMap abstractWorldMap;
     public Simulation(int animalCount, AbstractWorldMap abstractWorldMap){
+        this.daysCount = 0;
         this.animalCount = animalCount;
         this.abstractWorldMap = abstractWorldMap;
         animalGenerator(animalCount);
-
     }
     private void animalGenerator(int n){
         Random randomPosition = new Random();
@@ -23,7 +25,7 @@ public class Simulation implements Runnable{
             height = randomPosition.nextInt(mapBoundary.upperRight().getX());
             width = randomPosition.nextInt(mapBoundary.upperRight().getY());
             direction = randomPosition.nextInt(8);
-            abstractWorldMap.place(new Animal(new Vector2d(width,height),OptionsParser.change(direction),1,0,0,0));
+            abstractWorldMap.place(new Animal(new Vector2d(width,height),OptionsParser.change(direction),1,16));
         }
         abstractWorldMap.printAnimals();
         abstractWorldMap.printGrasses();
@@ -133,7 +135,6 @@ public class Simulation implements Runnable{
         ArrayList<Animal> animals = abstractWorldMap.getAnimals();
         animals.forEach(animal -> {
             abstractWorldMap.printAnimals();
-
                 System.out.println("przed move");
                 System.out.println(animal.toString());
                 abstractWorldMap.move(animal);
@@ -157,8 +158,19 @@ public class Simulation implements Runnable{
     private void breedAnimals(){
 
     }
+    private void decrementEnergy(){
+        Map<Vector2d, ArrayList<Animal>> animals = abstractWorldMap.getAnimals2();
+        animals.forEach((key,value) -> {
+            value.forEach(animal -> {
+                animal.decreaseEnergy(abstractWorldMap.getDailyEnergy());
+            });
+        });
+    }
     private void deleteDead(){
-
+        Map<Vector2d, ArrayList<Animal>> animals = abstractWorldMap.getAnimals2();
+        animals.forEach((key,value) -> {
+            value.stream().filter(animal -> animal.getEnergy() <= 0).forEach(abstractWorldMap::deleteDead);
+        });
     }
     public void run(){
         for(int i=0; i<10; i++){
@@ -168,6 +180,9 @@ public class Simulation implements Runnable{
                 throw new RuntimeException(e);
             }
             moveAnimals();
+            decrementEnergy();
+            deleteDead();
+            this.daysCount += 1;
         }
     }
 }

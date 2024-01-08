@@ -14,13 +14,13 @@ public class Animal implements WorldElement{
     private Gene gene;
     private int energy;
     private int breedEnergy;
-    public Animal(Vector2d position, MapDirection facing, int geneSize,int energy,int test1,int test2){ //int geneSize, int energy, int breedEnergy){
+    public Animal(Vector2d position, MapDirection facing, int geneSize,int energy){ //int geneSize, int energy, int breedEnergy){
         this.facing = facing;
         this.position = position;
         this.gene = new Gene(geneSize);
         this.energy=energy;
-        this.age=test1;
-        this.childrenCount=test2;
+        this.age=0;
+        this.childrenCount=0;
         this.animalId = UUID.randomUUID();
 //        this.energy = energy;
 //        this.breedEnergy = breedEnergy;

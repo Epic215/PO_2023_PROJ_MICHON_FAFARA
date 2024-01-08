@@ -8,8 +8,8 @@ public class DarwinMapWater extends AbstractWorldMap{
     private final Map<Vector2d, Water> waters=new HashMap<>();
     private final ArrayList<Water> mainWaterPools=new ArrayList<>();
     private int phase=0;
-    public DarwinMapWater(int width, int height,int grassCount,int grassGrowth, int grassEnergy){//  int energy, int grassGrowth, int animalCount)
-        super(width, height, grassCount, grassGrowth, grassEnergy);
+    public DarwinMapWater(int width, int height,int grassCount,int grassGrowth, int grassEnergy, int dailyEnergy){//  int energy, int grassGrowth, int animalCount)
+        super(width, height, grassCount, grassGrowth, grassEnergy, dailyEnergy);
 //        this.animalCount = animalCount;
         generateWater(width,height);
     }
