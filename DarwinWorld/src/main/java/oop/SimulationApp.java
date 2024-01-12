@@ -12,21 +12,19 @@ public class SimulationApp extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-//        var scene = new Scene(new Label("HELLO"));
-//        primaryStage.setScene(scene);
-//        primaryStage.show();
+
         FXMLLoader loader = new FXMLLoader();   //creates new fxml loader
         loader.setLocation(getClass().getClassLoader().getResource("simulation.fxml")); //path to fxml file
         BorderPane viewRoot = loader.load();
 
-        DarwinMap grassField = new DarwinMap(10, 10, 10, 1,2, 2);
 
         SimulationPresenter presenter = loader.getController();
-        presenter.setWorldMap(grassField);
-        grassField.subscribe(presenter);
 
-//        primaryStage.setScene(new Scene(viewRoot));
+
         configureStage(primaryStage,viewRoot);
+
+        presenter.onSimulationStartClicked();
+
         primaryStage.show();
     }
     private void configureStage(Stage primaryStage, BorderPane viewRoot) {
