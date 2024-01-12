@@ -89,4 +89,12 @@ public class Animal implements WorldElement{
     public MapDirection getFacing(){
         return facing;
     }
+    public void createGene(Animal animal1, Animal animal2, int div){
+        for (int i=0; i<div; i++){
+            getGene().getGene()[i] = animal1.getGene().getGene()[i];
+        }
+        for (int i=div; i<animal1.getGene().getGene().length; i++){
+            getGene().getGene()[i] = animal2.getGene().getGene()[i];
+        }
+    }
 }
