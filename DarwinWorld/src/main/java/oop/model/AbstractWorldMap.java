@@ -69,7 +69,7 @@ public abstract class AbstractWorldMap{
             }
         }
     }
-    private void GrassGenerator(int grassCount){
+    public void GrassGenerator(int grassCount){
         int grassEquator=(int) (grassCount*0.8);
         int grassSteppes=grassCount-grassEquator;
         Random rand = new Random();
@@ -92,6 +92,15 @@ public abstract class AbstractWorldMap{
         }
 
 
+    }
+    public void deleteGrass(Grass grass){
+        if (equator[grass.getPosition().getY()]){
+            canPlaceGrassEquator.add(grass.getPosition());
+        }
+        else {
+            canPlaceGrassSteppes.add(grass.getPosition());
+        }
+        grasses.remove(grass.getPosition());
     }
     private int generateNumber(int min, int max){
         return (int)Math.floor(Math.random() * (max - min + 1) + min);
@@ -262,7 +271,10 @@ public abstract class AbstractWorldMap{
         });
         return childCount[0]/animalCount[0];
     }
-//    public Map<Vector2d,ArrayList<WorldElement>> getElements(){
+    public int getGrassGrowth() {
+        return grassGrowth;
+    }
+    //    public Map<Vector2d,ArrayList<WorldElement>> getElements(){
 //        Map<Vector2d,ArrayList<WorldElement>> elements = new HashMap<>();
 //        if(!animals.isEmpty()){
 //            elements.putAll((Map<? extends Vector2d, ? extends ArrayList<WorldElement>>) animals);

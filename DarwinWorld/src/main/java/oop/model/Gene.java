@@ -18,7 +18,7 @@ public class Gene {
     private void generateGene(int geneSize){
         gene = new int[geneSize];
         for(int i=0; i<geneSize; i++){
-            gene[i] = (0);
+            gene[i] = (Functions.randomNumberBetween(0,8));
 //            System.out.println(gene[i]);
         }
     }
