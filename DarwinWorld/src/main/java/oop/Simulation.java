@@ -31,7 +31,7 @@ public class Simulation implements Runnable{
             height = randomPosition.nextInt(mapBoundary.upperRight().getX());
             width = randomPosition.nextInt(mapBoundary.upperRight().getY());
             direction = randomPosition.nextInt(8);
-            abstractWorldMap.place(new Animal(new Vector2d(width,height),OptionsParser.change(4),geneSize,initialEnergy));
+            abstractWorldMap.place(new Animal(new Vector2d(width,height),OptionsParser.change(direction),geneSize,initialEnergy));
         }
         abstractWorldMap.printAnimals();
         abstractWorldMap.printGrasses();
@@ -157,7 +157,7 @@ public class Simulation implements Runnable{
             if(animals.containsKey(key)){
                 Animal animal = resolveConflictFirstStrongest(animals.get(key));
                 animal.eatGrass(abstractWorldMap.getGrassEnergy());
-                //delete grass
+                abstractWorldMap.deleteGrass(value);
             }
         });
     }
@@ -194,7 +194,7 @@ public class Simulation implements Runnable{
         abstractWorldMap.mapChanged("fhdjsklafh");
     }
     public void run(){
-        for(int i=0; i<10; i++){
+        for(int i=0; i<20; i++){
             try {
                 Thread.sleep(500);
             } catch (InterruptedException e) {
@@ -202,8 +202,10 @@ public class Simulation implements Runnable{
             }
             moveAnimals();
             decrementEnergy();
+            eatGrass();
             breedAnimals();
             deleteDead();
+            abstractWorldMap.GrassGenerator(abstractWorldMap.getGrassGrowth());
             this.daysCount += 1;
         }
     }
