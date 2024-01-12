@@ -27,7 +27,8 @@ public class SimulationView implements MapChangeListener{
     private Label infoLabel;
     @FXML
     private GridPane mapGridd;
-
+    @FXML
+    private GridPane container;
     private AbstractWorldMap map;
 
 
@@ -61,8 +62,9 @@ public class SimulationView implements MapChangeListener{
     private void newGrid(){
         int left = map.getCurrentBounds().bottomLeft().getX();
         int upper = map.getCurrentBounds().upperRight().getY()-1;
-        int width = 50;
-        int height = 50;
+        double containerWidth = container.getWidth();
+        double width = 0.65*containerWidth/map.getCurrentBounds().upperRight().getX()*0.9;
+        double height = 0.65*containerWidth/map.getCurrentBounds().upperRight().getX()*0.9;
 
         Label label;
 
@@ -86,8 +88,8 @@ public class SimulationView implements MapChangeListener{
 //        System.out.println(grasses);
         for (Map.Entry<Vector2d,Grass> grass : grasses.entrySet()) {
             label = new Label();
-            label.setMinWidth(40);
-            label.setMinHeight(40);
+            label.setMinWidth(width*0.8);
+            label.setMinHeight(height*0.8);
             label.setAlignment(Pos.CENTER);
             GridPane.setHalignment(label, HPos.CENTER);
             label.setText(grass.getValue().toString());
@@ -97,8 +99,8 @@ public class SimulationView implements MapChangeListener{
         }
         for (Map.Entry<Vector2d,ArrayList<Animal>> animal : animals.entrySet()){
             label = new Label();
-            label.setMinWidth(40);
-            label.setMinHeight(40);
+            label.setMinWidth(width*0.8);
+            label.setMinHeight(height*0.8);
             label.setAlignment(Pos.CENTER);
             GridPane.setHalignment(label, HPos.CENTER);
             label.setText(""+animal.getValue().size());
