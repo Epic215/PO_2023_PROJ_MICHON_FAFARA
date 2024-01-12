@@ -23,7 +23,6 @@ public class SimulationApp extends Application {
 
         SimulationPresenter presenter = loader.getController();
         presenter.setWorldMap(grassField);
-        grassField.subscribe(presenter);
 
 //        primaryStage.setScene(new Scene(viewRoot));
         configureStage(primaryStage,viewRoot);
