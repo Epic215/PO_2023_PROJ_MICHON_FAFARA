@@ -151,7 +151,7 @@ public abstract class AbstractWorldMap{
         }
     }
     public boolean canMoveTo(Vector2d vector2d){
-        return !(vector2d.getY() < bottomLeft.getX() || vector2d.getY() > upperRight.getY() || isOccupied(vector2d));
+        return !(vector2d.getY() < bottomLeft.getY() || vector2d.getY() >= upperRight.getY() || isOccupied(vector2d));
     }
     abstract boolean isOccupied(Vector2d vector2d);
     public Map<Vector2d, ArrayList<Animal>> getAnimals2(){

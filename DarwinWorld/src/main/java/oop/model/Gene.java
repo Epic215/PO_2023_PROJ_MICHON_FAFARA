@@ -34,6 +34,14 @@ public class Gene {
     public int[] getGene(){
         return gene;
     }
+    public void createGene(Animal animal1, Animal animal2, int div){
+        for (int i=0; i<div; i++){
+            gene[i] = animal1.getGene().getGene()[i];
+        }
+        for (int i=div; i<animal1.getGene().getGene().length; i++){
+            gene[i] = animal2.getGene().getGene()[i];
+        }
+    }
     @Override
     public boolean equals(Object other){
         if (this == other)

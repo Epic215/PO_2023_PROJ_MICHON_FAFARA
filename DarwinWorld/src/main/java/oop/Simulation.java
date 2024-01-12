@@ -10,13 +10,15 @@ public class Simulation implements Runnable{
     private int daysCount;
     private final int geneSize;
     private final int initialEnergy;
+    private final int breedEnergy;
     private final AbstractWorldMap abstractWorldMap;
-    public Simulation(int animalCount, AbstractWorldMap abstractWorldMap, int geneSize,int initialEnergy){
+    public Simulation(int animalCount, AbstractWorldMap abstractWorldMap, int geneSize,int initialEnergy, int breedEnergy){
         this.daysCount = 0;
         this.animalCount = animalCount;
         this.abstractWorldMap = abstractWorldMap;
         this.geneSize = geneSize;
         this.initialEnergy = initialEnergy;
+        this.breedEnergy = breedEnergy;
         animalGenerator(animalCount);
     }
     private void animalGenerator(int n){
@@ -29,7 +31,7 @@ public class Simulation implements Runnable{
             height = randomPosition.nextInt(mapBoundary.upperRight().getX());
             width = randomPosition.nextInt(mapBoundary.upperRight().getY());
             direction = randomPosition.nextInt(8);
-            abstractWorldMap.place(new Animal(new Vector2d(width,height),OptionsParser.change(4),1,18));
+            abstractWorldMap.place(new Animal(new Vector2d(width,height),OptionsParser.change(4),geneSize,initialEnergy));
         }
         abstractWorldMap.printAnimals();
         abstractWorldMap.printGrasses();
@@ -155,22 +157,24 @@ public class Simulation implements Runnable{
             if(animals.containsKey(key)){
                 Animal animal = resolveConflictFirstStrongest(animals.get(key));
                 animal.eatGrass(abstractWorldMap.getGrassEnergy());
-                //delete dead
+                //delete grass
             }
         });
     }
     private void breedAnimals(){
-        Random randomPosition = new Random();
-        Boundary mapBoundary = abstractWorldMap.getCurrentBounds();
         Map<Vector2d, ArrayList<Animal>> animals = abstractWorldMap.getAnimals2();
         animals.forEach((key,value) -> {
-            if(value.size()>=2){
+            if(value.size() >= 2){
                 Animal animal1 = resolveConflictFirstStrongest(value);
                 Animal animal2 = resolveConflictSecondStrongest(value,animal1);
-
-                Animal animal3 = new Animal(key,OptionsParser.change(Functions.randomNumberBetween(0,8)),geneSize, initialEnergy);
-                animal3.createGene(animal1, animal2, animal2.getEnergy()/animal1.getEnergy()*geneSize);
-                abstractWorldMap.place(animal3);
+                if(animal1.getEnergy()>=breedEnergy && animal2.getEnergy()>=breedEnergy){
+                    Animal animal3 = new Animal(key,OptionsParser.change(Functions.randomNumberBetween(0,8)),geneSize, 2*breedEnergy);
+                    System.out.println(animal3.toString());
+                    animal3.createGene(animal1, animal2, animal2.getEnergy()/animal1.getEnergy()*geneSize);
+                    abstractWorldMap.place(animal3);
+                    animal1.decreaseEnergy(breedEnergy);
+                    animal2.decreaseEnergy(breedEnergy);
+                }
             }
         });
     }
@@ -198,7 +202,7 @@ public class Simulation implements Runnable{
             }
             moveAnimals();
             decrementEnergy();
-//            breedAnimals();
+            breedAnimals();
             deleteDead();
             this.daysCount += 1;
         }
