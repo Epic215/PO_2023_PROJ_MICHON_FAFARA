@@ -6,17 +6,24 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane xmlns="http://javafx.com/javafx"
+<GridPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             minHeight="550.0" minWidth="850.0"
-            fx:controller="oop.presenter.SimulationView">
-    <top>
-
-        <Label fx:id="infoLabel" text="Tutaj beda podawane informacje na aktualnej sytuacji zwierzątka" textAlignment="CENTER"/>
-
-    </top>
-    <center>
-        <GridPane fx:id="mapGridd" gridLinesVisible="true"/>
-    </center>
-
-</BorderPane>
+            stylesheets="styles.css"
+            fx:controller="oop.presenter.SimulationView"
+            fx:id="container">
+        <children>
+            <HBox GridPane.columnIndex="0" GridPane.rowIndex="0" styleClass="statsPane">
+                <Label fx:id="infoLabel" text="Tutaj beda podawane informacje na aktualnej sytuacji zwierzątka" textAlignment="CENTER"/>
+            </HBox>
+            <GridPane fx:id="mapGridd" styleClass="gridPane" GridPane.columnIndex="1" gridLinesVisible="true"/>
+        </children>
+        <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="35.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="65.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+            <RowConstraints minHeight="100.0" prefHeight="100.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+<!--        <Label fx:id="infoLabel" text="Tutaj beda podawane informacje na aktualnej sytuacji zwierzątka" textAlignment="CENTER"/>-->
+</GridPane>

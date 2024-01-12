@@ -35,12 +35,12 @@ public class SimulationPresenter{
 
     public void onSimulationStartClicked() {
         startButton.setOnAction(event -> {
-            DarwinMap darwinWorld = new DarwinMap(5, 5, 10, 1,2, 2);
+            DarwinMap darwinWorld = new DarwinMap(20, 20, 10, 1,2, 2);
 
-            Simulation simulation = new Simulation(3,darwinWorld,2,2);
+            Simulation simulation = new Simulation(3,darwinWorld,1,20,2);
 
             FXMLLoader newwindow= new FXMLLoader(getClass().getResource("/windowsimulation.fxml"));
-            BorderPane root = null;
+            GridPane root = null;
             try {
                 root = newwindow.load();
             } catch (IOException e) {
@@ -48,6 +48,7 @@ public class SimulationPresenter{
             }
             SimulationView newView = newwindow.getController();
             Stage stage = new Stage();
+            stage.setResizable(false);
             stage.setTitle("Mapa: Teeeest");
             stage.setScene(new Scene(root));
             stage.show();
