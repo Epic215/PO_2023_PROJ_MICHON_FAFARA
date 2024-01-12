@@ -65,7 +65,7 @@ public class Animal implements WorldElement{
         gene.moveGeneIndex();
     }
     public void bounce(MapDirection direction){
-        this.facing = this.facing.turn(direction.direction);
+        this.facing = this.facing.turn(direction.direction+4);
     }
     public String toString(){
         return position.toString() + " " + facing.direction + " " + gene.toString();
@@ -88,5 +88,8 @@ public class Animal implements WorldElement{
     }
     public MapDirection getFacing(){
         return facing;
+    }
+    public void createGene(Animal animal1, Animal animal2, int div){
+        this.gene.createGene(animal1, animal2, div);
     }
 }

@@ -18,7 +18,8 @@ public class Gene {
     private void generateGene(int geneSize){
         gene = new int[geneSize];
         for(int i=0; i<geneSize; i++){
-            gene[i] = (generateNumber(0,7));
+            gene[i] = (0);
+//            gene[i] = (generateNumber(0,7));
 //            System.out.println(gene[i]);
         }
     }
@@ -33,6 +34,14 @@ public class Gene {
     }
     public int[] getGene(){
         return gene;
+    }
+    public void createGene(Animal animal1, Animal animal2, int div){
+        for (int i=0; i<div; i++){
+            gene[i] = animal1.getGene().getGene()[i];
+        }
+        for (int i=div; i<gene.length; i++){
+            gene[i] = animal2.getGene().getGene()[i];
+        }
     }
     @Override
     public boolean equals(Object other){

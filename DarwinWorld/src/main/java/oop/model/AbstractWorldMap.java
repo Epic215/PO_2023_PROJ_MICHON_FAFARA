@@ -17,12 +17,13 @@ public abstract class AbstractWorldMap{
     protected int dailyEnergy;
     protected int overallAge;
     protected int deadCount;
+    protected int breedEnergy;
     protected final Map<Vector2d, ArrayList<Animal>> animals = new HashMap<>();
     protected final Map<Vector2d, Grass> grasses = new HashMap<>();
     protected final ArrayList<Vector2d> canPlaceGrassEquator = new ArrayList<>();
     protected final ArrayList<Vector2d> canPlaceGrassSteppes = new ArrayList<>();
     private final List<MapChangeListener> listeners = new ArrayList<>();
-    public AbstractWorldMap(int width, int height,int grassCount,int grassGrowth, int grassEnergy, int dailyEnergy){
+    public AbstractWorldMap(int width, int height,int grassCount,int grassGrowth, int grassEnergy, int dailyEnergy, int breedEnergy){
         this.upperRight = new Vector2d(width,height);
         this.bottomLeft = new Vector2d(0,0);
         this.grassCount = grassCount;
@@ -32,6 +33,9 @@ public abstract class AbstractWorldMap{
         this.dailyEnergy = dailyEnergy;
         this.overallAge = 0;
         this.deadCount = 0;
+        this.breedEnergy = breedEnergy;
+//        this.geneSize = geneSize;
+//        this.animalEnergy = animalEnergy;
         initializeMapEquator(height,width);
         GrassGenerator(grassCount);
     }
@@ -120,23 +124,24 @@ public abstract class AbstractWorldMap{
     }
     public void move(Animal animal){
         MapDirection mapDirection = animal.getCurrentGene();
-        Vector2d supposedPosition = animal.getPosition().add(mapDirection.toUnitVector());
+        Vector2d supposedPosition = animal.getPosition().add(animal.getFacing().turn(mapDirection.direction).toUnitVector());
 
         if(canMoveTo(supposedPosition)){
             animals.get(animal.getPosition()).remove(animal);
             if(animals.get(animal.getPosition()).isEmpty()) {
                 animals.remove(animal.getPosition());
             }
-            if(supposedPosition.getX() > upperRight.getX()){
+            if(supposedPosition.getX() >= upperRight.getX()){
                 animal.crossEarth(bottomLeft.getX(), supposedPosition.getY(), mapDirection);
             } else if (supposedPosition.getX() < bottomLeft.getX()) {
-                animal.crossEarth(upperRight.getX(), supposedPosition.getY(), mapDirection);
+                animal.crossEarth(upperRight.getX()-1, supposedPosition.getY(), mapDirection);
             } else {
                 animal.move(mapDirection);
             }
 //            place(animal);
         } else {
             animal.bounce(mapDirection);
+            animals.get(animal.getPosition()).remove(animal);
         }
         animal.moveGeneIndex();
         place(animal);
@@ -150,7 +155,7 @@ public abstract class AbstractWorldMap{
         }
     }
     public boolean canMoveTo(Vector2d vector2d){
-        return !(vector2d.getY() < bottomLeft.getX() || vector2d.getY() > upperRight.getY() || isOccupied(vector2d));
+        return !(vector2d.getY() < bottomLeft.getY() || vector2d.getY() >= upperRight.getY() || isOccupied(vector2d));
     }
     abstract boolean isOccupied(Vector2d vector2d);
     public Map<Vector2d, ArrayList<Animal>> getAnimals2(){
@@ -260,6 +265,9 @@ public abstract class AbstractWorldMap{
             });
         });
         return childCount[0]/animalCount[0];
+    }
+    public int getBreedEnergy(){
+        return breedEnergy;
     }
 //    public Map<Vector2d,ArrayList<WorldElement>> getElements(){
 //        Map<Vector2d,ArrayList<WorldElement>> elements = new HashMap<>();
