@@ -35,9 +35,9 @@ public class SimulationPresenter{
 
     public void onSimulationStartClicked() {
         startButton.setOnAction(event -> {
-            DarwinMap darwinWorld = new DarwinMap(10, 10, 10, 1,2, 2);
+            DarwinMap darwinWorld = new DarwinMap(5, 5, 10, 1,2, 2);
 
-            Simulation simulation = new Simulation(3,darwinWorld);
+            Simulation simulation = new Simulation(3,darwinWorld,2,2);
 
             FXMLLoader newwindow= new FXMLLoader(getClass().getResource("/windowsimulation.fxml"));
             BorderPane root = null;

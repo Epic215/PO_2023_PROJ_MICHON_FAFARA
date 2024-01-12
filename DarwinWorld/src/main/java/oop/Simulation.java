@@ -8,11 +8,15 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class Simulation implements Runnable{
     private int animalCount;
     private int daysCount;
+    private final int geneSize;
+    private final int initialEnergy;
     private final AbstractWorldMap abstractWorldMap;
-    public Simulation(int animalCount, AbstractWorldMap abstractWorldMap){
+    public Simulation(int animalCount, AbstractWorldMap abstractWorldMap, int geneSize,int initialEnergy){
         this.daysCount = 0;
         this.animalCount = animalCount;
         this.abstractWorldMap = abstractWorldMap;
+        this.geneSize = geneSize;
+        this.initialEnergy = initialEnergy;
         animalGenerator(animalCount);
     }
     private void animalGenerator(int n){
@@ -25,7 +29,7 @@ public class Simulation implements Runnable{
             height = randomPosition.nextInt(mapBoundary.upperRight().getX());
             width = randomPosition.nextInt(mapBoundary.upperRight().getY());
             direction = randomPosition.nextInt(8);
-            abstractWorldMap.place(new Animal(new Vector2d(width,height),OptionsParser.change(5),1,32));
+            abstractWorldMap.place(new Animal(new Vector2d(width,height),OptionsParser.change(4),1,18));
         }
         abstractWorldMap.printAnimals();
         abstractWorldMap.printGrasses();
@@ -156,7 +160,19 @@ public class Simulation implements Runnable{
         });
     }
     private void breedAnimals(){
+        Random randomPosition = new Random();
+        Boundary mapBoundary = abstractWorldMap.getCurrentBounds();
+        Map<Vector2d, ArrayList<Animal>> animals = abstractWorldMap.getAnimals2();
+        animals.forEach((key,value) -> {
+            if(value.size()>=2){
+                Animal animal1 = resolveConflictFirstStrongest(value);
+                Animal animal2 = resolveConflictSecondStrongest(value,animal1);
 
+                Animal animal3 = new Animal(key,OptionsParser.change(Functions.randomNumberBetween(0,8)),geneSize, initialEnergy);
+                animal3.createGene(animal1, animal2, animal2.getEnergy()/animal1.getEnergy()*geneSize);
+                abstractWorldMap.place(animal3);
+            }
+        });
     }
     private void decrementEnergy(){
         Map<Vector2d, ArrayList<Animal>> animals = abstractWorldMap.getAnimals2();
@@ -171,6 +187,7 @@ public class Simulation implements Runnable{
         animals.forEach((key,value) -> {
             value.stream().filter(animal -> animal.getEnergy() <= 0).forEach(abstractWorldMap::deleteDead);
         });
+        abstractWorldMap.mapChanged("fhdjsklafh");
     }
     public void run(){
         for(int i=0; i<10; i++){
@@ -181,6 +198,7 @@ public class Simulation implements Runnable{
             }
             moveAnimals();
             decrementEnergy();
+//            breedAnimals();
             deleteDead();
             this.daysCount += 1;
         }

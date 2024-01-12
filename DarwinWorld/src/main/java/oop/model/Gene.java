@@ -18,7 +18,7 @@ public class Gene {
     private void generateGene(int geneSize){
         gene = new int[geneSize];
         for(int i=0; i<geneSize; i++){
-            gene[i] = (generateNumber(0,7));
+            gene[i] = (0);
 //            System.out.println(gene[i]);
         }
     }
