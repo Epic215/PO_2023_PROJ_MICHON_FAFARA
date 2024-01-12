@@ -25,7 +25,7 @@ public class Simulation implements Runnable{
             height = randomPosition.nextInt(mapBoundary.upperRight().getX());
             width = randomPosition.nextInt(mapBoundary.upperRight().getY());
             direction = randomPosition.nextInt(8);
-            abstractWorldMap.place(new Animal(new Vector2d(width,height),OptionsParser.change(5),1,32));
+            abstractWorldMap.place(new Animal(new Vector2d(width,height),OptionsParser.change(4),1,18));
         }
         abstractWorldMap.printAnimals();
         abstractWorldMap.printGrasses();
@@ -171,6 +171,7 @@ public class Simulation implements Runnable{
         animals.forEach((key,value) -> {
             value.stream().filter(animal -> animal.getEnergy() <= 0).forEach(abstractWorldMap::deleteDead);
         });
+        abstractWorldMap.mapChanged("fhdjsklafh");
     }
     public void run(){
         for(int i=0; i<10; i++){
@@ -181,6 +182,7 @@ public class Simulation implements Runnable{
             }
             moveAnimals();
             decrementEnergy();
+//            breedAnimals();
             deleteDead();
             this.daysCount += 1;
         }

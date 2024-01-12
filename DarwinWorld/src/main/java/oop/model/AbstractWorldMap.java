@@ -120,23 +120,24 @@ public abstract class AbstractWorldMap{
     }
     public void move(Animal animal){
         MapDirection mapDirection = animal.getCurrentGene();
-        Vector2d supposedPosition = animal.getPosition().add(mapDirection.toUnitVector());
+        Vector2d supposedPosition = animal.getPosition().add(animal.getFacing().turn(mapDirection.direction).toUnitVector());
 
         if(canMoveTo(supposedPosition)){
             animals.get(animal.getPosition()).remove(animal);
             if(animals.get(animal.getPosition()).isEmpty()) {
                 animals.remove(animal.getPosition());
             }
-            if(supposedPosition.getX() > upperRight.getX()){
+            if(supposedPosition.getX() >= upperRight.getX()){
                 animal.crossEarth(bottomLeft.getX(), supposedPosition.getY(), mapDirection);
             } else if (supposedPosition.getX() < bottomLeft.getX()) {
-                animal.crossEarth(upperRight.getX(), supposedPosition.getY(), mapDirection);
+                animal.crossEarth(upperRight.getX()-1, supposedPosition.getY(), mapDirection);
             } else {
                 animal.move(mapDirection);
             }
 //            place(animal);
         } else {
             animal.bounce(mapDirection);
+            animals.get(animal.getPosition()).remove(animal);
         }
         animal.moveGeneIndex();
         place(animal);

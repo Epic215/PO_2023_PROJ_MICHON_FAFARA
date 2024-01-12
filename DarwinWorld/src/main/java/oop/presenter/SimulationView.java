@@ -60,17 +60,12 @@ public class SimulationView implements MapChangeListener{
 
     private void newGrid(){
         int left = map.getCurrentBounds().bottomLeft().getX();
-        int right = map.getCurrentBounds().upperRight().getX();
-        int lower = map.getCurrentBounds().bottomLeft().getY();
         int upper = map.getCurrentBounds().upperRight().getY();
         int width = 50;
         int height = 50;
 
-        Label label = new Label();
-        this.mapGridd.add(label, 0, 0);
-        this.mapGridd.getColumnConstraints().add(new ColumnConstraints(width));
-        this.mapGridd.getRowConstraints().add(new RowConstraints(height));
-        GridPane.setHalignment(label, HPos.CENTER);
+        Label label;
+
         for (int i = 0; i < map.getCurrentBounds().upperRight().getX() ; i++) {
             this.mapGridd.getColumnConstraints().add(new ColumnConstraints(width));
             label = new Label();
