@@ -60,7 +60,7 @@ public class SimulationView implements MapChangeListener{
 
     private void newGrid(){
         int left = map.getCurrentBounds().bottomLeft().getX();
-        int upper = map.getCurrentBounds().upperRight().getY();
+        int upper = map.getCurrentBounds().upperRight().getY()-1;
         int width = 50;
         int height = 50;
 
