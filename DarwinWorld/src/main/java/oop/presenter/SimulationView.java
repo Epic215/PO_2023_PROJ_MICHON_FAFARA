@@ -71,17 +71,15 @@ public class SimulationView implements MapChangeListener{
         this.mapGridd.getColumnConstraints().add(new ColumnConstraints(width));
         this.mapGridd.getRowConstraints().add(new RowConstraints(height));
         GridPane.setHalignment(label, HPos.CENTER);
-        for (int i = 1; i <= right - left + 1; i++) {
+        for (int i = 0; i < map.getCurrentBounds().upperRight().getX() ; i++) {
             this.mapGridd.getColumnConstraints().add(new ColumnConstraints(width));
             label = new Label();
-            label.setVisible(false);
             GridPane.setHalignment(label, HPos.CENTER);
             this.mapGridd.add(label, i, 0);
         }
-        for (int i = 1; i <= upper - lower + 1; i++) {
+        for (int i = 0; i < map.getCurrentBounds().upperRight().getY() ; i++) {
             this.mapGridd.getRowConstraints().add(new RowConstraints(height));
             label = new Label();
-            label.setVisible(false);
             GridPane.setHalignment(label, HPos.CENTER);
             this.mapGridd.add(label, 0, i);
         }
@@ -99,7 +97,7 @@ public class SimulationView implements MapChangeListener{
             GridPane.setHalignment(label, HPos.CENTER);
             label.setText(grass.getValue().toString());
             label.setStyle("-fx-background-color: #77c44c; -fx-border-radius: 100px");
-            mapGridd.add(label, 1 + grass.getKey().getX() - left, 1 + upper - grass.getKey().getY());
+            mapGridd.add(label,  grass.getKey().getX() - left,  upper - grass.getKey().getY());
 
         }
         for (Map.Entry<Vector2d,ArrayList<Animal>> animal : animals.entrySet()){
@@ -110,7 +108,7 @@ public class SimulationView implements MapChangeListener{
             GridPane.setHalignment(label, HPos.CENTER);
             label.setText(""+animal.getValue().size());
             label.setStyle("-fx-background-color: #d79839; -fx-border-radius: 100px ");
-            mapGridd.add(label,1+animal.getKey().getX()- left,1+upper - animal.getKey().getY());
+            mapGridd.add(label,animal.getKey().getX()- left,upper - animal.getKey().getY());
         }
 
     }

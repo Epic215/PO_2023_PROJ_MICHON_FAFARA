@@ -25,7 +25,7 @@ public class Simulation implements Runnable{
             height = randomPosition.nextInt(mapBoundary.upperRight().getX());
             width = randomPosition.nextInt(mapBoundary.upperRight().getY());
             direction = randomPosition.nextInt(8);
-            abstractWorldMap.place(new Animal(new Vector2d(width,height),OptionsParser.change(direction),1,16));
+            abstractWorldMap.place(new Animal(new Vector2d(width,height),OptionsParser.change(5),1,32));
         }
         abstractWorldMap.printAnimals();
         abstractWorldMap.printGrasses();
