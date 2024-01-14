@@ -194,17 +194,21 @@ public class Simulation implements Runnable{
         abstractWorldMap.mapChanged("fhdjsklafh");
     }
     public void run(){
-        for(int i=0; i<20; i++){
+        for(int i=0; i<50; i++){
             try {
                 Thread.sleep(500);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
+            if (i%10==0 && i!=0) {((DarwinMapWater)abstractWorldMap).waterChange();}
             moveAnimals();
             decrementEnergy();
             eatGrass();
             breedAnimals();
             deleteDead();
+            if(abstractWorldMap.getAnimalCount()==0){
+                break;
+            }
             abstractWorldMap.GrassGenerator(abstractWorldMap.getGrassGrowth());
             this.daysCount += 1;
         }
