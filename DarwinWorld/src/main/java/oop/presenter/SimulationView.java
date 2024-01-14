@@ -1,5 +1,6 @@
 package oop.presenter;
 
+import javafx.scene.control.Button;
 import oop.Simulation;
 import oop.model.*;
 import javafx.application.Platform;
@@ -29,6 +30,15 @@ public class SimulationView implements MapChangeListener{
     private GridPane mapGridd;
     @FXML
     private GridPane container;
+    @FXML private Label animalCount;
+    @FXML private Label plantsCount;
+    @FXML private Label emptyCount;
+    @FXML private Label geneType;
+    @FXML private Label averageEnergy;
+    @FXML private Label averageLifespan;
+    @FXML private Label childrenCount;
+//    @FXML private Button stopButton;
+//    @FXML private Button resumeButton;
     private AbstractWorldMap map;
 
 
@@ -65,6 +75,14 @@ public class SimulationView implements MapChangeListener{
         double containerWidth = container.getWidth();
         double width = 0.65*containerWidth/map.getCurrentBounds().upperRight().getX()*0.9;
         double height = 0.65*containerWidth/map.getCurrentBounds().upperRight().getX()*0.9;
+
+        animalCount.setText(String.valueOf(map.getAnimalCount()));
+        plantsCount.setText(String.valueOf(map.getGrassCount()));
+        emptyCount.setText(String.valueOf(map.getFreeFieldsCount()));
+        geneType.setText(String.valueOf(map.getMostPopularGeneType()));
+        averageEnergy.setText(String.valueOf(map.getAverageEnergy()));
+        averageLifespan.setText(String.valueOf(map.getAverageDeadAge()));
+        childrenCount.setText(String.valueOf(map.getAverageChildCount()));
 
         Label label;
 
@@ -107,7 +125,17 @@ public class SimulationView implements MapChangeListener{
             label.setStyle("-fx-background-color: #d79839; -fx-border-radius: 100px ");
             mapGridd.add(label,animal.getKey().getX()- left,upper - animal.getKey().getY());
         }
-
+        Map<Vector2d, Water> waters = ((DarwinMapWater) map).getWaters();
+        for (Map.Entry<Vector2d,Water> water : waters.entrySet()){
+            label = new Label();
+            label.setMinWidth(width*0.8);
+            label.setMinHeight(height*0.8);
+            label.setAlignment(Pos.CENTER);
+            GridPane.setHalignment(label, HPos.CENTER);
+            label.setText(water.getValue().toString());
+            label.setStyle("-fx-background-color: #3b36da; -fx-border-radius: 100px ");
+            mapGridd.add(label,water.getKey().getX()- left,upper - water.getKey().getY());
+        }
     }
 
     private void clearGrid() {

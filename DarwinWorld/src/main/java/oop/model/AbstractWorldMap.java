@@ -258,7 +258,10 @@ public abstract class AbstractWorldMap{
     }
     public int getDailyEnergy(){return dailyEnergy;}
     public int getAverageDeadAge(){
-        return overallAge/deadCount;
+        if(deadCount!=0){
+            return overallAge/deadCount;
+        }
+        return 0;
     }
     public int getAverageChildCount(){
         final int[] childCount = {0};

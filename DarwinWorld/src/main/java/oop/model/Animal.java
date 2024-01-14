@@ -90,6 +90,7 @@ public class Animal implements WorldElement{
         return facing;
     }
     public void createGene(Animal animal1, Animal animal2, int div){
+        childrenCount+=1;
         gene.createGene(animal1, animal2, div);
     }
 }
