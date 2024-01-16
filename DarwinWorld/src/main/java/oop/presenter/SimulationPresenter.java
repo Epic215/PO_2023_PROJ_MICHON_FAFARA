@@ -29,9 +29,8 @@ import java.util.Map;
 import static java.lang.Math.abs;
 
 public class SimulationPresenter{
-    @FXML public RadioButton worldConfigGlobe;
     @FXML public RadioButton worldConfigGlobeTides;
-    @FXML private GridPane mapGrid;
+//    @FXML private GridPane mapGrid;
     @FXML private Button startButton;
     @FXML private TextField animalCountInput;
     @FXML private TextField geneSizeInput;
@@ -66,9 +65,9 @@ public class SimulationPresenter{
 
             AbstractWorldMap abstractWorldMap;
             if(worldConfigGlobeTides.isSelected()){
-                abstractWorldMap = new DarwinMap(mapWidth, mapHeight, grassCount, grassGrowth,grassEnergy, dailyEnergy);
-            } else{
                 abstractWorldMap = new DarwinMapWater(mapWidth, mapHeight, grassCount, grassGrowth,grassEnergy, dailyEnergy);
+            } else{
+                abstractWorldMap = new DarwinMap(mapWidth, mapHeight, grassCount, grassGrowth,grassEnergy, dailyEnergy);
             }
 
 //            DarwinMap darwinWorld = new DarwinMap(mapWidth, mapHeight, grassCount, grassGrowth,grassEnergy, dailyEnergy);

@@ -14,7 +14,7 @@ public class DarwinMapWater extends AbstractWorldMap{
     private int phaseNumber=0;
     private static final int PHASES=3; // ilosc wzrosniec
     public DarwinMapWater(int width, int height,int grassCount,int grassGrowth, int grassEnergy, int dailyEnergy){//  int energy, int grassGrowth, int animalCount)
-        super(width, height, grassCount, grassGrowth, grassEnergy, dailyEnergy);
+        super(width, height, grassCount, grassGrowth, grassEnergy, dailyEnergy, true);
 //        this.animalCount = animalCount;
         generateWater(width,height);
         generateWaterPhases();

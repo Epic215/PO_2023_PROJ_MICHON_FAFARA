@@ -17,12 +17,13 @@ public abstract class AbstractWorldMap{
     protected int dailyEnergy;
     protected int overallAge;
     protected int deadCount;
+    protected boolean isWater;
     protected final Map<Vector2d, ArrayList<Animal>> animals = new HashMap<>();
     protected final Map<Vector2d, Grass> grasses = new HashMap<>();
     protected final ArrayList<Vector2d> canPlaceGrassEquator = new ArrayList<>();
     protected final ArrayList<Vector2d> canPlaceGrassSteppes = new ArrayList<>();
     private final List<MapChangeListener> listeners = new ArrayList<>();
-    public AbstractWorldMap(int width, int height,int grassCount,int grassGrowth, int grassEnergy, int dailyEnergy){
+    public AbstractWorldMap(int width, int height,int grassCount,int grassGrowth, int grassEnergy, int dailyEnergy, boolean isWater){
         this.upperRight = new Vector2d(width,height);
         this.bottomLeft = new Vector2d(0,0);
         this.grassCount = grassCount;
@@ -32,6 +33,7 @@ public abstract class AbstractWorldMap{
         this.dailyEnergy = dailyEnergy;
         this.overallAge = 0;
         this.deadCount = 0;
+        this.isWater = isWater;
         initializeMapEquator(height,width);
         GrassGenerator(grassCount);
     }
@@ -271,6 +273,9 @@ public abstract class AbstractWorldMap{
         });
         if (animalCount[0]==0) return 0;
         return childCount[0]/animalCount[0];
+    }
+    public boolean getIsWater(){
+        return isWater;
     }
     public int getGrassGrowth() {
         return grassGrowth;
