@@ -44,7 +44,9 @@ public class DarwinMapWater extends AbstractWorldMap{
         for (Water water : waterToAdd){
             waters.put(water.getPosition(),water);
             if(animals.get(water.getPosition())!=null) {
-                animals.remove(water.getPosition());
+                for(Animal animal : animals.get(water.getPosition())){
+                    animal.decreaseEnergy(animal.getEnergy());
+                }
             }
         }
     }
@@ -119,6 +121,9 @@ public class DarwinMapWater extends AbstractWorldMap{
     }
     public Map<Vector2d, Water> getWaters(){
         return waters;
+    }
+    public boolean canMoveTo(Vector2d vector2d){
+        return !(vector2d.getX() < bottomLeft.getX() || vector2d.getX() >= upperRight.getX() || vector2d.getY() < bottomLeft.getY() || vector2d.getY() >= upperRight.getY() || isOccupied(vector2d));
     }
 
 

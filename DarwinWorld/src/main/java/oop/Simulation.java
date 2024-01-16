@@ -33,8 +33,8 @@ public class Simulation implements Runnable{
             direction = randomPosition.nextInt(8);
             abstractWorldMap.place(new Animal(new Vector2d(width,height),OptionsParser.change(direction),geneSize,initialEnergy));
         }
-        abstractWorldMap.printAnimals();
-        abstractWorldMap.printGrasses();
+//        abstractWorldMap.printAnimals();
+//        abstractWorldMap.printGrasses();
     }
     public Animal resolveConflictFirstStrongest(ArrayList<Animal> animals){
         int oldestAnimalAge=0;
@@ -122,15 +122,15 @@ public class Simulation implements Runnable{
     public void moveAnimals(){
         Map<Vector2d, ArrayList<Animal>> animals = abstractWorldMap.getAnimals2();
         animals.forEach((key, value) -> {
-            abstractWorldMap.printAnimals();
+//            abstractWorldMap.printAnimals();
             if(!value.isEmpty()){
                 for(Animal animal : value){
                     if(animal != null){
-                        System.out.println("przed move");
-                        System.out.println(animal.toString());
+//                        System.out.println("przed move");
+//                        System.out.println(animal.toString());
                         abstractWorldMap.move(animal);
-                        System.out.println("po move");
-                        System.out.println(animal.toString());
+//                        System.out.println("po move");
+//                        System.out.println(animal.toString());
                     }
                 }
             }
@@ -141,11 +141,11 @@ public class Simulation implements Runnable{
         ArrayList<Animal> animals = abstractWorldMap.getAnimals();
         animals.forEach(animal -> {
             abstractWorldMap.printAnimals();
-                System.out.println("przed move");
-                System.out.println(animal.toString());
+//                System.out.println("przed move");
+//                System.out.println(animal.toString());
                 abstractWorldMap.move(animal);
-                System.out.println("po move");
-                System.out.println(animal.toString());
+//                System.out.println("po move");
+//                System.out.println(animal.toString());
 
         });
         abstractWorldMap.mapChanged("fhdjsklafh");
@@ -154,10 +154,12 @@ public class Simulation implements Runnable{
         Map<Vector2d, ArrayList<Animal>> animals = abstractWorldMap.getAnimals2();
         Map<Vector2d, Grass> grasses = abstractWorldMap.getGrasses();
         grasses.forEach((key,value) -> {
-            if(animals.containsKey(key)){
+            if(animals.get(key)!=null){
                 Animal animal = resolveConflictFirstStrongest(animals.get(key));
-                animal.eatGrass(abstractWorldMap.getGrassEnergy());
-                abstractWorldMap.deleteGrass(value);
+                if(animal.getEnergy()>0){
+                    animal.eatGrass(abstractWorldMap.getGrassEnergy());
+                    abstractWorldMap.deleteGrass(value);
+                }
             }
         });
     }
@@ -200,15 +202,17 @@ public class Simulation implements Runnable{
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
+
             if (i%10==0 && i!=0) {((DarwinMapWater)abstractWorldMap).waterChange();}
-            moveAnimals();
-            decrementEnergy();
-            eatGrass();
-            breedAnimals();
             deleteDead();
             if(abstractWorldMap.getAnimalCount()==0){
                 break;
             }
+            moveAnimals();
+            decrementEnergy();
+            eatGrass();
+            breedAnimals();
+//            deleteDead();
             abstractWorldMap.GrassGenerator(abstractWorldMap.getGrassGrowth());
             this.daysCount += 1;
         }
