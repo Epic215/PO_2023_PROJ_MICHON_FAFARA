@@ -12,48 +12,104 @@
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.layout.AnchorPane?>
+
 <GridPane xmlns="http://javafx.com/javafx"
           xmlns:fx="http://javafx.com/fxml"
           minHeight="550.0" minWidth="850.0"
-          fx:controller="oop.presenter.SimulationPresenter">
+          fx:controller="oop.presenter.SimulationPresenter"
+          style="-fx-background-color: #9af4ff; -fx-border-width: 3px; -fx-border-color: black;"
+          stylesheets="configstyles.css">
 <!--        <TextField  fx:id="ruchy" layoutX="100.0" layoutY="50.0"/>-->
 <!--        <Label fx:id="infoLabel" text="To okno tylko jest do startu symulacji podaj liste ruchów" textAlignment="CENTER"/>-->
 <!--        <GridPane fx:id="mapGrid" gridLinesVisible="true"/>-->
         <children>
-            <VBox GridPane.columnIndex="0" GridPane.rowIndex="0">
-                <Label fx:id="worldConfigGlobeLabel" text="Configure world:" textAlignment="CENTER"/>
-                <RadioButton fx:id="worldConfigGlobe" text="Globe">
-                    <toggleGroup>
-                        <ToggleGroup fx:id="groupWorld"/>
-                    </toggleGroup>
-                </RadioButton>
-                <RadioButton fx:id="worldConfigGlobeTides" text="Tides">
-                    <toggleGroup>
-                        <fx:reference source="groupWorld"/>
-                    </toggleGroup>
-                </RadioButton>
+            <VBox GridPane.columnIndex="0" GridPane.rowIndex="0" styleClass="borderBox">
+                <ImageView id="boxImage" styleClass="borderBox">
+                    <fitWidth>600</fitWidth>
+                    <preserveRatio>true</preserveRatio>
+                    <image>
+                        <Image url="@logodawinmap.png" />
+                    </image>
+                </ImageView>
             </VBox>
-            <VBox GridPane.columnIndex="0" GridPane.rowIndex="1">
-                <Label fx:id="animalConfigLabel" text="Configure world:" textAlignment="CENTER"/>
-                <RadioButton fx:id="animalConfigMadness" text="A bit of madness">
-                    <toggleGroup>
-                        <ToggleGroup fx:id="groupAnimal"/>
-                    </toggleGroup>
-                </RadioButton>
-                <RadioButton fx:id="animalConfigPredestination" text="Complete Predestintion">
-                    <toggleGroup>
-                        <fx:reference source="groupAnimal"/>
-                    </toggleGroup>
-                </RadioButton>
+            <VBox GridPane.columnIndex="0" GridPane.rowIndex="1" styleClass="borderBox">
+                <Label fx:id="worldConfigGlobeLabel" text="Configure world:" textAlignment="CENTER" />
+                <HBox>
+                    <RadioButton fx:id="worldConfigGlobe" text="Globe" styleClass="radioButton">
+                        <toggleGroup>
+                            <ToggleGroup fx:id="groupWorld"/>
+                        </toggleGroup>
+                    </RadioButton>
+                    <RadioButton fx:id="worldConfigGlobeTides" text="Tides" styleClass="radioButton">
+                        <toggleGroup>
+                            <fx:reference source="groupWorld"/>
+                        </toggleGroup>
+                    </RadioButton>
+                </HBox>
             </VBox>
-            <VBox GridPane.columnIndex="0" GridPane.rowIndex="2">
-                <Button fx:id="startButton" text="Start" onAction="#onSimulationStartClicked"/>
+<!--            <VBox GridPane.columnIndex="0" GridPane.rowIndex="2">-->
+<!--                <Label fx:id="animalConfigLabel" text="Configure animals:" textAlignment="CENTER"/>-->
+<!--                <HBox>-->
+<!--                    <RadioButton fx:id="animalConfigMadness" text="A bit of madness">-->
+<!--                        <toggleGroup>-->
+<!--                            <ToggleGroup fx:id="groupAnimal"/>-->
+<!--                        </toggleGroup>-->
+<!--                    </RadioButton>-->
+<!--                    <RadioButton fx:id="animalConfigPredestination" text="Complete Predestintion">-->
+<!--                        <toggleGroup>-->
+<!--                            <fx:reference source="groupAnimal"/>-->
+<!--                        </toggleGroup>-->
+<!--                    </RadioButton>-->
+<!--                </HBox>-->
+<!--            </VBox>-->
+
+            <VBox GridPane.columnIndex="0" GridPane.rowIndex="2" GridPane.halignment="CENTER" styleClass="borderBox">
+                <HBox>
+<!--                    <Label text="Number of animals: " textAlignment="CENTER"/>-->
+                    <TextField fx:id="animalCountInput" promptText="Number of animals" styleClass="textInput"/>
+                    <TextField fx:id="geneSizeInput" promptText="Gene size" styleClass="textInput"/>
+                </HBox>
+            </VBox>
+            <VBox GridPane.columnIndex="0" GridPane.rowIndex="3">
+                <HBox>
+<!--                    <Label text="Gene size: " textAlignment="CENTER"/>-->
+                    <TextField fx:id="mapWidthInput" promptText="Map width" styleClass="textInput"/>
+                    <TextField fx:id="mapHeightInput" promptText="Map height" styleClass="textInput"/>
+                </HBox>
+            </VBox>
+            <VBox GridPane.columnIndex="0" GridPane.rowIndex="4">
+                <HBox>
+<!--                    <Label text="Map width: " textAlignment="CENTER"/>-->
+                    <TextField fx:id="grassCountInput" promptText="Initial grass count" styleClass="textInput"/>
+                    <TextField fx:id="grassGrowthInput" promptText="Grass growth per day" styleClass="textInput"/>
+                </HBox>
+            </VBox>
+            <VBox GridPane.columnIndex="0" GridPane.rowIndex="5">
+                <HBox>
+<!--                    <Label text="Map height: " textAlignment="CENTER"/>-->
+                    <TextField fx:id="grassEnergyInput" promptText="Grass energy" styleClass="textInput"/>
+                    <TextField fx:id="dailyEnergyInput" promptText="Daily energy cost" styleClass="textInput"/>
+                </HBox>
+            </VBox>
+            <VBox GridPane.columnIndex="0" GridPane.rowIndex="6">
+                <HBox>
+<!--                    <Label text="Initial grass count: " textAlignment="CENTER"/>-->
+                    <TextField fx:id="initialEnergyInput" promptText="Initial animal energy" styleClass="textInput"/>
+                    <TextField fx:id="breedEnergyInput" promptText="Breed energy input" styleClass="textInput"/>
+                </HBox>
+            </VBox>
+            <VBox GridPane.columnIndex="0" GridPane.rowIndex="7" >
+                <Button fx:id="startButton" text="Start" onAction="#onSimulationStartClicked" styleClass="textInput"/>
             </VBox>
         </children>
         <columnConstraints>
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="100.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="80.0" prefWidth="100.0"/>
         </columnConstraints>
         <rowConstraints>
-            <RowConstraints minHeight="10.0" prefHeight="100.0" vgrow="SOMETIMES" />
+            <RowConstraints vgrow="SOMETIMES" percentHeight="20.0" prefHeight="100.0" />
+
         </rowConstraints>
 </GridPane>

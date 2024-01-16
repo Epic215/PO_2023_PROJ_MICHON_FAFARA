@@ -44,10 +44,9 @@
                     <Label fx:id="childrenCount" textAlignment="CENTER"/>
                 </HBox>
                 <HBox>
-                    <Button fx:id="stopButton" text="Start"/>
-                    <Button fx:id="resumeButton" text="resume"/>
+                    <Button fx:id="stopButton" text="Stop"/>
+                    <Button fx:id="resumeButton" text="Resume"/>
                 </HBox>
-
             </VBox>
             <GridPane fx:id="mapGridd" styleClass="gridPane" GridPane.columnIndex="1" gridLinesVisible="true"/>
         </children>
