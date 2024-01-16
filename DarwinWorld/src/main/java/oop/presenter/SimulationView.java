@@ -125,16 +125,23 @@ public class SimulationView implements MapChangeListener{
             label.setStyle("-fx-background-color: #d79839; -fx-border-radius: 100px ");
             mapGridd.add(label,animal.getKey().getX()- left,upper - animal.getKey().getY());
         }
+        if(map.getIsWater()){
+            drawWater(width, height, left, upper);
+        }
+    }
+
+    private void drawWater(double width, double height, int left, int upper) {
+        Label label;
         Map<Vector2d, Water> waters = ((DarwinMapWater) map).getWaters();
         for (Map.Entry<Vector2d,Water> water : waters.entrySet()){
             label = new Label();
-            label.setMinWidth(width*0.8);
-            label.setMinHeight(height*0.8);
+            label.setMinWidth(width *0.8);
+            label.setMinHeight(height *0.8);
             label.setAlignment(Pos.CENTER);
             GridPane.setHalignment(label, HPos.CENTER);
             label.setText(water.getValue().toString());
             label.setStyle("-fx-background-color: #3b36da; -fx-border-radius: 100px ");
-            mapGridd.add(label,water.getKey().getX()- left,upper - water.getKey().getY());
+            mapGridd.add(label,water.getKey().getX()- left, upper - water.getKey().getY());
         }
     }
 
