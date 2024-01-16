@@ -194,7 +194,8 @@ public abstract class AbstractWorldMap{
         return this.mapId;
     }
     public int getAnimalCount(){
-        return animals.size();
+        return this.getAnimals().size();
+
     }
     public int getGrassCount(){
         return grasses.size();
@@ -210,17 +211,13 @@ public abstract class AbstractWorldMap{
         }
         return count;
     }
-    public int getMostPopularGeneType(){
+    public String getMostPopularGeneType(){
         Map<String, Integer> popularGene = new HashMap<>();
         animals.forEach((key,value) -> {
-            value.forEach(animal -> {
+            for (Animal animal : value){
                 String gene = animal.getGene().toString();
-                if(popularGene.get(gene)==null){
-                    popularGene.put(gene,1);
-                } else {
-                    popularGene.put(gene,popularGene.get(gene)+1);
-                }
-            });
+                popularGene.merge(gene, 1, Integer::sum);
+            }
         });
         AtomicInteger maxGene = new AtomicInteger(0);
         AtomicReference<String> maxGeneArray = new AtomicReference<>();
@@ -233,8 +230,8 @@ public abstract class AbstractWorldMap{
         System.out.println(maxGeneArray);
         System.out.println(maxGene.get());
         System.out.println(popularGene.toString());
-        System.out.println(Collections.max(popularGene.entrySet(), (entry1, entry2) -> entry1.getValue() - entry2.getValue()).getKey());
-        return maxGene.get();
+//        System.out.println(Collections.max(popularGene.entrySet(), (entry1, entry2) -> entry1.getValue() - entry2.getValue()).getKey());
+        return maxGeneArray.toString();
     }
     public int getAverageEnergy(){
         final int[] energySum = {0};
@@ -272,6 +269,7 @@ public abstract class AbstractWorldMap{
                 animalCount[0] += 1;
             });
         });
+        if (animalCount[0]==0) return 0;
         return childCount[0]/animalCount[0];
     }
     public int getGrassGrowth() {
