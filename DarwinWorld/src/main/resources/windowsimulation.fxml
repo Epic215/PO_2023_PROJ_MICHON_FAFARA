@@ -14,39 +14,41 @@
             fx:id="container">
         <children>
             <VBox GridPane.columnIndex="0" GridPane.rowIndex="0" styleClass="statsPane">
-                <Label fx:id="infoLabel" text="Tutaj beda podawane informacje na aktualnej sytuacji zwierzątka" textAlignment="CENTER"/>
-                <HBox>
+                <Label fx:id="infoLabel" text="Statystyki mapy" textAlignment="CENTER"/>
+                <HBox styleClass="stats">
                     <Label text="Number of animals: " textAlignment="CENTER"/>
                     <Label fx:id="animalCount" textAlignment="CENTER"/>
                 </HBox>
-                <HBox>
+                <HBox styleClass="stats">
                     <Label text="Number of plants: " textAlignment="CENTER"/>
                     <Label fx:id="plantsCount" textAlignment="CENTER"/>
                 </HBox>
-                <HBox>
+                <HBox styleClass="stats">
                     <Label text="Number of empty spaces: " textAlignment="CENTER"/>
                     <Label fx:id="emptyCount" textAlignment="CENTER"/>
                 </HBox>
-                <HBox>
+                <HBox styleClass="stats">
                     <Label text="Most popular gene type: " textAlignment="CENTER"/>
                     <Label fx:id="geneType" textAlignment="CENTER"/>
                 </HBox>
-                <HBox>
+                <HBox styleClass="stats">
                     <Label text="Average energy: " textAlignment="CENTER"/>
                     <Label fx:id="averageEnergy" textAlignment="CENTER"/>
                 </HBox>
-                <HBox>
+                <HBox styleClass="stats">
                     <Label text="Average lifespan: " textAlignment="CENTER"/>
                     <Label fx:id="averageLifespan" textAlignment="CENTER"/>
                 </HBox>
-                <HBox>
+                <HBox styleClass="stats">
                     <Label text="Average children number: " textAlignment="CENTER"/>
                     <Label fx:id="childrenCount" textAlignment="CENTER"/>
                 </HBox>
-                <HBox>
+
+                <HBox styleClass="stats">
                     <Button fx:id="pauseButton" text="Pause" onAction="#viewPause"/>
                     <Button fx:id="resumeButton" text="Resume" onAction="#viewResume"/>
                     <Button fx:id="stopButton" text="Terminate" onAction="#viewStop"/>
+
                 </HBox>
             </VBox>
             <GridPane fx:id="mapGridd" styleClass="gridPane" GridPane.columnIndex="1" gridLinesVisible="true"/>

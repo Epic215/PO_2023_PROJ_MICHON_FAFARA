@@ -160,7 +160,7 @@ public class Simulation implements Runnable{
             if(animals.get(key)!=null){
                 Animal animal = resolveConflictFirstStrongest(animals.get(key));
                 if(animal.getEnergy()>0){
-                    animal.eatGrass(abstractWorldMap.getGrassEnergy());
+                    animal.eatGrass(abstractWorldMap.getGrassEnergy(), initialEnergy);
                     abstractWorldMap.deleteGrass(value);
                 }
             }
