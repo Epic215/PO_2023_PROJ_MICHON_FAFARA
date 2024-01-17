@@ -3,6 +3,7 @@ package oop.model;
 import java.util.Map;
 import java.util.UUID;
 
+import static java.lang.Math.min;
 import static oop.model.MapDirection.*;
 
 public class Animal implements WorldElement{
@@ -70,8 +71,8 @@ public class Animal implements WorldElement{
     public String toString(){
         return position.toString() + " " + facing.direction + " " + gene.toString();
     }
-    public void eatGrass(int grassEnergy){
-        this.energy = this.energy + grassEnergy;
+    public void eatGrass(int grassEnergy, int initialEnergy){
+        this.energy = min(this.energy ,this.energy + grassEnergy);
     }
     @Override
     public Vector2d getPosition() {
