@@ -91,6 +91,7 @@ public class SimulationPresenter{
             List<Simulation> simulationList = new ArrayList<>();
             simulationList.add(simulation);
             SimulationEngine simulationEngine = new SimulationEngine(simulationList);
+            newView.set(simulation);
             //run
             simulationEngine.runAsync();
 

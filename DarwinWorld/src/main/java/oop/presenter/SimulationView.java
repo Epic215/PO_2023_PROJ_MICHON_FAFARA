@@ -1,8 +1,10 @@
 package oop.presenter;
 
+import javafx.event.ActionEvent;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import oop.Simulation;
+import oop.SimulationEngine;
 import oop.model.*;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -25,6 +27,8 @@ import java.util.Map;
 
 public class SimulationView implements MapChangeListener{
 
+    @FXML
+    private Button stopButton;
     @FXML private Label infoLabel;
     @FXML private GridPane mapGridd;
     @FXML private GridPane container;
@@ -36,9 +40,10 @@ public class SimulationView implements MapChangeListener{
     @FXML private Label averageLifespan;
     @FXML private Label childrenCount;
 //    @FXML private TextField animalCountInput;
-    @FXML private Button stopButton;
+    @FXML private Button pauseButton;
     @FXML private Button resumeButton;
     private AbstractWorldMap map;
+    private Simulation engine;
 
     @Override
     public void mapChanged(AbstractWorldMap worldMap, String message) {
@@ -151,5 +156,23 @@ public class SimulationView implements MapChangeListener{
         mapGridd.getRowConstraints().clear();
     }
 
+    @FXML
+    public void viewPause()  {
+        engine.pause();
 
+    }
+    @FXML
+    public void viewResume() {
+        engine.resume();
+
+    }
+    @FXML
+    public void viewStop() {
+        engine.stop();
+
+    }
+
+    public void set(Simulation simulationEngine) {
+        engine=simulationEngine;
+    }
 }
