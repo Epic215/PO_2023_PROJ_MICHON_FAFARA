@@ -43,9 +43,12 @@
                     <Label text="Average children number: " textAlignment="CENTER"/>
                     <Label fx:id="childrenCount" textAlignment="CENTER"/>
                 </HBox>
+
                 <HBox styleClass="stats">
-                    <Button fx:id="stopButton" text="Stop"/>
-                    <Button fx:id="resumeButton" text="Resume"/>
+                    <Button fx:id="pauseButton" text="Pause" onAction="#viewPause"/>
+                    <Button fx:id="resumeButton" text="Resume" onAction="#viewResume"/>
+                    <Button fx:id="stopButton" text="Terminate" onAction="#viewStop"/>
+
                 </HBox>
             </VBox>
             <GridPane fx:id="mapGridd" styleClass="gridPane" GridPane.columnIndex="1" gridLinesVisible="true"/>

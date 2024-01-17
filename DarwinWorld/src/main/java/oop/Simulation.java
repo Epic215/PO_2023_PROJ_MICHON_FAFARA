@@ -12,6 +12,8 @@ public class Simulation implements Runnable{
     private final int initialEnergy;
     private final int breedEnergy;
     private final AbstractWorldMap abstractWorldMap;
+    private boolean pause=false;
+    private boolean running=true;
     public Simulation(int animalCount, AbstractWorldMap abstractWorldMap, int geneSize,int initialEnergy, int breedEnergy){
         this.daysCount = 0;
         this.animalCount = animalCount;
@@ -112,6 +114,7 @@ public class Simulation implements Runnable{
                     }
                 }
                 if (conflictAnimals.size()!=1){
+                    System.out.println(conflictAnimals.size());
                     int randomNumber=Functions.randomNumberBetween(0,conflictAnimals.size());
                     return conflictAnimals.get(randomNumber);
                 }
@@ -195,26 +198,41 @@ public class Simulation implements Runnable{
         });
         abstractWorldMap.mapChanged("fhdjsklafh");
     }
+    public void pause(){
+        pause=true;
+    }
+    public void resume(){
+        pause=false;
+    }
+    public void stop(){
+        running=false;
+    }
+
     public void run(){
-        for(int i=0; i<50; i++){
+        while(running){
             try {
                 Thread.sleep(500);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
+            if(!pause){
 
-            if (i%10==0 && i!=0) {((DarwinMapWater)abstractWorldMap).waterChange();}
-            deleteDead();
-            if(abstractWorldMap.getAnimalCount()==0){
-                break;
-            }
-            moveAnimals();
-            decrementEnergy();
-            eatGrass();
-            breedAnimals();
+
+                if (daysCount%10==0 && daysCount!=0 && abstractWorldMap.getIsWater()) {((DarwinMapWater)abstractWorldMap).waterChange();}
+                deleteDead();
+                if(abstractWorldMap.getAnimalCount()==0){
+                    break;
+                }
+                moveAnimals();
+                decrementEnergy();
+                eatGrass();
+                breedAnimals();
 //            deleteDead();
-            abstractWorldMap.GrassGenerator(abstractWorldMap.getGrassGrowth());
-            this.daysCount += 1;
+                abstractWorldMap.GrassGenerator(abstractWorldMap.getGrassGrowth());
+                this.daysCount += 1;
+
+            }
+
         }
     }
 }
