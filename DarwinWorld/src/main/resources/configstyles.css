@@ -1,7 +1,7 @@
 
 .borderBox{
-    -fx-border-width: 1px;
-    -fx-border-color: red;
+    /*-fx-border-width: 1px;*/
+    /*-fx-border-color: red;*/
 }
 .imageLogo{
     -fx-border-width: 1px;
@@ -10,9 +10,15 @@
 .textInput{
     -fx-padding: 5px;
     -fx-border-insets: 5px;
-    -fx-background-insets: 5px;
-
+    -fx-background-insets: 3px;
 }
+
 VBox, HBox, GridPane{
     -fx-alignment: center ;
+}
+Button{
+    -fx-padding: 8px 15px;
+    -fx-border-insets: 5px;
+    -fx-background-insets: 3px;
+    -fx-background-color: white;
 }

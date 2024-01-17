@@ -46,17 +46,12 @@ public class SimulationView implements MapChangeListener{
 //        System.out.println(Thread.currentThread());
         setWorldMap(worldMap);
         Platform.runLater(() -> {
-            infoLabel.setText(message);
+//            infoLabel.setText(message);
             drawMap();
         });
     }
     public void setWorldMap(AbstractWorldMap map){
         this.map=map;
-    }
-    public void onSimulationStopClicked(){
-        stopButton.setOnAction(event -> {
-
-        });
     }
     @FXML
     private void initialize() {
@@ -144,12 +139,9 @@ public class SimulationView implements MapChangeListener{
             mapGridd.add(label,water.getKey().getX()- left, upper - water.getKey().getY());
         }
     }
-
     private void clearGrid() {
         mapGridd.getChildren().retainAll(mapGridd.getChildren().get(0)); // hack to retain visible grid lines
         mapGridd.getColumnConstraints().clear();
         mapGridd.getRowConstraints().clear();
     }
-
-
 }
