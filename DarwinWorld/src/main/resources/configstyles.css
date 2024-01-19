@@ -11,6 +11,7 @@
     -fx-padding: 5px;
     -fx-border-insets: 5px;
     -fx-background-insets: 3px;
+    -fx-alignment: center;
 }
 
 VBox, HBox, GridPane{
@@ -22,3 +23,4 @@ Button{
     -fx-background-insets: 3px;
     -fx-background-color: white;
 }
+

@@ -41,9 +41,10 @@ public class SimulationPresenter{
     @FXML private TextField dailyEnergyInput;
     @FXML private TextField initialEnergyInput;
     @FXML private TextField breedEnergyInput;
-    @FXML private AnchorPane anchorPane;
     private Properties settings;
     String RESOURCENAME = "settings.properties"; // could also be a constant
+//    @FXML private AnchorPane anchorPane;
+
     @FXML
     private void initialize(){
         animalCountInput.setAlignment(Pos.CENTER);
@@ -70,6 +71,7 @@ public class SimulationPresenter{
         dailyEnergyInput.setText(settings.getProperty("dailyEnergy"));
         initialEnergyInput.setText(settings.getProperty("initialEnergy"));
         breedEnergyInput.setText(settings.getProperty("breedEnergy"));
+
     }
 
     public void onSimulationStartClicked() {
@@ -84,6 +86,7 @@ public class SimulationPresenter{
             int dailyEnergy = Integer.parseInt(dailyEnergyInput.getText());
             int initialEnergy = Integer.parseInt(initialEnergyInput.getText());
             int breedEnergy = Integer.parseInt(breedEnergyInput.getText());
+
 
             AbstractWorldMap abstractWorldMap;
             if(worldConfigGlobeTides.isSelected()){

@@ -23,10 +23,12 @@ BorderPane{
     /*-fx-border-color: red;*/
 }
 Button{
-     -fx-padding: 8px 15px;
-     -fx-border-insets: 5px;
-     -fx-background-insets: 3px;
-     -fx-background-color: #656565;
-     -fx-text-fill: white;
+    -fx-padding: 8px 15px;
+    -fx-border-insets: 5px;
+    -fx-background-insets: 3px;
+    -fx-background-color: #c4c4c4;
  }
 
+Label{
+    -fx-alignment: center ;
+}
