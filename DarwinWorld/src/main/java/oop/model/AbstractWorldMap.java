@@ -50,12 +50,12 @@ public abstract class AbstractWorldMap{
             equatorHeigth=pow+1;
         }
         equator[middle]=true;
-        pow-=1;
+        equatorHeigth-=1;
         int i=1;
-        while (pow>0){
+        while (equatorHeigth>0){
             equator[middle + i] = true;
-            pow-=1;
-            if (pow>0){
+            equatorHeigth-=1;
+            if (equatorHeigth>0){
                 equator[middle-i]=true;
                 pow-=1;
             }

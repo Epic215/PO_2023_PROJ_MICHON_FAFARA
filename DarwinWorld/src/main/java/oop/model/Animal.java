@@ -99,6 +99,14 @@ public class Animal implements WorldElement{
         childrenCount+=1;
         gene.createGene(animal1, animal2, div);
     }
+
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+    public void setChildrenCount(int childrenCount) {
+        this.childrenCount = childrenCount;
+
     public int getEatenGrass(){
         return eatenGrass;
     }
@@ -107,5 +115,6 @@ public class Animal implements WorldElement{
     }
     public void incrementChildCount(){
         childrenCount+=1;
+
     }
 }
