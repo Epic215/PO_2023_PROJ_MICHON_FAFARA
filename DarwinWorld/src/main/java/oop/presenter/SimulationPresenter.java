@@ -42,12 +42,11 @@ public class SimulationPresenter{
     @FXML private TextField dailyEnergyInput;
     @FXML private TextField initialEnergyInput;
     @FXML private TextField breedEnergyInput;
-    @FXML private AnchorPane anchorPane;
+//    @FXML private AnchorPane anchorPane;
     @FXML
     private void initialize(){
         animalCountInput.setAlignment(Pos.CENTER);
         GridPane.setHalignment(animalCountInput, HPos.CENTER);
-
     }
 
     public void onSimulationStartClicked() {
@@ -62,6 +61,7 @@ public class SimulationPresenter{
             int dailyEnergy = Integer.parseInt(dailyEnergyInput.getText());
             int initialEnergy = Integer.parseInt(initialEnergyInput.getText());
             int breedEnergy = Integer.parseInt(breedEnergyInput.getText());
+
 
             AbstractWorldMap abstractWorldMap;
             if(worldConfigGlobeTides.isSelected()){
@@ -94,6 +94,9 @@ public class SimulationPresenter{
             newView.set(simulation);
             //run
             simulationEngine.runAsync();
+            stage.setOnCloseRequest(close ->{
+                simulation.stop();
+            });
 
 
 //            fillGrid();
