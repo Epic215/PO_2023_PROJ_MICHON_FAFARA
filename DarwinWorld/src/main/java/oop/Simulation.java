@@ -14,8 +14,10 @@ public class Simulation implements Runnable{
     private final AbstractWorldMap abstractWorldMap;
     private boolean pause=false;
     private boolean running=true;
+    private int simulationDay;
     public Simulation(int animalCount, AbstractWorldMap abstractWorldMap, int geneSize,int initialEnergy, int breedEnergy){
         this.daysCount = 0;
+        this.simulationDay = 0;
         this.animalCount = animalCount;
         this.abstractWorldMap = abstractWorldMap;
         this.geneSize = geneSize;
@@ -207,7 +209,9 @@ public class Simulation implements Runnable{
     public void stop(){
         running=false;
     }
-
+    public int getSimulationDay(){
+        return simulationDay;
+    }
     public void run(){
         while(running){
             try {
@@ -219,6 +223,7 @@ public class Simulation implements Runnable{
 
 
                 if (daysCount%10==0 && daysCount!=0 && abstractWorldMap.getIsWater()) {((DarwinMapWater)abstractWorldMap).waterChange();}
+                simulationDay+=1;
                 deleteDead();
                 if(abstractWorldMap.getAnimalCount()==0){
                     break;

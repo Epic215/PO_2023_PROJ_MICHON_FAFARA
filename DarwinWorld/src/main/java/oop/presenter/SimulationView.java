@@ -131,8 +131,9 @@ public class SimulationView implements MapChangeListener{
             label.setStyle("-fx-background-color: #77c44c; -fx-border-radius: 100px");
             mapGridd.add(label,  grass.getKey().getX() - left,  upper - grass.getKey().getY());
         }
-        Vector2d position = animalPositionWithId(animalFollowedId);
-        System.out.println("Followed position: " + position.toString());
+        Vector2d position = animalAnimalWithId(animalFollowedId).getPosition();
+        Animal followedAnimal = animalAnimalWithId(animalFollowedId);
+        animalChanged(followedAnimal);
         for (Map.Entry<Vector2d,ArrayList<Animal>> animal : animals.entrySet()){
             label = new Label();
             label.setMinWidth(width*0.8);
@@ -157,7 +158,8 @@ public class SimulationView implements MapChangeListener{
                     animalButton.setText("Animal " + String.valueOf(element.getAnimalId()));
                     animalButton.setOnAction(action -> {
                         animalFollowedId = UUID.fromString(animalButton.getId());
-                        System.out.println(animalFollowedId);
+                        animalList.getChildren().clear();
+                        animalChanged(element);
                         mapChanged(map,"message");
                     });
                     animalList.getChildren().add(animalButton);
@@ -170,6 +172,37 @@ public class SimulationView implements MapChangeListener{
             drawWater(width, height, left, upper);
         }
     }
+
+    private void animalChanged(Animal element) {
+        if(element!=null){
+            animalList.getChildren().clear();
+            Label animalStats = new Label();
+            Label animalGene = new Label();
+            Label animalEnergy = new Label();
+            Label animalEatenPlants = new Label();
+            Label animalChildrenCount = new Label();
+            Label animalAge = new Label();
+            animalStats.setText("Followed animal stats:");
+            animalGene.setText("Gene: " + String.valueOf(element.getGene()));
+            animalEnergy.setText("Energy: " + String.valueOf(element.getEnergy()));
+            animalEatenPlants.setText("Eaten grass: " + String.valueOf(element.getEatenGrass()));
+            animalChildrenCount.setText("Children: " + String.valueOf(element.getChildrenCount()));
+            animalAge.setText("Age: " + String.valueOf(element.getAge()));
+            animalList.getChildren().add(animalStats);
+            animalList.getChildren().add(animalGene);
+            animalList.getChildren().add(animalEnergy);
+            animalList.getChildren().add(animalEatenPlants);
+            animalList.getChildren().add(animalChildrenCount);
+            animalList.getChildren().add(animalAge);
+        }
+        else{
+            animalList.getChildren().clear();
+            Label animalDeathDate = new Label();
+            animalDeathDate.setText("Animal survived for: " + String.valueOf(engine.getSimulationDay()) + " days");
+            animalList.getChildren().add(animalDeathDate);
+        }
+    }
+
     private void drawWater(double width, double height, int left, int upper) {
         Label label;
         Map<Vector2d, Water> waters = ((DarwinMapWater) map).getWaters();
@@ -208,14 +241,14 @@ public class SimulationView implements MapChangeListener{
     public void set(Simulation simulationEngine) {
         engine=simulationEngine;
     }
-    private Vector2d animalPositionWithId(UUID uuid){
+    private Animal animalAnimalWithId(UUID uuid){
         ArrayList<Animal> animals = map.getAnimals();
-        final Vector2d[] position = {new Vector2d(-1, -1)};
+        final Animal[] searchedAnimal = {new Animal(new Vector2d(-1,-1),MapDirection.ERR,0,0)};
         animals.forEach(animal -> {
             if(animal.getAnimalId().equals(uuid)){
-                position[0] = animal.getPosition();
+                searchedAnimal[0] = animal;
             }
         });
-        return position[0];
+        return searchedAnimal[0];
     }
 }
