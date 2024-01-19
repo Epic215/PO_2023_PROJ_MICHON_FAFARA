@@ -131,6 +131,7 @@ public class Simulation implements Runnable{
             if(!value.isEmpty()){
                 for(Animal animal : value){
                     if(animal != null){
+                        animal.incrementAge();
 //                        System.out.println("przed move");
 //                        System.out.println(animal.toString());
                         abstractWorldMap.move(animal);
@@ -177,10 +178,12 @@ public class Simulation implements Runnable{
                 if(animal1.getEnergy()>=breedEnergy && animal2.getEnergy()>=breedEnergy){
                     Animal animal3 = new Animal(key,OptionsParser.change(Functions.randomNumberBetween(0,8)),geneSize, 2*breedEnergy);
                     System.out.println(animal3.toString());
-                    animal3.createGene(animal1, animal2, animal2.getEnergy()/animal1.getEnergy()*geneSize);
+                    animal3.createGene(animal1, animal2, animal1.getEnergy()/(animal1.getEnergy()+animal2.getEnergy())*geneSize);
                     abstractWorldMap.place(animal3);
                     animal1.decreaseEnergy(breedEnergy);
                     animal2.decreaseEnergy(breedEnergy);
+                    animal1.incrementChildCount();
+                    animal2.incrementChildCount();
                 }
             }
         });
