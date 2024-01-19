@@ -1,5 +1,7 @@
 package oop.model;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -15,13 +17,15 @@ public class Animal implements WorldElement{
     private Gene gene;
     private int energy;
     private int breedEnergy;
+    private int eatenGrass;
     public Animal(Vector2d position, MapDirection facing, int geneSize,int energy){ //int geneSize, int energy, int breedEnergy){
         this.facing = facing;
         this.position = position;
         this.gene = new Gene(geneSize);
         this.energy=energy;
-        this.age=0;
-        this.childrenCount=0;
+        this.age = 0;
+        this.childrenCount = 0;
+        this.eatenGrass = 0;
         this.animalId = UUID.randomUUID();
 //        this.energy = energy;
 //        this.breedEnergy = breedEnergy;
@@ -72,6 +76,7 @@ public class Animal implements WorldElement{
         return position.toString() + " " + facing.direction + " " + gene.toString();
     }
     public void eatGrass(int grassEnergy, int initialEnergy){
+        this.eatenGrass += 1;
         this.energy = min(initialEnergy ,this.energy + grassEnergy);
     }
     @Override
@@ -95,10 +100,21 @@ public class Animal implements WorldElement{
         gene.createGene(animal1, animal2, div);
     }
 
+
     public void setAge(int age) {
         this.age = age;
     }
     public void setChildrenCount(int childrenCount) {
         this.childrenCount = childrenCount;
+
+    public int getEatenGrass(){
+        return eatenGrass;
+    }
+    public void incrementAge(){
+        age+=1;
+    }
+    public void incrementChildCount(){
+        childrenCount+=1;
+
     }
 }

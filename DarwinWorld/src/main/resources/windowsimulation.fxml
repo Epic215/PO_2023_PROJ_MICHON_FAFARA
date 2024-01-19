@@ -49,7 +49,7 @@
                     <Button fx:id="resumeButton" text="Resume" onAction="#viewResume"/>
 <!--                    <Button fx:id="stopButton" text="Terminate" onAction="#viewStop"/>-->
                 </HBox>
-                <VBox fx:id="animalList"></VBox>
+                <VBox fx:id="animalList" styleClass="stats"></VBox>
             </VBox>
             <GridPane fx:id="mapGridd" styleClass="gridPane" GridPane.columnIndex="1" gridLinesVisible="true"/>
         </children>
