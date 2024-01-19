@@ -45,6 +45,7 @@ public class SimulationView implements MapChangeListener{
     private AbstractWorldMap map;
     private Simulation engine;
     private UUID animalFollowedId;
+    private int flag = 0;
 
     @Override
     public void mapChanged(AbstractWorldMap worldMap, String message) {
@@ -174,7 +175,8 @@ public class SimulationView implements MapChangeListener{
     }
 
     private void animalChanged(Animal element) {
-        if(element!=null){
+        if(!element.getPosition().equals(new Vector2d(-1,-1))){
+            flag = 1;
             animalList.getChildren().clear();
             Label animalStats = new Label();
             Label animalGene = new Label();
@@ -195,7 +197,8 @@ public class SimulationView implements MapChangeListener{
             animalList.getChildren().add(animalChildrenCount);
             animalList.getChildren().add(animalAge);
         }
-        else{
+        else if(flag==1){
+            flag = 2;
             animalList.getChildren().clear();
             Label animalDeathDate = new Label();
             animalDeathDate.setText("Animal survived for: " + String.valueOf(engine.getSimulationDay()) + " days");

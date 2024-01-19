@@ -76,8 +76,8 @@ public class Animal implements WorldElement{
         return position.toString() + " " + facing.direction + " " + gene.toString();
     }
     public void eatGrass(int grassEnergy, int initialEnergy){
-        this.energy = min(initialEnergy ,this.energy + grassEnergy);
         this.eatenGrass += 1;
+        this.energy = min(initialEnergy ,this.energy + grassEnergy);
     }
     @Override
     public Vector2d getPosition() {
@@ -104,5 +104,8 @@ public class Animal implements WorldElement{
     }
     public void incrementAge(){
         age+=1;
+    }
+    public void incrementChildCount(){
+        childrenCount+=1;
     }
 }
