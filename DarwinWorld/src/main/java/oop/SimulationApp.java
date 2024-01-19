@@ -26,6 +26,7 @@ public class SimulationApp extends Application {
         presenter.onSimulationStartClicked();
 
         primaryStage.show();
+        presenter.onWindowClose(primaryStage);
     }
     private void configureStage(Stage primaryStage, GridPane viewRoot) {
         var scene = new Scene(viewRoot);
