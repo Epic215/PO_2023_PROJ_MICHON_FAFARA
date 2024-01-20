@@ -41,6 +41,8 @@ public class SimulationPresenter{
     @FXML private TextField dailyEnergyInput;
     @FXML private TextField initialEnergyInput;
     @FXML private TextField breedEnergyInput;
+    @FXML private TextField minimumMutationsInput;
+    @FXML private TextField maximumMutationsInput;
     private Properties settings;
     String RESOURCENAME = "settings.properties"; // could also be a constant
 //    @FXML private AnchorPane anchorPane;
@@ -55,7 +57,7 @@ public class SimulationPresenter{
         settings= new Properties();
         ClassLoader loader = Thread.currentThread().getContextClassLoader();
         try(InputStream resourceStream = loader.getResourceAsStream(RESOURCENAME)) {
-            System.out.println(resourceStream);
+//            System.out.println(resourceStream);
             settings.load(resourceStream);
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -86,13 +88,15 @@ public class SimulationPresenter{
             int dailyEnergy = Integer.parseInt(dailyEnergyInput.getText());
             int initialEnergy = Integer.parseInt(initialEnergyInput.getText());
             int breedEnergy = Integer.parseInt(breedEnergyInput.getText());
+            int minimumMutations = Integer.parseInt(minimumMutationsInput.getText());
+            int maxiumEnergy = Integer.parseInt(maximumMutationsInput.getText());
 
 
             AbstractWorldMap abstractWorldMap;
             if(worldConfigGlobeTides.isSelected()){
-                abstractWorldMap = new DarwinMapWater(mapWidth, mapHeight, grassCount, grassGrowth,grassEnergy, dailyEnergy);
+                abstractWorldMap = new DarwinMapWater(mapWidth, mapHeight, grassCount, grassGrowth,grassEnergy, dailyEnergy, minimumMutations, maxiumEnergy);
             } else{
-                abstractWorldMap = new DarwinMap(mapWidth, mapHeight, grassCount, grassGrowth,grassEnergy, dailyEnergy);
+                abstractWorldMap = new DarwinMap(mapWidth, mapHeight, grassCount, grassGrowth,grassEnergy, dailyEnergy, minimumMutations, maxiumEnergy);
             }
 
 //            DarwinMap darwinWorld = new DarwinMap(mapWidth, mapHeight, grassCount, grassGrowth,grassEnergy, dailyEnergy);

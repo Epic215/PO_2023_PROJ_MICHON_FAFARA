@@ -116,7 +116,7 @@ public class Simulation implements Runnable{
                     }
                 }
                 if (conflictAnimals.size()!=1){
-                    System.out.println(conflictAnimals.size());
+//                    System.out.println(conflictAnimals.size());
                     int randomNumber=Functions.randomNumberBetween(0,conflictAnimals.size());
                     return conflictAnimals.get(randomNumber);
                 }
@@ -146,7 +146,7 @@ public class Simulation implements Runnable{
     public void moveAnimals2(){
         ArrayList<Animal> animals = abstractWorldMap.getAnimals();
         animals.forEach(animal -> {
-            abstractWorldMap.printAnimals();
+//            abstractWorldMap.printAnimals();
 //                System.out.println("przed move");
 //                System.out.println(animal.toString());
                 abstractWorldMap.move(animal);
@@ -177,8 +177,9 @@ public class Simulation implements Runnable{
                 Animal animal2 = resolveConflictSecondStrongest(value,animal1);
                 if(animal1.getEnergy()>=breedEnergy && animal2.getEnergy()>=breedEnergy){
                     Animal animal3 = new Animal(key,OptionsParser.change(Functions.randomNumberBetween(0,8)),geneSize, 2*breedEnergy);
-                    System.out.println(animal3.toString());
+//                    System.out.println(animal3.toString());
                     animal3.createGene(animal1, animal2, animal1.getEnergy()/(animal1.getEnergy()+animal2.getEnergy())*geneSize);
+                    animal3.mutateGene(abstractWorldMap.getMinimumMutations(), abstractWorldMap.getMaximumMutations());
                     abstractWorldMap.place(animal3);
                     animal1.decreaseEnergy(breedEnergy);
                     animal2.decreaseEnergy(breedEnergy);
@@ -218,7 +219,7 @@ public class Simulation implements Runnable{
     public void run(){
         while(running){
             try {
-                Thread.sleep(500);
+                Thread.sleep(200);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }

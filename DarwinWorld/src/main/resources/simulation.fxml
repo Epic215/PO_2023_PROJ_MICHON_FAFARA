@@ -89,6 +89,13 @@
                 </VBox>
                 <VBox >
                     <HBox>
+                        <!--                    <Label text="Map width: " textAlignment="CENTER"/>-->
+                        <TextField fx:id="minimumMutationsInput" promptText="Minimum mutations" styleClass="textInput"/>
+                        <TextField fx:id="maximumMutationsInput" promptText="Maximum mutations" styleClass="textInput"/>
+                    </HBox>
+                </VBox>
+                <VBox >
+                    <HBox>
                         <!--                    <Label text="Map height: " textAlignment="CENTER"/>-->
                         <TextField fx:id="grassEnergyInput" promptText="Grass energy" styleClass="textInput"/>
                         <TextField fx:id="dailyEnergyInput" promptText="Daily energy cost" styleClass="textInput"/>
