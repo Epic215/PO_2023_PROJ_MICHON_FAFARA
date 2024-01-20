@@ -61,8 +61,9 @@ public abstract class AbstractWorldMap{
             equatorHeigth-=1;
             if (equatorHeigth>0){
                 equator[middle-i]=true;
-                pow-=1;
+                equatorHeigth-=1;
             }
+            i++;
         }
         for (int j=0;j<height;j++){
             for (int k=0;k<width;k++){
@@ -290,6 +291,10 @@ public abstract class AbstractWorldMap{
     }
     public int getMaximumMutations(){
         return maximumMutations;
+    }
+
+    public boolean[] getEquator() {
+        return equator;
     }
     //    public Map<Vector2d,ArrayList<WorldElement>> getElements(){
 //        Map<Vector2d,ArrayList<WorldElement>> elements = new HashMap<>();
