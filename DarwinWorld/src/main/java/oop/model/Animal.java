@@ -70,7 +70,7 @@ public class Animal implements WorldElement{
         gene.moveGeneIndex();
     }
     public void bounce(MapDirection direction){
-        this.facing = this.facing.turn(direction.direction);
+        this.facing = this.facing.turn(4);
     }
     public String toString(){
         return position.toString() + " " + facing.direction + " " + gene.toString();
@@ -118,5 +118,13 @@ public class Animal implements WorldElement{
     public void mutateGene(int min, int max){
         int numOfMutations = Functions.randomNumberBetween(min,max);
         gene.mutateGene(numOfMutations);
+    }
+    @Override
+    public boolean equals(Object other){
+        if (this == other)
+            return true;
+        if (!(other instanceof Animal that))
+            return false;
+        return (that.animalId==this.animalId);
     }
 }

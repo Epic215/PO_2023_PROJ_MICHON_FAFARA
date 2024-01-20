@@ -80,7 +80,7 @@ public class SimulationView implements MapChangeListener{
         clearGrid();
         newGrid();
     }
-    private void newGrid() throws URISyntaxException {
+    private void newGrid() {
         int left = map.getCurrentBounds().bottomLeft().getX();
         int upper = map.getCurrentBounds().upperRight().getY()-1;
         double containerWidth = container.getWidth();
@@ -109,21 +109,22 @@ public class SimulationView implements MapChangeListener{
         boolean[] equator=map.getEquator();
         for (int i = 0; i < map.getCurrentBounds().upperRight().getY() ; i++) {
             this.mapGridd.getRowConstraints().add(new RowConstraints(height));
-            for (int j =0; j<map.getCurrentBounds().upperRight().getY();j++) {
-                label = new Label(" ");
-                if (equator[i]) {
-                    label.setStyle("-fx-background-color: #9bdc00; -fx-border-radius: 100px ");
-                }
-                else {
-                    label.setStyle("-fx-background-color: #f6732a; -fx-border-radius: 100px ");
-                }
-                label.setMinHeight(height);
-                label.setMinWidth(width);
-                label.setAlignment(Pos.CENTER);
-                GridPane.setHalignment(label, HPos.CENTER);
-                this.mapGridd.add(label, j, i);
 
-            }
+//            for (int j =0; j<map.getCurrentBounds().upperRight().getY();j++) {
+//                label = new Label(" ");
+//                if (equator[i]) {
+//                    label.setStyle("-fx-background-color: #9bdc00; -fx-border-radius: 100px ");
+//                }
+//                else {
+//                    label.setStyle("-fx-background-color: #f6732a; -fx-border-radius: 100px ");
+//                }
+//                label.setMinHeight(height);
+//                label.setMinWidth(width);
+//                label.setAlignment(Pos.CENTER);
+//                GridPane.setHalignment(label, HPos.CENTER);
+//                this.mapGridd.add(label, j, i);
+//
+//            }
 
         }
         mapGridd.setGridLinesVisible(false);
@@ -158,7 +159,9 @@ public class SimulationView implements MapChangeListener{
             GridPane.setHalignment(label, HPos.CENTER);
             label.setText(grass.getValue().toString());
             label.setStyle("-fx-background-color: #77c44c; -fx-border-radius: 100px");
-            mapGridd.add(label,  grass.getKey().getX() - left,  upper - grass.getKey().getY());
+//            System.out.println(grass.getKey().getX() - left);
+
+            mapGridd.add(label,  grass.getKey().getX() ,   upper-grass.getKey().getY());
         }
         Vector2d position = animalAnimalWithId(animalFollowedId).getPosition();
         Animal followedAnimal = animalAnimalWithId(animalFollowedId);
@@ -194,7 +197,10 @@ public class SimulationView implements MapChangeListener{
                     animalList.getChildren().add(animalButton);
                 });
             });
-            mapGridd.add(label,animal.getKey().getX()- left,upper - animal.getKey().getY());
+//            System.out.println(animal.getValue().get(0).getFacing());
+//            System.out.println(animal.getKey().getX()- left);
+//            System.out.println(upper - animal.getKey().getY());
+            mapGridd.add(label,animal.getKey().getX(), upper-animal.getKey().getY());
         }
 
         if(map.getIsWater()){
@@ -270,7 +276,7 @@ public class SimulationView implements MapChangeListener{
             GridPane.setHalignment(label, HPos.CENTER);
             label.setText(water.getValue().toString());
             label.setStyle("-fx-background-color: #3b36da; -fx-border-radius: 100px ");
-            mapGridd.add(label,water.getKey().getX()- left, upper - water.getKey().getY());
+            mapGridd.add(label,water.getKey().getX(), upper - water.getKey().getY());
         }
     }
     private void clearGrid() {

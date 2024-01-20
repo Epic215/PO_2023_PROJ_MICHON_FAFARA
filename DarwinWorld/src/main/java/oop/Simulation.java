@@ -34,8 +34,8 @@ public class Simulation implements Runnable{
         int width;
         int direction;
         for (int i=0; i<n;i++){
-            height = randomPosition.nextInt(mapBoundary.upperRight().getX());
-            width = randomPosition.nextInt(mapBoundary.upperRight().getY());
+            height = randomPosition.nextInt(mapBoundary.upperRight().getY());
+            width = randomPosition.nextInt(mapBoundary.upperRight().getX());
             direction = randomPosition.nextInt(8);
             abstractWorldMap.place(new Animal(new Vector2d(width,height),OptionsParser.change(direction),geneSize,initialEnergy));
         }
@@ -101,19 +101,19 @@ public class Simulation implements Runnable{
 //        return conflictAnimals.get(0);
     }
     public Animal resolveConflictSecondStrongest(ArrayList<Animal> animals,Animal firstStrongestAnimal){
-        int oldestAnimalAge=0;
-        int mostChildren=0;
-        int mostEnergy=0;
+        int oldestAnimalAge=Integer.MIN_VALUE;
+        int mostChildren=Integer.MIN_VALUE;
+        int mostEnergy= Integer.MIN_VALUE;
         ArrayList<Animal> conflictAnimals=new ArrayList<>();
         for (Animal animal : animals){
-            if (animal!=firstStrongestAnimal){
+            if (!animal.equals(firstStrongestAnimal)){
                 mostEnergy=Math.max(mostEnergy,animal.getEnergyStatus());
             }
 
         }
         for (Animal animal : animals){
             if (mostEnergy==animal.getEnergyStatus()){
-                if (animal!=firstStrongestAnimal){
+                if (!animal.equals(firstStrongestAnimal)){
                     conflictAnimals.add(animal);
                 }
             }
@@ -243,7 +243,7 @@ public class Simulation implements Runnable{
     public void run(){
         while(running){
             try {
-                Thread.sleep(200);
+                Thread.sleep(500);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
