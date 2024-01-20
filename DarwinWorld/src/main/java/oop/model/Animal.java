@@ -106,7 +106,7 @@ public class Animal implements WorldElement{
     }
     public void setChildrenCount(int childrenCount) {
         this.childrenCount = childrenCount;
-
+    }
     public int getEatenGrass(){
         return eatenGrass;
     }

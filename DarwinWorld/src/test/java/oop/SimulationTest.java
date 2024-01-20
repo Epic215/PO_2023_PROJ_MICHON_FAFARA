@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class SimulationTest {
     @Test
     void energyMatterStrongestAnimal(){
-        Simulation simulation = new Simulation(1,new DarwinMap(1,1,1,1,1,1),1,1,1);
+        Simulation simulation = new Simulation(1,new DarwinMap(1,1,1,1,1,1,1,2),1,1,1);
         Animal animal1 = new Animal(new Vector2d(1,1), MapDirection.NORTH,5,1);
         Animal animal2 = new Animal(new Vector2d(1,1), MapDirection.NORTH,5,2);
         Animal animal3 = new Animal(new Vector2d(1,1), MapDirection.NORTH,5,3);
@@ -30,7 +30,7 @@ public class SimulationTest {
     }
     @Test
     void ageMatterStrongestAnimal(){
-        Simulation simulation = new Simulation(1,new DarwinMap(1,1,1,1,1,1),1,1,1);
+        Simulation simulation = new Simulation(1,new DarwinMap(1,1,1,1,1,1,1,2),1,1,1);
         Animal animal1 = new Animal(new Vector2d(1,1), MapDirection.NORTH,5,3);
         Animal animal2 = new Animal(new Vector2d(1,1), MapDirection.NORTH,5,3);
         Animal animal3 = new Animal(new Vector2d(1,1), MapDirection.NORTH,5,3);
@@ -52,7 +52,7 @@ public class SimulationTest {
     }
     @Test
     void childrenMatterStrongestAnimal(){
-        Simulation simulation = new Simulation(1,new DarwinMap(1,1,1,1,1,1),1,1,1);
+        Simulation simulation = new Simulation(1,new DarwinMap(1,1,1,1,1,1,1,2),1,1,1);
         Animal animal1 = new Animal(new Vector2d(1,1), MapDirection.NORTH,5,3);
         Animal animal2 = new Animal(new Vector2d(1,1), MapDirection.NORTH,5,3);
         Animal animal3 = new Animal(new Vector2d(1,1), MapDirection.NORTH,5,3);

@@ -14,11 +14,15 @@ import javafx.stage.Stage;
 import oop.Simulation;
 import oop.SimulationEngine;
 import oop.model.*;
+import org.apache.commons.configuration.ConfigurationException;
+import org.apache.commons.configuration.PropertiesConfiguration;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -56,15 +60,16 @@ public class SimulationPresenter{
     private void initializeSettings(){
         settings= new Properties();
         ClassLoader loader = Thread.currentThread().getContextClassLoader();
-        try(InputStream resourceStream = loader.getResourceAsStream(RESOURCENAME)) {
+        try(InputStream resourceStream = loader.getResourceAsStream("settings.properties")) {
 //            System.out.println(resourceStream);
             settings.load(resourceStream);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        worldConfigGlobeTides.setSelected(Boolean.parseBoolean("worldConfigGlobeTides"));
-        animalCountInput.setText(settings.getProperty("geneSize"));
-        geneSizeInput.setText(settings.getProperty("animalCount"));
+        System.out.println(Boolean.parseBoolean(settings.getProperty("worldConfigGlobeTides")));
+        worldConfigGlobeTides.setSelected(Boolean.parseBoolean(settings.getProperty("worldConfigGlobeTides")));
+        animalCountInput.setText(settings.getProperty("animalCount"));
+        geneSizeInput.setText(settings.getProperty("geneSize"));
         mapWidthInput.setText(settings.getProperty("mapWidth"));
         mapHeightInput.setText(settings.getProperty("mapHeight"));
         grassCountInput.setText(settings.getProperty("grassCount"));
@@ -73,6 +78,8 @@ public class SimulationPresenter{
         dailyEnergyInput.setText(settings.getProperty("dailyEnergy"));
         initialEnergyInput.setText(settings.getProperty("initialEnergy"));
         breedEnergyInput.setText(settings.getProperty("breedEnergy"));
+        minimumMutationsInput.setText(settings.getProperty("minimumMutations"));
+        maximumMutationsInput.setText(settings.getProperty("maximumMutations"));
 
     }
 
@@ -134,27 +141,36 @@ public class SimulationPresenter{
 
     public void onWindowClose(Stage primaryStage) {
         primaryStage.setOnCloseRequest(exit -> {
-//            ClassLoader loader = Thread.currentThread().getContextClassLoader();
-//            System.out.println(loader.getResourceAsStream(RESOURCENAME));
-//            ClassLoader classloader = Thread.currentThread().getContextClassLoader();
-//            System.out.println(new File(Objects.requireNonNull(classloader.getResource(RESOURCENAME)).getFile()));
-//            try(FileOutputStream out = new FileOutputStream(String.valueOf(new File(Objects.requireNonNull(classloader.getResource(RESOURCENAME)).getFile())))) {
-//
-//            settings.setProperty("worldConfigGlobeTides", String.valueOf(worldConfigGlobeTides.isSelected()));
-//            settings.setProperty("animalCount",animalCountInput.getText());
-//            settings.setProperty("geneSize",geneSizeInput.getText());
-//            settings.setProperty("mapWidth",mapWidthInput.getText());
-//            settings.setProperty("mapHeight",mapHeightInput.getText());
-//            settings.setProperty("grassCount",grassCountInput.getText());
-//            settings.setProperty("grassGrowth",grassGrowthInput.getText());
-//            settings.setProperty("grassEnergy",grassEnergyInput.getText());
-//            settings.setProperty("dailyEnergy",dailyEnergyInput.getText());
-//            settings.setProperty("initialEnergy",initialEnergyInput.getText());
-//            settings.setProperty("breedEnergy",breedEnergyInput.getText());
-//            settings.store(out,null);
-//            } catch (IOException e) {
-//                throw new RuntimeException(e);
-//            }
+
+            PropertiesConfiguration conf;
+            try {
+                saveSettings();
+            } catch (ConfigurationException e) {
+                throw new RuntimeException(e);
+            }
+
+
         });
+    }
+
+    private void saveSettings() throws ConfigurationException {
+        PropertiesConfiguration conf;
+        conf = new PropertiesConfiguration(Paths.get(".\\").toAbsolutePath().getParent().toString() + "\\src\\main\\resources\\settings.properties");
+        conf.setProperty("worldConfigGlobeTides",worldConfigGlobeTides.isSelected());
+        conf.setProperty("animalCount",animalCountInput.getText());
+        conf.setProperty("geneSize", geneSizeInput.getText());
+        conf.setProperty("mapWidth", mapWidthInput.getText());
+        conf.setProperty("mapHeight", mapHeightInput.getText());
+        conf.setProperty("grassCount", grassCountInput.getText());
+        conf.setProperty("grassGrowth", grassGrowthInput.getText());
+        conf.setProperty("grassEnergy", grassEnergyInput.getText());
+        conf.setProperty("dailyEnergy", dailyEnergyInput.getText());
+        conf.setProperty("initialEnergy", initialEnergyInput.getText());
+        conf.setProperty("breedEnergy", breedEnergyInput.getText());
+        conf.setProperty("minimumMutations", minimumMutationsInput.getText());
+        conf.setProperty("maximumMutations", maximumMutationsInput.getText());
+
+
+        conf.save();
     }
 }

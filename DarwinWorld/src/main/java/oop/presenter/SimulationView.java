@@ -89,16 +89,29 @@ public class SimulationView implements MapChangeListener{
 
         for (int i = 0; i < map.getCurrentBounds().upperRight().getX() ; i++) {
             this.mapGridd.getColumnConstraints().add(new ColumnConstraints(width));
-            label = new Label();
-            GridPane.setHalignment(label, HPos.CENTER);
-            this.mapGridd.add(label, i, 0);
+
         }
+        boolean[] equator=map.getEquator();
         for (int i = 0; i < map.getCurrentBounds().upperRight().getY() ; i++) {
             this.mapGridd.getRowConstraints().add(new RowConstraints(height));
-            label = new Label();
-            GridPane.setHalignment(label, HPos.CENTER);
-            this.mapGridd.add(label, 0, i);
+            for (int j =0; j<map.getCurrentBounds().upperRight().getY();j++) {
+                label = new Label(" ");
+                if (equator[i]) {
+                    label.setStyle("-fx-background-color: #9bdc00; -fx-border-radius: 100px ");
+                }
+                else {
+                    label.setStyle("-fx-background-color: #f6732a; -fx-border-radius: 100px ");
+                }
+                label.setMinHeight(height);
+                label.setMinWidth(width);
+                label.setAlignment(Pos.CENTER);
+                GridPane.setHalignment(label, HPos.CENTER);
+                this.mapGridd.add(label, j, i);
+
+            }
+
         }
+        mapGridd.setGridLinesVisible(false);
 
 //        for(int i=0; i < map.getCurrentBounds().upperRight().getX(); i++){
 //            for(int j=0; j <  map.getCurrentBounds().upperRight().getY(); j++){
