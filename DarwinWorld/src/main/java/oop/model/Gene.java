@@ -42,6 +42,14 @@ public class Gene {
             gene[i] = animal2.getGene().getGene()[i];
         }
     }
+    public void mutateGene(int numOfMutations){
+        boolean[] genesToMutate = Functions.randomNNumbersBetween(numOfMutations, 0, gene.length);
+        for(int i=0; i< gene.length; i++){
+            if(genesToMutate[i]){
+                gene[i] = Functions.randomNumberBetween(0,7);
+            }
+        }
+    }
     @Override
     public boolean equals(Object other){
         if (this == other)

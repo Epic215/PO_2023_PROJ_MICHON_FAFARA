@@ -13,8 +13,8 @@ public class DarwinMapWater extends AbstractWorldMap{
     private final Map<Integer,ArrayList<Water>> phases=new HashMap<>();
     private int phaseNumber=0;
     private static final int PHASES=3; // ilosc wzrosniec
-    public DarwinMapWater(int width, int height,int grassCount,int grassGrowth, int grassEnergy, int dailyEnergy){//  int energy, int grassGrowth, int animalCount)
-        super(width, height, grassCount, grassGrowth, grassEnergy, dailyEnergy, true);
+    public DarwinMapWater(int width, int height,int grassCount,int grassGrowth, int grassEnergy, int dailyEnergy, int minimumMutations, int maximumMutations){//  int energy, int grassGrowth, int animalCount)
+        super(width, height, grassCount, grassGrowth, grassEnergy, dailyEnergy, true, minimumMutations, maximumMutations);
 //        this.animalCount = animalCount;
         generateWater(width,height);
         generateWaterPhases();

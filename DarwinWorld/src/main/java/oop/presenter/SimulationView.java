@@ -201,7 +201,7 @@ public class SimulationView implements MapChangeListener{
             flag = 2;
             animalList.getChildren().clear();
             Label animalDeathDate = new Label();
-            animalDeathDate.setText("Animal survived for: " + String.valueOf(engine.getSimulationDay()) + " days");
+            animalDeathDate.setText("Selected animal died on: " + String.valueOf(engine.getSimulationDay()) + " day:(");
             animalList.getChildren().add(animalDeathDate);
         }
     }

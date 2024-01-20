@@ -117,4 +117,8 @@ public class Animal implements WorldElement{
         childrenCount+=1;
 
     }
+    public void mutateGene(int min, int max){
+        int numOfMutations = Functions.randomNumberBetween(min,max);
+        gene.mutateGene(numOfMutations);
+    }
 }

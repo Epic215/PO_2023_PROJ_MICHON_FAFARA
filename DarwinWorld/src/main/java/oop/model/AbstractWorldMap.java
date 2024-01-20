@@ -18,12 +18,14 @@ public abstract class AbstractWorldMap{
     protected int overallAge;
     protected int deadCount;
     protected boolean isWater;
+    protected int minimumMutations;
+    protected int maximumMutations;
     protected final Map<Vector2d, ArrayList<Animal>> animals = new HashMap<>();
     protected final Map<Vector2d, Grass> grasses = new HashMap<>();
     protected final ArrayList<Vector2d> canPlaceGrassEquator = new ArrayList<>();
     protected final ArrayList<Vector2d> canPlaceGrassSteppes = new ArrayList<>();
     private final List<MapChangeListener> listeners = new ArrayList<>();
-    public AbstractWorldMap(int width, int height,int grassCount,int grassGrowth, int grassEnergy, int dailyEnergy, boolean isWater){
+    public AbstractWorldMap(int width, int height,int grassCount,int grassGrowth, int grassEnergy, int dailyEnergy, boolean isWater, int minimumMutations, int maximumMutations){
         this.upperRight = new Vector2d(width,height);
         this.bottomLeft = new Vector2d(0,0);
         this.grassCount = grassCount;
@@ -34,6 +36,8 @@ public abstract class AbstractWorldMap{
         this.overallAge = 0;
         this.deadCount = 0;
         this.isWater = isWater;
+        this.minimumMutations = minimumMutations;
+        this.maximumMutations = maximumMutations;
         initializeMapEquator(height,width);
         GrassGenerator(grassCount);
     }
@@ -216,9 +220,11 @@ public abstract class AbstractWorldMap{
     public String getMostPopularGeneType(){
         Map<String, Integer> popularGene = new HashMap<>();
         animals.forEach((key,value) -> {
-            for (Animal animal : value){
-                String gene = animal.getGene().toString();
-                popularGene.merge(gene, 1, Integer::sum);
+            if(!value.isEmpty()){
+                for (Animal animal : value){
+                    String gene = animal.getGene().toString();
+                    popularGene.merge(gene, 1, Integer::sum);
+                }
             }
         });
         AtomicInteger maxGene = new AtomicInteger(0);
@@ -229,9 +235,9 @@ public abstract class AbstractWorldMap{
                 maxGeneArray.set(key);
             }
         });
-        System.out.println(maxGeneArray);
-        System.out.println(maxGene.get());
-        System.out.println(popularGene.toString());
+//        System.out.println(maxGeneArray);
+//        System.out.println(maxGene.get());
+//        System.out.println(popularGene.toString());
 //        System.out.println(Collections.max(popularGene.entrySet(), (entry1, entry2) -> entry1.getValue() - entry2.getValue()).getKey());
         return maxGeneArray.toString();
     }
@@ -279,6 +285,12 @@ public abstract class AbstractWorldMap{
     }
     public int getGrassGrowth() {
         return grassGrowth;
+    }
+    public int getMinimumMutations(){
+        return minimumMutations;
+    }
+    public int getMaximumMutations(){
+        return maximumMutations;
     }
     //    public Map<Vector2d,ArrayList<WorldElement>> getElements(){
 //        Map<Vector2d,ArrayList<WorldElement>> elements = new HashMap<>();
