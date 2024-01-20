@@ -67,11 +67,11 @@ public abstract class AbstractWorldMap{
         }
         for (int j=0;j<height;j++){
             for (int k=0;k<width;k++){
-                if (equator[k]){
-                    canPlaceGrassEquator.add(new Vector2d(j,k));
+                if (equator[j]){
+                    canPlaceGrassEquator.add(new Vector2d(k,j));
                 }
                 else {
-                    canPlaceGrassSteppes.add(new Vector2d(j,k));
+                    canPlaceGrassSteppes.add(new Vector2d(k,j));
                 }
             }
         }
