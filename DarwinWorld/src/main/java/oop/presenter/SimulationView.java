@@ -1,5 +1,6 @@
 package oop.presenter;
 
+import com.opencsv.CSVWriter;
 import javafx.beans.value.ChangeListener;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -19,9 +20,13 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
 
+import java.io.*;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.*;
 
 public class SimulationView implements MapChangeListener{
@@ -46,6 +51,7 @@ public class SimulationView implements MapChangeListener{
     private Simulation engine;
     private UUID animalFollowedId;
     private int flag = 0;
+    File statistictFile = new File(Paths.get(".\\").toAbsolutePath().getParent().toString() + "\\src\\main\\resources\\statistictFile.csv");
 
     @Override
     public void mapChanged(AbstractWorldMap worldMap, String message) {
@@ -54,7 +60,11 @@ public class SimulationView implements MapChangeListener{
         setWorldMap(worldMap);
         Platform.runLater(() -> {
 //            infoLabel.setText(message);
-            drawMap();
+            try {
+                drawMap();
+            } catch (URISyntaxException e) {
+                throw new RuntimeException(e);
+            }
         });
     }
     public void setWorldMap(AbstractWorldMap map){
@@ -66,11 +76,11 @@ public class SimulationView implements MapChangeListener{
     }
 
     @FXML
-    public void drawMap() {
+    public void drawMap() throws URISyntaxException {
         clearGrid();
         newGrid();
     }
-    private void newGrid(){
+    private void newGrid() throws URISyntaxException {
         int left = map.getCurrentBounds().bottomLeft().getX();
         int upper = map.getCurrentBounds().upperRight().getY()-1;
         double containerWidth = container.getWidth();
@@ -80,10 +90,15 @@ public class SimulationView implements MapChangeListener{
         animalCount.setText(String.valueOf(map.getAnimalCount()));
         plantsCount.setText(String.valueOf(map.getGrassCount()));
         emptyCount.setText(String.valueOf(map.getFreeFieldsCount()));
-        geneType.setText(String.valueOf(map.getMostPopularGeneType()));
+        geneType.setText(map.getMostPopularGeneType());
         averageEnergy.setText(String.valueOf(map.getAverageEnergy()));
         averageLifespan.setText(String.valueOf(map.getAverageDeadAge()));
         childrenCount.setText(String.valueOf(map.getAverageChildCount()));
+        if(engine.getSaveToCsv()){
+            saveToCsv(map.getAnimalCount(),map.getGrassCount(),map.getFreeFieldsCount(),map.getMostPopularGeneType(), map.getAverageEnergy(), map.getAverageDeadAge(), map.getAverageChildCount());
+        }
+//        System.out.println(Paths.get(".\\").toAbsolutePath());
+//        System.out.println(Paths.get(".\\").toAbsolutePath().getParent().toString() + "\\java\\oop\\resources");
 
         Label label;
 
@@ -171,6 +186,31 @@ public class SimulationView implements MapChangeListener{
 
         if(map.getIsWater()){
             drawWater(width, height, left, upper);
+        }
+    }
+
+    private void saveToCsv(int animalCount,int grassCount,int freeFieldsCount,String mostPopularGeneType, int averageEnergy, int averageDeadAge, int averageChildCount){
+//        System.out.println(Paths.get(".\\").toAbsolutePath().getParent().toString() + "\\java\\oop\\resources");
+        try {
+            // create FileWriter object with file as parameter
+//            FileWriter outputfile = new FileWriter(statistictFile);
+
+            // create CSVWriter object filewriter object as parameter
+            BufferedWriter writer = new BufferedWriter(new FileWriter(statistictFile,true));
+
+            // adding header to csv
+            String[] header = { "animalCount", "grassCount", "freeFieldsCount", "mostPopularGeneType", "averageEnergy", "averageDeadAge", "averageChildCount"};
+            writer.write(Arrays.toString(header) + "\n");
+
+            // add data to csv
+            String[] data = { String.valueOf(animalCount), String.valueOf(grassCount), String.valueOf(freeFieldsCount), mostPopularGeneType, String.valueOf(averageEnergy), String.valueOf(averageDeadAge), String.valueOf(averageChildCount)};
+            writer.write(Arrays.toString(data) + "\n");
+
+            // closing writer connection
+            writer.close();
+        }
+        catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
