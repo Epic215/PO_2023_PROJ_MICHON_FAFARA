@@ -183,9 +183,9 @@ public abstract class AbstractWorldMap{
     public ArrayList<Animal>  getAnimals(){
         ArrayList<Animal> newAnimals = new ArrayList<>();
         animals.forEach((key,value) -> {
-            value.forEach(animal -> {
-                newAnimals.add(animal);
-            });
+            if(!value.isEmpty()){
+                newAnimals.addAll(value);
+            }
         });
         return newAnimals;
     }
@@ -202,7 +202,6 @@ public abstract class AbstractWorldMap{
     }
     public int getAnimalCount(){
         return this.getAnimals().size();
-
     }
     public int getGrassCount(){
         return grasses.size();

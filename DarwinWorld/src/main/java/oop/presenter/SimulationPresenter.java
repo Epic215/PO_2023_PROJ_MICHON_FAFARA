@@ -33,6 +33,7 @@ import static java.lang.Math.abs;
 
 public class SimulationPresenter{
     @FXML public RadioButton worldConfigGlobeTides;
+    @FXML public RadioButton noConfig;
 //    @FXML private GridPane mapGrid;
     @FXML private Button startButton;
     @FXML private TextField animalCountInput;
@@ -47,6 +48,7 @@ public class SimulationPresenter{
     @FXML private TextField breedEnergyInput;
     @FXML private TextField minimumMutationsInput;
     @FXML private TextField maximumMutationsInput;
+    private boolean saveToCsv;
     private Properties settings;
     String RESOURCENAME = "settings.properties"; // could also be a constant
 //    @FXML private AnchorPane anchorPane;
@@ -56,6 +58,7 @@ public class SimulationPresenter{
         animalCountInput.setAlignment(Pos.CENTER);
         GridPane.setHalignment(animalCountInput, HPos.CENTER);
         initializeSettings();
+        saveToCsv = true;
     }
     private void initializeSettings(){
         settings= new Properties();
@@ -105,9 +108,12 @@ public class SimulationPresenter{
             } else{
                 abstractWorldMap = new DarwinMap(mapWidth, mapHeight, grassCount, grassGrowth,grassEnergy, dailyEnergy, minimumMutations, maxiumEnergy);
             }
+            if(noConfig.isSelected()){
+                saveToCsv = false;
+            }
 
 //            DarwinMap darwinWorld = new DarwinMap(mapWidth, mapHeight, grassCount, grassGrowth,grassEnergy, dailyEnergy);
-            Simulation simulation = new Simulation(animalCount,abstractWorldMap,geneSize,initialEnergy,breedEnergy);
+            Simulation simulation = new Simulation(animalCount,abstractWorldMap,geneSize,initialEnergy,breedEnergy,saveToCsv);
 
             FXMLLoader newwindow= new FXMLLoader(getClass().getResource("/windowsimulation.fxml"));
             GridPane root = null;

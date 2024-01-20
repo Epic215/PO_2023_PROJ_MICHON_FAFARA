@@ -15,7 +15,8 @@ public class Simulation implements Runnable{
     private boolean pause=false;
     private boolean running=true;
     private int simulationDay;
-    public Simulation(int animalCount, AbstractWorldMap abstractWorldMap, int geneSize,int initialEnergy, int breedEnergy){
+    private boolean saveToCsv;
+    public Simulation(int animalCount, AbstractWorldMap abstractWorldMap, int geneSize,int initialEnergy, int breedEnergy, boolean saveToCsv){
         this.daysCount = 0;
         this.simulationDay = 0;
         this.animalCount = animalCount;
@@ -23,6 +24,7 @@ public class Simulation implements Runnable{
         this.geneSize = geneSize;
         this.initialEnergy = initialEnergy;
         this.breedEnergy = breedEnergy;
+        this.saveToCsv = saveToCsv;
         animalGenerator(animalCount);
     }
     private void animalGenerator(int n){
@@ -234,6 +236,9 @@ public class Simulation implements Runnable{
     }
     public int getSimulationDay(){
         return simulationDay;
+    }
+    public boolean getSaveToCsv(){
+        return saveToCsv;
     }
     public void run(){
         while(running){
