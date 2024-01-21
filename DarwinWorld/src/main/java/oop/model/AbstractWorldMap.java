@@ -25,6 +25,7 @@ public abstract class AbstractWorldMap{
     protected final ArrayList<Vector2d> canPlaceGrassEquator = new ArrayList<>();
     protected final ArrayList<Vector2d> canPlaceGrassSteppes = new ArrayList<>();
     private final List<MapChangeListener> listeners = new ArrayList<>();
+    private Map<String, Integer> popularGene = new HashMap<>();
     public AbstractWorldMap(int width, int height,int grassCount,int grassGrowth, int grassEnergy, int dailyEnergy, boolean isWater, int minimumMutations, int maximumMutations){
         this.upperRight = new Vector2d(width,height);
         this.bottomLeft = new Vector2d(0,0);
@@ -218,7 +219,7 @@ public abstract class AbstractWorldMap{
         return count;
     }
     public String getMostPopularGeneType(){
-        Map<String, Integer> popularGene = new HashMap<>();
+        popularGene.clear();
         animals.forEach((key,value) -> {
             if(!value.isEmpty()){
                 for (Animal animal : value){
@@ -248,7 +249,10 @@ public abstract class AbstractWorldMap{
                 energySum[0] += animal.getEnergy();
             });
         });
-        return energySum[0];
+        if(getAnimalCount()!=0){
+            return energySum[0]/getAnimalCount();
+        }
+        return 0;
     }
     public void subscribe(MapChangeListener listener){
         listeners.add(listener);

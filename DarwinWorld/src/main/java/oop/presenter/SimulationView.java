@@ -20,6 +20,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
 
+import javax.swing.*;
 import java.io.*;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -28,6 +29,8 @@ import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.*;
+
+import static org.apache.commons.lang3.math.NumberUtils.min;
 
 public class SimulationView implements MapChangeListener{
 
@@ -84,8 +87,10 @@ public class SimulationView implements MapChangeListener{
         int left = map.getCurrentBounds().bottomLeft().getX();
         int upper = map.getCurrentBounds().upperRight().getY()-1;
         double containerWidth = container.getWidth();
-        double width = 0.65*containerWidth/map.getCurrentBounds().upperRight().getX()*0.9;
-        double height = 0.65*containerWidth/map.getCurrentBounds().upperRight().getX()*0.9;
+        double containerHeight = container.getHeight();
+        double width = min(0.65*containerWidth/map.getCurrentBounds().upperRight().getX()*0.9, containerHeight/map.getCurrentBounds().upperRight().getY()*0.9);
+        double height = min(0.65*containerWidth/map.getCurrentBounds().upperRight().getX()*0.9, containerHeight/map.getCurrentBounds().upperRight().getY()*0.9);
+//        double height = 0.65*containerWidth/map.getCurrentBounds().upperRight().getX()*0.9;
 
         animalCount.setText(String.valueOf(map.getAnimalCount()));
         plantsCount.setText(String.valueOf(map.getGrassCount()));
@@ -127,7 +132,7 @@ public class SimulationView implements MapChangeListener{
 //            }
 
         }
-        mapGridd.setGridLinesVisible(false);
+//        mapGridd.setGridLinesVisible(false);
 
 //        for(int i=0; i < map.getCurrentBounds().upperRight().getX(); i++){
 //            for(int j=0; j <  map.getCurrentBounds().upperRight().getY(); j++){
@@ -176,7 +181,35 @@ public class SimulationView implements MapChangeListener{
             if(animal.getKey().equals(position)){
                 label.setStyle("-fx-background-color: #ff57a3; -fx-border-radius: 100px ");
             } else {
-                label.setStyle("-fx-background-color: #d79839; -fx-border-radius: 100px ");
+                int animalEnergy = engine.resolveConflictFirstStrongest(animal.getValue()).getEnergy();
+                int maxAnimalEnergy = engine.getInitialEnergy();
+                String styles = null;
+                if(animalEnergy>0 && animalEnergy<=maxAnimalEnergy*0.2){
+                    styles = "-fx-background-color: #e5b678; -fx-border-radius: 100px ";
+//                    label.setStyle("-fx-background-color: #f3c890; -fx-border-radius: 100px ");
+                }else if(animalEnergy>maxAnimalEnergy*0.2 && animalEnergy<=maxAnimalEnergy*0.4){
+                    styles = "-fx-background-color: #cc9c5f; -fx-border-radius: 100px ";
+//                    label.setStyle("-fx-background-color: #cc9c5f; -fx-border-radius: 100px ");
+                }else if(animalEnergy>maxAnimalEnergy*0.4 && animalEnergy<=maxAnimalEnergy*0.6){
+                    styles = "-fx-background-color: #e08f4c; -fx-border-radius: 100px ";
+//                    label.setStyle("-fx-background-color: #e08f4c; -fx-border-radius: 100px ");
+                }else if(animalEnergy>maxAnimalEnergy*0.6 && animalEnergy<=maxAnimalEnergy*0.8){
+                    styles = "-fx-background-color: #ea7232; -fx-border-radius: 100px ";
+//                    label.setStyle("-fx-background-color: #e77233; -fx-border-radius: 100px ");
+                }else if(animalEnergy>maxAnimalEnergy*0.8 && animalEnergy<=maxAnimalEnergy){
+                    styles = "-fx-background-color: #ec6332; -fx-border-radius: 100px ";
+//                    label.setStyle("-fx-background-color: #e85b28; -fx-border-radius: 100px ");
+                }
+                label.setStyle(styles);
+                final Boolean[] isMostPopularHere = {false};
+                animal.getValue().forEach(value -> {
+                    if(value.ifGeneMostPopular(map.getMostPopularGeneType())){
+                        isMostPopularHere[0] =true;
+                    }
+                });
+                if(isMostPopularHere[0]){
+                    label.setStyle("-fx-background-color: #f1cc38; -fx-border-radius: 100px ");
+                }
             }
             label.setOnMouseClicked(event -> {
                 Label animalLabel = new Label();

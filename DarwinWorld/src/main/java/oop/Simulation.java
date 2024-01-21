@@ -240,10 +240,13 @@ public class Simulation implements Runnable{
     public boolean getSaveToCsv(){
         return saveToCsv;
     }
+    public int getInitialEnergy(){
+        return initialEnergy;
+    }
     public void run(){
         while(running){
             try {
-                Thread.sleep(500);
+                Thread.sleep(200);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
