@@ -8,6 +8,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.*;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Text;
 import oop.Simulation;
 import oop.SimulationEngine;
 import oop.model.*;
@@ -42,7 +43,7 @@ public class SimulationView implements MapChangeListener{
     @FXML private Label animalCount;
     @FXML private Label plantsCount;
     @FXML private Label emptyCount;
-    @FXML private Label geneType;
+    @FXML private Text geneType;
     @FXML private Label averageEnergy;
     @FXML private Label averageLifespan;
     @FXML private Label childrenCount;
@@ -91,7 +92,7 @@ public class SimulationView implements MapChangeListener{
         double width = min(0.65*containerWidth/map.getCurrentBounds().upperRight().getX()*0.9, containerHeight/map.getCurrentBounds().upperRight().getY()*0.9);
         double height = min(0.65*containerWidth/map.getCurrentBounds().upperRight().getX()*0.9, containerHeight/map.getCurrentBounds().upperRight().getY()*0.9);
 //        double height = 0.65*containerWidth/map.getCurrentBounds().upperRight().getX()*0.9;
-
+        geneType.setWrappingWidth(containerWidth/7);
         animalCount.setText(String.valueOf(map.getAnimalCount()));
         plantsCount.setText(String.valueOf(map.getGrassCount()));
         emptyCount.setText(String.valueOf(map.getFreeFieldsCount()));
