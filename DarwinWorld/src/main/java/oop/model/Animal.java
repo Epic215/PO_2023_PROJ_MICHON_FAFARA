@@ -1,9 +1,6 @@
 package oop.model;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 import static java.lang.Math.min;
 import static oop.model.MapDirection.*;
@@ -113,11 +110,15 @@ public class Animal implements WorldElement{
     }
     public void incrementChildCount(){
         childrenCount+=1;
-
     }
     public void mutateGene(int min, int max){
         int numOfMutations = Functions.randomNumberBetween(min,max);
         gene.mutateGene(numOfMutations);
+    }
+    public boolean ifGeneMostPopular(String gene){
+//        System.out.println(gene);
+//        System.out.println(Arrays.toString(this.getGene().getGene()));
+        return gene.equals(Arrays.toString(this.getGene().getGene()));
     }
     @Override
     public boolean equals(Object other){
