@@ -35,9 +35,6 @@ import static org.apache.commons.lang3.math.NumberUtils.min;
 
 public class SimulationView implements MapChangeListener{
 
-    @FXML
-    private Button stopButton;
-    @FXML private Label infoLabel;
     @FXML private GridPane mapGridd;
     @FXML private GridPane container;
     @FXML private Label animalCount;
@@ -47,23 +44,18 @@ public class SimulationView implements MapChangeListener{
     @FXML private Label averageEnergy;
     @FXML private Label averageLifespan;
     @FXML private Label childrenCount;
-//    @FXML private TextField animalCountInput;
-    @FXML private Button pauseButton;
-    @FXML private Button resumeButton;
     @FXML private VBox animalList;
     private AbstractWorldMap map;
     private Simulation engine;
     private UUID animalFollowedId;
     private int flag = 0;
+    private boolean showEquatorStatus = false;
     File statistictFile = new File(Paths.get(".\\").toAbsolutePath().getParent().toString() + "\\src\\main\\resources\\statistictFile.csv");
 
     @Override
     public void mapChanged(AbstractWorldMap worldMap, String message) {
-        //synchronized (System.out){
-//        System.out.println(Thread.currentThread());
         setWorldMap(worldMap);
         Platform.runLater(() -> {
-//            infoLabel.setText(message);
             try {
                 drawMap();
             } catch (URISyntaxException e) {
@@ -82,6 +74,7 @@ public class SimulationView implements MapChangeListener{
     @FXML
     public void drawMap() throws URISyntaxException {
         clearGrid();
+        showEquatorStatus = false;
         newGrid();
     }
     private void newGrid() {
@@ -91,7 +84,6 @@ public class SimulationView implements MapChangeListener{
         double containerHeight = container.getHeight();
         double width = min(0.65*containerWidth/map.getCurrentBounds().upperRight().getX()*0.9, containerHeight/map.getCurrentBounds().upperRight().getY()*0.9);
         double height = min(0.65*containerWidth/map.getCurrentBounds().upperRight().getX()*0.9, containerHeight/map.getCurrentBounds().upperRight().getY()*0.9);
-//        double height = 0.65*containerWidth/map.getCurrentBounds().upperRight().getX()*0.9;
         geneType.setWrappingWidth(containerWidth/7);
         animalCount.setText(String.valueOf(map.getAnimalCount()));
         plantsCount.setText(String.valueOf(map.getGrassCount()));
@@ -103,8 +95,6 @@ public class SimulationView implements MapChangeListener{
         if(engine.getSaveToCsv()){
             saveToCsv(map.getAnimalCount(),map.getGrassCount(),map.getFreeFieldsCount(),map.getMostPopularGeneType(), map.getAverageEnergy(), map.getAverageDeadAge(), map.getAverageChildCount());
         }
-//        System.out.println(Paths.get(".\\").toAbsolutePath());
-//        System.out.println(Paths.get(".\\").toAbsolutePath().getParent().toString() + "\\java\\oop\\resources");
 
         Label label;
 
@@ -115,48 +105,26 @@ public class SimulationView implements MapChangeListener{
         boolean[] equator=map.getEquator();
         for (int i = 0; i < map.getCurrentBounds().upperRight().getY() ; i++) {
             this.mapGridd.getRowConstraints().add(new RowConstraints(height));
-
-//            for (int j =0; j<map.getCurrentBounds().upperRight().getY();j++) {
-//                label = new Label(" ");
-//                if (equator[i]) {
-//                    label.setStyle("-fx-background-color: #9bdc00; -fx-border-radius: 100px ");
-//                }
-//                else {
-//                    label.setStyle("-fx-background-color: #f6732a; -fx-border-radius: 100px ");
-//                }
-//                label.setMinHeight(height);
-//                label.setMinWidth(width);
-//                label.setAlignment(Pos.CENTER);
-//                GridPane.setHalignment(label, HPos.CENTER);
-//                this.mapGridd.add(label, j, i);
-//
-//            }
-
+            if (showEquatorStatus) {
+                for (int j = 0; j < map.getCurrentBounds().upperRight().getY(); j++) {
+                    label = new Label(" ");
+                    label.setMinWidth(width*0.9);
+                    label.setMinHeight(height*0.9);
+                    if (equator[i]) {
+                        label.setStyle("-fx-background-color: #d8e3ac; -fx-border-radius: 100px ");
+                    } else {
+                        label.setStyle("-fx-background-color: #efd7be; -fx-border-radius: 100px ");
+                    }
+                    label.setAlignment(Pos.CENTER);
+                    GridPane.setHalignment(label, HPos.CENTER);
+                    this.mapGridd.add(label, j, i);
+                }
+            }
         }
-//        mapGridd.setGridLinesVisible(false);
+        mapGridd.setGridLinesVisible(false);
 
-//        for(int i=0; i < map.getCurrentBounds().upperRight().getX(); i++){
-//            for(int j=0; j <  map.getCurrentBounds().upperRight().getY(); j++){
-//                Label newLabel = (Label) this.mapGridd.getChildren().get(i*map.getCurrentBounds().upperRight().getX()+j);
-//            }
-//        }
-//        for (int i = 0; i < map.getCurrentBounds().upperRight().getX() ; i++) {
-//            for (int j = 0; j < map.getCurrentBounds().upperRight().getY() ; j++){
-//                Label label1 = new Label();
-//                label1.setMinWidth(width*0.85);
-//                label1.setMinHeight(height*0.85);
-//                label1.setAlignment(Pos.CENTER);
-//                GridPane.setHalignment(label1, HPos.CENTER);
-//                label1.setStyle("-fx-background-color: #ffffff; -fx-border-radius: 150px");
-//                mapGridd.add(label1,i,j);
-//            }
-//        }
-//        mapGridd.setStyle("-fx-background-color: #ffffff");
         Map<Vector2d, ArrayList<Animal>> animals = map.getAnimals2();
         Map<Vector2d, Grass> grasses = map.getGrasses();
-//        System.out.println(elements);
-//        System.out.println(animals);
-//        System.out.println(grasses);
         for (Map.Entry<Vector2d,Grass> grass : grasses.entrySet()) {
             label = new Label();
             label.setMinWidth(width*0.8);
@@ -165,7 +133,6 @@ public class SimulationView implements MapChangeListener{
             GridPane.setHalignment(label, HPos.CENTER);
             label.setText(grass.getValue().toString());
             label.setStyle("-fx-background-color: #77c44c; -fx-border-radius: 100px");
-//            System.out.println(grass.getKey().getX() - left);
 
             mapGridd.add(label,  grass.getKey().getX() ,   upper-grass.getKey().getY());
         }
@@ -187,19 +154,14 @@ public class SimulationView implements MapChangeListener{
                 String styles = null;
                 if(animalEnergy>0 && animalEnergy<=maxAnimalEnergy*0.2){
                     styles = "-fx-background-color: #e5b678; -fx-border-radius: 100px ";
-//                    label.setStyle("-fx-background-color: #f3c890; -fx-border-radius: 100px ");
                 }else if(animalEnergy>maxAnimalEnergy*0.2 && animalEnergy<=maxAnimalEnergy*0.4){
                     styles = "-fx-background-color: #cc9c5f; -fx-border-radius: 100px ";
-//                    label.setStyle("-fx-background-color: #cc9c5f; -fx-border-radius: 100px ");
                 }else if(animalEnergy>maxAnimalEnergy*0.4 && animalEnergy<=maxAnimalEnergy*0.6){
                     styles = "-fx-background-color: #e08f4c; -fx-border-radius: 100px ";
-//                    label.setStyle("-fx-background-color: #e08f4c; -fx-border-radius: 100px ");
                 }else if(animalEnergy>maxAnimalEnergy*0.6 && animalEnergy<=maxAnimalEnergy*0.8){
                     styles = "-fx-background-color: #ea7232; -fx-border-radius: 100px ";
-//                    label.setStyle("-fx-background-color: #e77233; -fx-border-radius: 100px ");
                 }else if(animalEnergy>maxAnimalEnergy*0.8 && animalEnergy<=maxAnimalEnergy){
                     styles = "-fx-background-color: #ec6332; -fx-border-radius: 100px ";
-//                    label.setStyle("-fx-background-color: #e85b28; -fx-border-radius: 100px ");
                 }
                 label.setStyle(styles);
                 final Boolean[] isMostPopularHere = {false};
@@ -217,7 +179,6 @@ public class SimulationView implements MapChangeListener{
                 animalLabel.setText("Animals on position " + animal.getKey().toString());
                 animalList.getChildren().clear();
                 animalList.getChildren().add(animalLabel);
-//                animalList.setClip(new Rectangle(400,277));
                 animal.getValue().forEach(element -> {
                     Button animalButton = new Button();
                     animalButton.setId(String.valueOf(element.getAnimalId()));
@@ -231,9 +192,6 @@ public class SimulationView implements MapChangeListener{
                     animalList.getChildren().add(animalButton);
                 });
             });
-//            System.out.println(animal.getValue().get(0).getFacing());
-//            System.out.println(animal.getKey().getX()- left);
-//            System.out.println(upper - animal.getKey().getY());
             mapGridd.add(label,animal.getKey().getX(), upper-animal.getKey().getY());
         }
 
@@ -243,23 +201,15 @@ public class SimulationView implements MapChangeListener{
     }
 
     private void saveToCsv(int animalCount,int grassCount,int freeFieldsCount,String mostPopularGeneType, int averageEnergy, int averageDeadAge, int averageChildCount){
-//        System.out.println(Paths.get(".\\").toAbsolutePath().getParent().toString() + "\\java\\oop\\resources");
         try {
-            // create FileWriter object with file as parameter
-//            FileWriter outputfile = new FileWriter(statistictFile);
-
-            // create CSVWriter object filewriter object as parameter
             BufferedWriter writer = new BufferedWriter(new FileWriter(statistictFile,true));
 
-            // adding header to csv
             String[] header = { "animalCount", "grassCount", "freeFieldsCount", "mostPopularGeneType", "averageEnergy", "averageDeadAge", "averageChildCount"};
             writer.write(Arrays.toString(header) + "\n");
 
-            // add data to csv
-            String[] data = { String.valueOf(animalCount), String.valueOf(grassCount), String.valueOf(freeFieldsCount), mostPopularGeneType, String.valueOf(averageEnergy), String.valueOf(averageDeadAge), String.valueOf(averageChildCount)};
+            String[] data = { String.valueOf(animalCount), String.valueOf(grassCount), String.valueOf(freeFieldsCount), mostPopularGeneType.replaceAll(",",""), String.valueOf(averageEnergy), String.valueOf(averageDeadAge), String.valueOf(averageChildCount)};
             writer.write(Arrays.toString(data) + "\n");
 
-            // closing writer connection
             writer.close();
         }
         catch (IOException e) {
@@ -321,19 +271,27 @@ public class SimulationView implements MapChangeListener{
     @FXML
     public void viewPause()  {
         engine.pause();
-
+        animalList.getChildren().clear();
+        Button showEquator = new Button();
+        showEquator.setText("Show preferred grass fields");
+        showEquator.setOnAction(value -> {
+            if(!showEquatorStatus){
+                showEquatorStatus = true;
+                clearGrid();
+                newGrid();
+            } else {
+                showEquatorStatus = false;
+                clearGrid();
+                newGrid();
+            }
+        });
+        animalList.getChildren().add(showEquator);
     }
     @FXML
     public void viewResume() {
+        animalList.getChildren().clear();
         engine.resume();
-
     }
-    @FXML
-    public void viewStop() {
-        engine.stop();
-
-    }
-
     public void set(Simulation simulationEngine) {
         engine=simulationEngine;
     }
