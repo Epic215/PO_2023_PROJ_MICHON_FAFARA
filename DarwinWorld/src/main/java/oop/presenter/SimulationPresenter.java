@@ -91,14 +91,16 @@ public class SimulationPresenter{
     }
 
     private void createMap (int mapWidth, int mapHeight, int grassCount, int grassGrowth, int grassEnergy, int dailyEnergy, int minimumMutations, int maxiumMutations, int animalCount, int geneSize, int initialEnergy, int breedEnergy) throws IncorrectDataException{
-        if(minimumMutations<0 || minimumMutations>maxiumMutations){
+
+        if(minimumMutations<0 || maxiumMutations<0 || mapWidth<0 || grassCount<0 || grassEnergy<0 || dailyEnergy<0){
             incorrectDataError.show();
-            throw new IncorrectDataException("Minimum mutations");
+            throw new IncorrectDataException("Incorrect data for input! Check if the values are not negative!");
         }
-        if(maxiumMutations<0){
+        if(minimumMutations>maxiumMutations){
             incorrectDataError.show();
-            throw new IncorrectDataException("Maximum mutations");
+            throw new IncorrectDataException("Incorrect data for input! Check if minimum mutations are not larger than maximum mutations!");
         }
+
         AbstractWorldMap abstractWorldMap;
         if(worldConfigGlobeTides.isSelected()){
             abstractWorldMap = new DarwinMapWater(mapWidth, mapHeight, grassCount, grassGrowth, grassEnergy, dailyEnergy, minimumMutations, maxiumMutations);
