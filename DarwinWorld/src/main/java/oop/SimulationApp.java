@@ -31,8 +31,7 @@ public class SimulationApp extends Application {
     private void configureStage(Stage primaryStage, GridPane viewRoot) {
         var scene = new Scene(viewRoot);
         primaryStage.setScene(scene);
-        //properties
-        primaryStage.setTitle("Simulation app");
+        primaryStage.setTitle("DarwinMap - settings");
         primaryStage.minWidthProperty().bind(viewRoot.minWidthProperty());
         primaryStage.minHeightProperty().bind(viewRoot.minHeightProperty());
     }
