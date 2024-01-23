@@ -10,7 +10,6 @@ public abstract class AbstractWorldMap{
     protected final boolean[] equator;
     protected Vector2d bottomLeft;
     protected Vector2d upperRight;
-    protected UUID mapId = UUID.randomUUID();
     protected int grassCount;
     protected int grassGrowth;
     protected int grassEnergy;
@@ -43,7 +42,7 @@ public abstract class AbstractWorldMap{
         GrassGenerator(grassCount);
     }
     private void initializeMapEquator(int height,int width){
-        int equatorHeigth=0;
+        int equatorHeigth;
         int pow= (int) (height*0.2);
         int middle=(height-1)/2;
         if (min(abs(0.2- (double) pow /height),abs(0.2- (double) (pow+1) /height))==abs(0.2- (double) pow /height))
@@ -110,9 +109,7 @@ public abstract class AbstractWorldMap{
         }
         grasses.remove(grass.getPosition());
     }
-    private int generateNumber(int min, int max){
-        return (int)Math.floor(Math.random() * (max - min + 1) + min);
-    }
+
     public void place(Animal animal) {
         if (animals.get(animal.getPosition())==null){
             ArrayList<Animal> field = new ArrayList<>();
@@ -125,16 +122,7 @@ public abstract class AbstractWorldMap{
         }
 
     }
-    public void printAnimals(){
-        animals.forEach((key, value) -> {
-            System.out.println("Key=" + key + ", Value=" + value.toString());
-        });
-    }
-    public void printGrasses(){
-        grasses.forEach((key, value) -> {
-            System.out.println("Key=" + key + ", Value=" + value.toString());
-        });
-    }
+
     public void move(Animal animal){
         MapDirection mapDirection = animal.getCurrentGene();
         Vector2d supposedPosition = animal.getPosition().add(animal.getFacing().turn(mapDirection.direction).toUnitVector());
@@ -151,9 +139,9 @@ public abstract class AbstractWorldMap{
             } else {
                 animal.move(mapDirection);
             }
-//            place(animal);
+
         } else {
-            animal.bounce(mapDirection);
+            animal.bounce();
             animals.get(animal.getPosition()).remove(animal);
         }
         animal.moveGeneIndex();
@@ -198,9 +186,7 @@ public abstract class AbstractWorldMap{
     public Boundary getCurrentBounds(){
         return new Boundary(bottomLeft,upperRight);
     }
-    public UUID getMapId(){
-        return this.mapId;
-    }
+
     public int getAnimalCount(){
         return this.getAnimals().size();
     }
@@ -236,10 +222,7 @@ public abstract class AbstractWorldMap{
                 maxGeneArray.set(key);
             }
         });
-//        System.out.println(maxGeneArray);
-//        System.out.println(maxGene.get());
-//        System.out.println(popularGene.toString());
-//        System.out.println(Collections.max(popularGene.entrySet(), (entry1, entry2) -> entry1.getValue() - entry2.getValue()).getKey());
+
         return maxGeneArray.toString();
     }
     public int getAverageEnergy(){
@@ -300,16 +283,5 @@ public abstract class AbstractWorldMap{
     public boolean[] getEquator() {
         return equator;
     }
-    //    public Map<Vector2d,ArrayList<WorldElement>> getElements(){
-//        Map<Vector2d,ArrayList<WorldElement>> elements = new HashMap<>();
-//        if(!animals.isEmpty()){
-//            elements.putAll((Map<? extends Vector2d, ? extends ArrayList<WorldElement>>) animals);
-//        }
-//        if(!grasses.isEmpty()){
-//            grasses.forEach((key,value) -> {
-//                elements.get(key).add(value);
-//            });
-//        }
-//        return elements;
-//    }
+
 }
