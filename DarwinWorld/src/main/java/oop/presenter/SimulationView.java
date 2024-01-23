@@ -222,11 +222,12 @@ public class SimulationView implements MapChangeListener{
             flag = 1;
             animalList.getChildren().clear();
             Label animalStats = new Label();
-            Label animalGene = new Label();
+            Text animalGene = new Text();
             Label animalEnergy = new Label();
             Label animalEatenPlants = new Label();
             Label animalChildrenCount = new Label();
             Label animalAge = new Label();
+            animalGene.setWrappingWidth(container.getWidth()/7);
             animalStats.setText("Followed animal stats:");
             animalGene.setText("Gene: " + String.valueOf(element.getGene()));
             animalEnergy.setText("Energy: " + String.valueOf(element.getEnergy()));

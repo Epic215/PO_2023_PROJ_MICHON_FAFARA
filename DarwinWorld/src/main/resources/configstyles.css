@@ -24,3 +24,11 @@ Button{
     -fx-background-color: white;
 }
 
+ScrollPane{
+    -fx-alignment: center;
+    -fx-border-insets: 10px;
+    -fx-padding: 15px;
+    /*-fx-border-insets: 5px;*/
+    -fx-background-insets: 13px;
+}
+
