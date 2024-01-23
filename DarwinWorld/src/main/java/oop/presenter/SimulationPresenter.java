@@ -50,11 +50,15 @@ public class SimulationPresenter{
     @FXML private TextField maximumMutationsInput;
     private boolean saveToCsv;
     private Properties settings;
+    private Alert missingDataError = new Alert(Alert.AlertType.ERROR);
+    private Alert incorrectDataError = new Alert(Alert.AlertType.ERROR);
     String RESOURCENAME = "settings.properties"; // could also be a constant
 //    @FXML private AnchorPane anchorPane;
 
     @FXML
     private void initialize(){
+        missingDataError.setContentText("Missing input data");
+        incorrectDataError.setContentText("Incorrect data for minimum or maximum mutations");
         animalCountInput.setAlignment(Pos.CENTER);
         GridPane.setHalignment(animalCountInput, HPos.CENTER);
         initializeSettings();
@@ -86,8 +90,67 @@ public class SimulationPresenter{
 
     }
 
-    public void onSimulationStartClicked() {
+    private void createMap (int mapWidth, int mapHeight, int grassCount, int grassGrowth, int grassEnergy, int dailyEnergy, int minimumMutations, int maxiumMutations, int animalCount, int geneSize, int initialEnergy, int breedEnergy) throws IncorrectDataException{
+        if(minimumMutations<0 || minimumMutations>maxiumMutations){
+            incorrectDataError.show();
+            throw new IncorrectDataException("Minimum mutations");
+        }
+        if(maxiumMutations<0){
+            incorrectDataError.show();
+            throw new IncorrectDataException("Maximum mutations");
+        }
+        AbstractWorldMap abstractWorldMap;
+        if(worldConfigGlobeTides.isSelected()){
+            abstractWorldMap = new DarwinMapWater(mapWidth, mapHeight, grassCount, grassGrowth, grassEnergy, dailyEnergy, minimumMutations, maxiumMutations);
+        } else{
+            abstractWorldMap = new DarwinMap(mapWidth, mapHeight, grassCount, grassGrowth, grassEnergy, dailyEnergy, minimumMutations, maxiumMutations);
+        }
+        if(noConfig.isSelected()){
+            saveToCsv = false;
+        }
+
+//            DarwinMap darwinWorld = new DarwinMap(mapWidth, mapHeight, grassCount, grassGrowth,grassEnergy, dailyEnergy);
+        Simulation simulation = new Simulation(animalCount,abstractWorldMap, geneSize, initialEnergy, breedEnergy,saveToCsv);
+
+        FXMLLoader newwindow= new FXMLLoader(getClass().getResource("/windowsimulation.fxml"));
+        GridPane root = null;
+
+        try {
+            root = newwindow.load();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        SimulationView newView = newwindow.getController();
+        Stage stage = new Stage();
+        stage.setResizable(false);
+        stage.setTitle("Mapa: Teeeest");
+        stage.setScene(new Scene(root));
+
+
+        stage.show();
+
+        abstractWorldMap.subscribe(newView);
+        List<Simulation> simulationList = new ArrayList<>();
+        simulationList.add(simulation);
+        SimulationEngine simulationEngine = new SimulationEngine(simulationList);
+        newView.set(simulation);
+        //run
+        simulationEngine.runAsync();
+        stage.setOnCloseRequest(close ->{
+            simulation.stop();
+        });
+    }
+
+
+    public void onSimulationStartClicked() throws NumberFormatException {
         startButton.setOnAction(event -> {
+            if(animalCountInput.getText().isEmpty() || geneSizeInput.getText().isEmpty() || mapWidthInput.getText().isEmpty() ||
+                mapHeightInput.getText().isEmpty() || grassCountInput.getText().isEmpty() || grassGrowthInput.getText().isEmpty() ||
+                dailyEnergyInput.getText().isEmpty() || initialEnergyInput.getText().isEmpty() || breedEnergyInput.getText().isEmpty() ||
+                minimumMutationsInput.getText().isEmpty() || mapHeightInput.getText().isEmpty()){
+                missingDataError.show();
+                throw new NumberFormatException();
+            }
             int animalCount = Integer.parseInt(animalCountInput.getText());
             int geneSize = Integer.parseInt(geneSizeInput.getText());
             int mapWidth = Integer.parseInt(mapWidthInput.getText());
@@ -99,48 +162,10 @@ public class SimulationPresenter{
             int initialEnergy = Integer.parseInt(initialEnergyInput.getText());
             int breedEnergy = Integer.parseInt(breedEnergyInput.getText());
             int minimumMutations = Integer.parseInt(minimumMutationsInput.getText());
-            int maxiumEnergy = Integer.parseInt(maximumMutationsInput.getText());
+            int maxiumMutations = Integer.parseInt(maximumMutationsInput.getText());
+            //java.lang.NumberFormatException
 
-
-            AbstractWorldMap abstractWorldMap;
-            if(worldConfigGlobeTides.isSelected()){
-                abstractWorldMap = new DarwinMapWater(mapWidth, mapHeight, grassCount, grassGrowth,grassEnergy, dailyEnergy, minimumMutations, maxiumEnergy);
-            } else{
-                abstractWorldMap = new DarwinMap(mapWidth, mapHeight, grassCount, grassGrowth,grassEnergy, dailyEnergy, minimumMutations, maxiumEnergy);
-            }
-            if(noConfig.isSelected()){
-                saveToCsv = false;
-            }
-
-//            DarwinMap darwinWorld = new DarwinMap(mapWidth, mapHeight, grassCount, grassGrowth,grassEnergy, dailyEnergy);
-            Simulation simulation = new Simulation(animalCount,abstractWorldMap,geneSize,initialEnergy,breedEnergy,saveToCsv);
-
-            FXMLLoader newwindow= new FXMLLoader(getClass().getResource("/windowsimulation.fxml"));
-            GridPane root = null;
-            try {
-                root = newwindow.load();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-            SimulationView newView = newwindow.getController();
-            Stage stage = new Stage();
-            stage.setResizable(false);
-            stage.setTitle("Mapa: Teeeest");
-            stage.setScene(new Scene(root));
-            stage.show();
-
-            abstractWorldMap.subscribe(newView);
-            List<Simulation> simulationList = new ArrayList<>();
-            simulationList.add(simulation);
-            SimulationEngine simulationEngine = new SimulationEngine(simulationList);
-            newView.set(simulation);
-            //run
-            simulationEngine.runAsync();
-            stage.setOnCloseRequest(close ->{
-                simulation.stop();
-            });
-
-
+            createMap(mapWidth, mapHeight, grassCount, grassGrowth, grassEnergy, dailyEnergy, minimumMutations, maxiumMutations, animalCount, geneSize, initialEnergy, breedEnergy);
 //            fillGrid();
         });
     }
