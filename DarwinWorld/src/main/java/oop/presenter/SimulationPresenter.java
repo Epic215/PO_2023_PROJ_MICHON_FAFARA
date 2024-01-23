@@ -62,7 +62,7 @@ public class SimulationPresenter{
         animalCountInput.setAlignment(Pos.CENTER);
         GridPane.setHalignment(animalCountInput, HPos.CENTER);
         initializeSettings();
-        saveToCsv = true;
+//        saveToCsv = true;
     }
     private void initializeSettings(){
         settings= new Properties();
@@ -73,8 +73,9 @@ public class SimulationPresenter{
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        System.out.println(Boolean.parseBoolean(settings.getProperty("worldConfigGlobeTides")));
+
         worldConfigGlobeTides.setSelected(Boolean.parseBoolean(settings.getProperty("worldConfigGlobeTides")));
+        noConfig.setSelected(Boolean.parseBoolean(settings.getProperty("noConfig")));
         animalCountInput.setText(settings.getProperty("animalCount"));
         geneSizeInput.setText(settings.getProperty("geneSize"));
         mapWidthInput.setText(settings.getProperty("mapWidth"));
@@ -190,6 +191,7 @@ public class SimulationPresenter{
         PropertiesConfiguration conf;
         conf = new PropertiesConfiguration(Paths.get(".\\").toAbsolutePath().getParent().toString() + "\\src\\main\\resources\\settings.properties");
         conf.setProperty("worldConfigGlobeTides",worldConfigGlobeTides.isSelected());
+        conf.setProperty("noConfig",noConfig.isSelected());
         conf.setProperty("animalCount",animalCountInput.getText());
         conf.setProperty("geneSize", geneSizeInput.getText());
         conf.setProperty("mapWidth", mapWidthInput.getText());

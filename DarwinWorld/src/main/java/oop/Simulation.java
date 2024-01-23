@@ -43,9 +43,7 @@ public class Simulation implements Runnable{
 //        abstractWorldMap.printGrasses();
     }
     public Animal resolveConflictFirstStrongest(ArrayList<Animal> animals){
-//        int oldestAnimalAge=0;
-//        int mostChildren=0;
-//        int mostEnergy=0;
+
         ArrayList<Animal> conflictAnimals=new ArrayList<>();
         Comparator<Animal> animalComparatorConflict = Comparator.comparing(Animal::getEnergyStatus)
                 .thenComparing(Animal::getAge)
@@ -66,82 +64,31 @@ public class Simulation implements Runnable{
         }
         return conflictAnimals.get(0);
 
-//        for (Animal animal : animals){
-//            mostEnergy=Math.max(mostEnergy,animal.getEnergyStatus());
-//        }
-//        for (Animal animal : animals){
-//            if (mostEnergy==animal.getEnergyStatus()){
-//                conflictAnimals.add(animal);
-//            }
-//        }
-//        if (conflictAnimals.size()!=1){
-//            for (Animal animal : conflictAnimals){
-//                oldestAnimalAge=Math.max(oldestAnimalAge,animal.getAge());
-//            }
-//            for (Animal animal :  new ArrayList<>(conflictAnimals)){
-//                if (oldestAnimalAge!=animal.getAge()){
-//                    conflictAnimals.remove(animal);
-//                }
-//            }
-//            if (conflictAnimals.size()!=1){
-//                for (Animal animal : conflictAnimals){
-//                    mostChildren=Math.max(mostChildren,animal.getChildrenCount());
-//                }
-//                for (Animal animal : new ArrayList<>(conflictAnimals)){
-//                    if (mostChildren!=animal.getChildrenCount()){
-//                        conflictAnimals.remove(animal);
-//                    }
-//                }
-//                if (conflictAnimals.size()!=1){
-//                    int randomNumber=Functions.randomNumberBetween(0,conflictAnimals.size());
-//                    return conflictAnimals.get(randomNumber);
-//                }
-//            }
-//        }
-//        return conflictAnimals.get(0);
     }
     public Animal resolveConflictSecondStrongest(ArrayList<Animal> animals,Animal firstStrongestAnimal){
-        int oldestAnimalAge=Integer.MIN_VALUE;
-        int mostChildren=Integer.MIN_VALUE;
-        int mostEnergy= Integer.MIN_VALUE;
         ArrayList<Animal> conflictAnimals=new ArrayList<>();
-        for (Animal animal : animals){
-            if (!animal.equals(firstStrongestAnimal)){
-                mostEnergy=Math.max(mostEnergy,animal.getEnergyStatus());
-            }
-
+        Comparator<Animal> animalComparatorConflict = Comparator.comparing(Animal::getEnergyStatus)
+                .thenComparing(Animal::getAge)
+                .thenComparing(Animal::getChildrenCount).reversed();
+        animals.sort(animalComparatorConflict);
+        Animal secondStrongestAnimal=animals.get(0);
+        if (secondStrongestAnimal.getAnimalId()==firstStrongestAnimal.getAnimalId()){
+            secondStrongestAnimal=animals.get(1);
         }
         for (Animal animal : animals){
-            if (mostEnergy==animal.getEnergyStatus()){
-                if (!animal.equals(firstStrongestAnimal)){
-                    conflictAnimals.add(animal);
-                }
+            if (animal.getAnimalId()==firstStrongestAnimal.getAnimalId()){
+                continue;
+            }
+            if (secondStrongestAnimal.equals(animal)){
+                conflictAnimals.add(animal);
+            }
+            else {
+                break;
             }
         }
-        if (conflictAnimals.size()!=1){
-            for (Animal animal : conflictAnimals){
-                oldestAnimalAge=Math.max(oldestAnimalAge,animal.getAge());
-            }
-            for (Animal animal :  new ArrayList<>(conflictAnimals)){
-                if (oldestAnimalAge!=animal.getAge()){
-                    conflictAnimals.remove(animal);
-                }
-            }
-            if (conflictAnimals.size()!=1){
-                for (Animal animal : conflictAnimals){
-                    mostChildren=Math.max(mostChildren,animal.getChildrenCount());
-                }
-                for (Animal animal : new ArrayList<>(conflictAnimals)){
-                    if (mostChildren!=animal.getChildrenCount()){
-                        conflictAnimals.remove(animal);
-                    }
-                }
-                if (conflictAnimals.size()!=1){
-//                    System.out.println(conflictAnimals.size());
-                    int randomNumber=Functions.randomNumberBetween(0,conflictAnimals.size());
-                    return conflictAnimals.get(randomNumber);
-                }
-            }
+        if (conflictAnimals.size()>1){
+            int randomNumber=Functions.randomNumberBetween(0,conflictAnimals.size());
+            return conflictAnimals.get(randomNumber);
         }
         return conflictAnimals.get(0);
     }
@@ -246,7 +193,7 @@ public class Simulation implements Runnable{
     public void run(){
         while(running){
             try {
-                Thread.sleep(200);
+                Thread.sleep(300);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }

@@ -1,5 +1,9 @@
 package oop.model;
 
+import oop.model.Mutation.MutationContext;
+import oop.model.Mutation.NormalMutation;
+import oop.model.Mutation.ReplaceMutation;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -43,11 +47,15 @@ public class Gene {
         }
     }
     public void mutateGene(int numOfMutations){
-        boolean[] genesToMutate = Functions.randomNNumbersBetween(numOfMutations, 0, gene.length);
-        for(int i=0; i< gene.length; i++){
-            if(genesToMutate[i]){
-                gene[i] = Functions.randomNumberBetween(0,7);
-            }
+        if(Functions.randomNumberBetween(0,2)==1){
+            MutationContext mutation= new MutationContext();
+            mutation.setMutationStategy(new ReplaceMutation());
+            mutation.executeMutationStrategy(gene,numOfMutations);
+        }
+        else {
+            MutationContext mutation= new MutationContext();
+            mutation.setMutationStategy(new NormalMutation());
+            mutation.executeMutationStrategy(gene,numOfMutations);
         }
     }
     @Override
