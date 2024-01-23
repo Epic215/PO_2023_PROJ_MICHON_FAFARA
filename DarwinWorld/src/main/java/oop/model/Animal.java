@@ -13,9 +13,8 @@ public class Animal implements WorldElement{
     private UUID animalId;
     private Gene gene;
     private int energy;
-    private int breedEnergy;
     private int eatenGrass;
-    public Animal(Vector2d position, MapDirection facing, int geneSize,int energy){ //int geneSize, int energy, int breedEnergy){
+    public Animal(Vector2d position, MapDirection facing, int geneSize,int energy){
         this.facing = facing;
         this.position = position;
         this.gene = new Gene(geneSize);
@@ -24,8 +23,6 @@ public class Animal implements WorldElement{
         this.childrenCount = 0;
         this.eatenGrass = 0;
         this.animalId = UUID.randomUUID();
-//        this.energy = energy;
-//        this.breedEnergy = breedEnergy;
     }
     public void decreaseEnergy(int lostEnergy){
         energy = energy - lostEnergy;
@@ -34,9 +31,7 @@ public class Animal implements WorldElement{
         this.facing = this.facing.turn(mapDirection.direction);
         this.position = this.position.add(this.facing.toUnitVector());
     }
-    public void printGene(){
-        System.out.println(gene.toString());
-    }
+
     public void crossEarth(int x, int y, MapDirection mapDirection){
         this.facing = this.facing.turn(mapDirection.direction);
         this.position = new Vector2d(x,y);
@@ -66,7 +61,7 @@ public class Animal implements WorldElement{
     public void moveGeneIndex(){
         gene.moveGeneIndex();
     }
-    public void bounce(MapDirection direction){
+    public void bounce(){
         this.facing = this.facing.turn(4);
     }
     public String toString(){
@@ -118,8 +113,6 @@ public class Animal implements WorldElement{
         }
     }
     public boolean ifGeneMostPopular(String gene){
-//        System.out.println(gene);
-//        System.out.println(Arrays.toString(this.getGene().getGene()));
         return gene.equals(Arrays.toString(this.getGene().getGene()));
     }
     @Override

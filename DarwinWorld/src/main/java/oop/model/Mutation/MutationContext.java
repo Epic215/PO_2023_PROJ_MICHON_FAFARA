@@ -1,12 +1,14 @@
 package oop.model.Mutation;
 
+
+
 public class MutationContext {
     private MutationStrategy mutationStategy;
 
-    public void setMutationStategy(MutationStrategy mutationStategy) {
-        this.mutationStategy = mutationStategy;
+    public void setMutationStrategy(MutationStrategy mutationStrategy) {
+        this.mutationStategy = mutationStrategy;
     }
-    public int[] executeMutationStrategy(int[] gene, int n){
-        return mutationStategy.mutate(gene,n);
+    public void executeMutationStrategy(int[] gene, int n){
+        mutationStategy.mutate(gene, n);
     }
 }

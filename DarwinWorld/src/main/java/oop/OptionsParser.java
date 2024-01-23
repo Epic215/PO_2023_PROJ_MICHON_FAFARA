@@ -3,7 +3,7 @@ package oop;
 import oop.model.MapDirection;
 
 public class OptionsParser {
-    public static MapDirection change(int arg){ // funkcja zmienia tablice string na tablice typu enum
+    public static MapDirection change(int arg){
 
         switch(arg) {
             case 0 -> {

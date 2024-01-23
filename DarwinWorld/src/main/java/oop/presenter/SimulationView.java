@@ -1,32 +1,18 @@
 package oop.presenter;
 
-import com.opencsv.CSVWriter;
-import javafx.beans.value.ChangeListener;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
+
 import javafx.scene.control.Button;
-import javafx.scene.control.TextField;
 import javafx.scene.layout.*;
-import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import oop.Simulation;
-import oop.SimulationEngine;
 import oop.model.*;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.geometry.HPos;
 import javafx.geometry.Pos;
-import javafx.scene.Scene;
 import javafx.scene.control.Label;
-import javafx.stage.Stage;
-
-import javax.swing.*;
 import java.io.*;
-import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.awt.event.KeyEvent;
-import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.*;
@@ -162,6 +148,9 @@ public class SimulationView implements MapChangeListener{
                     styles = "-fx-background-color: #ea7232; -fx-border-radius: 100px ";
                 }else if(animalEnergy>maxAnimalEnergy*0.8 && animalEnergy<=maxAnimalEnergy){
                     styles = "-fx-background-color: #ec6332; -fx-border-radius: 100px ";
+                }
+                if (animalEnergy<=0){
+                    label.setText("");
                 }
                 label.setStyle(styles);
                 final Boolean[] isMostPopularHere = {false};

@@ -4,9 +4,7 @@ import oop.model.Mutation.MutationContext;
 import oop.model.Mutation.NormalMutation;
 import oop.model.Mutation.ReplaceMutation;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Objects;
 
 public class Gene {
@@ -16,14 +14,12 @@ public class Gene {
         this.geneIndex = 0;
         generateGene(geneSize);
     }
-    private int generateNumber(int min, int max){
-        return (int)Math.floor(Math.random() * (max - min + 1) + min);
-    }
+
     private void generateGene(int geneSize){
         gene = new int[geneSize];
         for(int i=0; i<geneSize; i++){
             gene[i] = (Functions.randomNumberBetween(0,8));
-//            System.out.println(gene[i]);
+
         }
     }
     public void moveGeneIndex(){
@@ -49,12 +45,12 @@ public class Gene {
     public void mutateGene(int numOfMutations){
         if(Functions.randomNumberBetween(0,2)==1){
             MutationContext mutation= new MutationContext();
-            mutation.setMutationStategy(new ReplaceMutation());
+            mutation.setMutationStrategy(new ReplaceMutation());
             mutation.executeMutationStrategy(gene,numOfMutations);
         }
         else {
             MutationContext mutation= new MutationContext();
-            mutation.setMutationStategy(new NormalMutation());
+            mutation.setMutationStrategy(new NormalMutation());
             mutation.executeMutationStrategy(gene,numOfMutations);
         }
     }

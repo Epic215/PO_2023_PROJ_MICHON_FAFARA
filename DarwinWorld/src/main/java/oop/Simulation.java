@@ -3,7 +3,6 @@ package oop;
 import oop.model.*;
 
 import java.util.*;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class Simulation implements Runnable{
     private int animalCount;
@@ -39,8 +38,6 @@ public class Simulation implements Runnable{
             direction = randomPosition.nextInt(8);
             abstractWorldMap.place(new Animal(new Vector2d(width,height),OptionsParser.change(direction),geneSize,initialEnergy));
         }
-//        abstractWorldMap.printAnimals();
-//        abstractWorldMap.printGrasses();
     }
     public Animal resolveConflictFirstStrongest(ArrayList<Animal> animals){
 
@@ -95,35 +92,20 @@ public class Simulation implements Runnable{
     public void moveAnimals(){
         Map<Vector2d, ArrayList<Animal>> animals = abstractWorldMap.getAnimals2();
         animals.forEach((key, value) -> {
-//            abstractWorldMap.printAnimals();
+
             if(!value.isEmpty()){
                 for(Animal animal : value){
                     if(animal != null){
                         animal.incrementAge();
-//                        System.out.println("przed move");
-//                        System.out.println(animal.toString());
                         abstractWorldMap.move(animal);
-//                        System.out.println("po move");
-//                        System.out.println(animal.toString());
+
                     }
                 }
             }
         });
         abstractWorldMap.mapChanged("fhdjsklafh");
     }
-    public void moveAnimals2(){
-        ArrayList<Animal> animals = abstractWorldMap.getAnimals();
-        animals.forEach(animal -> {
-//            abstractWorldMap.printAnimals();
-//                System.out.println("przed move");
-//                System.out.println(animal.toString());
-                abstractWorldMap.move(animal);
-//                System.out.println("po move");
-//                System.out.println(animal.toString());
 
-        });
-        abstractWorldMap.mapChanged("fhdjsklafh");
-    }
     private void eatGrass(){
         Map<Vector2d, ArrayList<Animal>> animals = abstractWorldMap.getAnimals2();
         Map<Vector2d, Grass> grasses = abstractWorldMap.getGrasses();
@@ -145,7 +127,6 @@ public class Simulation implements Runnable{
                 Animal animal2 = resolveConflictSecondStrongest(value,animal1);
                 if(animal1.getEnergy()>=breedEnergy && animal2.getEnergy()>=breedEnergy){
                     Animal animal3 = new Animal(key,OptionsParser.change(Functions.randomNumberBetween(0,8)),geneSize, 2*breedEnergy);
-//                    System.out.println(animal3.toString());
                     animal3.createGene(animal1, animal2, animal1.getEnergy()/(animal1.getEnergy()+animal2.getEnergy())*geneSize);
                     animal3.mutateGene(abstractWorldMap.getMinimumMutations(), abstractWorldMap.getMaximumMutations());
                     abstractWorldMap.place(animal3);
@@ -210,7 +191,6 @@ public class Simulation implements Runnable{
                 decrementEnergy();
                 eatGrass();
                 breedAnimals();
-//            deleteDead();
                 abstractWorldMap.GrassGenerator(abstractWorldMap.getGrassGrowth());
                 this.daysCount += 1;
 

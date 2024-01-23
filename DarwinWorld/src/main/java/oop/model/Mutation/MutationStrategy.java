@@ -1,5 +1,5 @@
 package oop.model.Mutation;
 
 public interface MutationStrategy {
-    int[] mutate(int[] gene,int n);
+    void mutate(int[] gene, int n);
 }

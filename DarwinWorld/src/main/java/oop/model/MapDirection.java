@@ -1,6 +1,6 @@
 package oop.model;
 
-import java.util.Map;
+
 
 public enum MapDirection {
     NORTH(0),
