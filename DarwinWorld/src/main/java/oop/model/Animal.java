@@ -112,8 +112,10 @@ public class Animal implements WorldElement{
         childrenCount+=1;
     }
     public void mutateGene(int min, int max){
-        int numOfMutations = Functions.randomNumberBetween(min,max);
-        gene.mutateGene(numOfMutations);
+        if (min!=0 && max!=0){
+            int numOfMutations = Functions.randomNumberBetween(min,max);
+            gene.mutateGene(numOfMutations);
+        }
     }
     public boolean ifGeneMostPopular(String gene){
 //        System.out.println(gene);
@@ -121,11 +123,11 @@ public class Animal implements WorldElement{
         return gene.equals(Arrays.toString(this.getGene().getGene()));
     }
     @Override
-    public boolean equals(Object other){
+    public boolean equals(Object other){ // equals when they have same energy,same number of children and same age
         if (this == other)
             return true;
         if (!(other instanceof Animal that))
             return false;
-        return (that.animalId==this.animalId);
+        return (that.age==this.age && that.childrenCount==this.childrenCount && that.energy==this.energy);
     }
 }
