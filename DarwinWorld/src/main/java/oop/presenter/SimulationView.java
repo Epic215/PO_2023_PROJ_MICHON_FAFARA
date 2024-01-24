@@ -125,7 +125,7 @@ public class SimulationView implements MapChangeListener{
         Vector2d position = animalAnimalWithId(animalFollowedId).getPosition();
         Animal followedAnimal = animalAnimalWithId(animalFollowedId);
         animalChanged(followedAnimal);
-        for (Map.Entry<Vector2d,ArrayList<Animal>> animal : animals.entrySet()){
+        for (Map.Entry<Vector2d,ArrayList<Animal>> animal : new ArrayList<>(animals.entrySet())){
             label = new Label();
             label.setMinWidth(width*0.8);
             label.setMinHeight(height*0.8);
@@ -141,7 +141,7 @@ public class SimulationView implements MapChangeListener{
                 if(animalEnergy>0 && animalEnergy<=maxAnimalEnergy*0.2){
                     styles = "-fx-background-color: #e5b678; -fx-border-radius: 100px ";
                 }else if(animalEnergy>maxAnimalEnergy*0.2 && animalEnergy<=maxAnimalEnergy*0.4){
-                    styles = "-fx-background-color: #cc9c5f; -fx-border-radius: 100px ";
+                    styles = "-fx-background-color: #eeb772; -fx-border-radius: 100px ";
                 }else if(animalEnergy>maxAnimalEnergy*0.4 && animalEnergy<=maxAnimalEnergy*0.6){
                     styles = "-fx-background-color: #e08f4c; -fx-border-radius: 100px ";
                 }else if(animalEnergy>maxAnimalEnergy*0.6 && animalEnergy<=maxAnimalEnergy*0.8){
@@ -216,6 +216,7 @@ public class SimulationView implements MapChangeListener{
             Label animalEatenPlants = new Label();
             Label animalChildrenCount = new Label();
             Label animalAge = new Label();
+            Label currentGene = new Label();
             animalGene.setWrappingWidth(container.getWidth()/7);
             animalStats.setText("Followed animal stats:");
             animalGene.setText("Gene: " + String.valueOf(element.getGene()));
@@ -223,12 +224,14 @@ public class SimulationView implements MapChangeListener{
             animalEatenPlants.setText("Eaten grass: " + String.valueOf(element.getEatenGrass()));
             animalChildrenCount.setText("Children: " + String.valueOf(element.getChildrenCount()));
             animalAge.setText("Age: " + String.valueOf(element.getAge()));
+            currentGene.setText("Current gene: " + String.valueOf(element.getCurrentGene()));
             animalList.getChildren().add(animalStats);
             animalList.getChildren().add(animalGene);
             animalList.getChildren().add(animalEnergy);
             animalList.getChildren().add(animalEatenPlants);
             animalList.getChildren().add(animalChildrenCount);
             animalList.getChildren().add(animalAge);
+            animalList.getChildren().add(currentGene);
         }
         else if(flag==1){
             flag = 2;
