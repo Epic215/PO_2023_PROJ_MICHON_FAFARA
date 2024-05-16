@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<GridPane xmlns="http://javafx.com/javafx"
+          xmlns:fx="http://javafx.com/fxml"
+          minHeight="550.0" minWidth="850.0"
+          fx:controller="oop.presenter.SimulationPresenter"
+          style="-fx-background-color: #9af4ff;"
+          stylesheets="configstyles.css">
+
+        <children>
+            <VBox GridPane.columnIndex="0" GridPane.rowIndex="0" styleClass="borderBox">
+                <ImageView id="boxImage" styleClass="borderBox">
+                    <fitWidth>700</fitWidth>
+                    <preserveRatio>true</preserveRatio>
+                    <image>
+                        <Image url="@logodawinmap.png" />
+                    </image>
+                </ImageView>
+            </VBox>
+
+            <VBox GridPane.columnIndex="0" GridPane.rowIndex="1" GridPane.halignment="CENTER" styleClass="borderBox">
+                <VBox>
+                    <Label fx:id="worldConfigGlobeLabel" text="Configure world:" textAlignment="CENTER" />
+                    <HBox>
+                        <RadioButton fx:id="worldConfigGlobe" text="Globe" styleClass="textInput">
+                            <toggleGroup>
+                                <ToggleGroup fx:id="groupWorld"/>
+                            </toggleGroup>
+                        </RadioButton>
+                        <RadioButton fx:id="worldConfigGlobeTides" text="Tides" styleClass="textInput">
+                            <toggleGroup>
+                                <fx:reference source="groupWorld"/>
+                            </toggleGroup>
+                        </RadioButton>
+                    </HBox>
+                </VBox>
+                <VBox>
+                    <Label fx:id="saveToCSVConfig" text="Do you want to save statistics to csv file?" textAlignment="CENTER" />
+                    <HBox>
+                        <RadioButton fx:id="yesConfig" text="Yes" styleClass="textInput">
+                            <toggleGroup>
+                                <ToggleGroup fx:id="yesGroup"/>
+                            </toggleGroup>
+                        </RadioButton>
+                        <RadioButton fx:id="noConfig" text="No" styleClass="textInput">
+                            <toggleGroup>
+                                <fx:reference source="yesGroup"/>
+                            </toggleGroup>
+                        </RadioButton>
+                    </HBox>
+                </VBox>
+                <VBox>
+                    <HBox>
+                        <TextField fx:id="animalCountInput" promptText="Number of animals" styleClass="textInput"/>
+                        <TextField fx:id="geneSizeInput" promptText="Gene size" styleClass="textInput"/>
+                    </HBox>
+                </VBox>
+                <VBox >
+                    <HBox>
+                        <TextField fx:id="mapWidthInput" promptText="Map width" styleClass="textInput"/>
+                        <TextField fx:id="mapHeightInput" promptText="Map height" styleClass="textInput"/>
+                    </HBox>
+                </VBox>
+                <VBox >
+                    <HBox>
+                        <TextField fx:id="grassCountInput" promptText="Initial grass count" styleClass="textInput"/>
+                        <TextField fx:id="grassGrowthInput" promptText="Grass growth per day" styleClass="textInput"/>
+                    </HBox>
+                </VBox>
+                <VBox >
+                    <HBox>
+                        <TextField fx:id="minimumMutationsInput" promptText="Minimum mutations" styleClass="textInput"/>
+                        <TextField fx:id="maximumMutationsInput" promptText="Maximum mutations" styleClass="textInput"/>
+                    </HBox>
+                </VBox>
+                <VBox >
+                    <HBox>
+                        <TextField fx:id="grassEnergyInput" promptText="Grass energy" styleClass="textInput"/>
+                        <TextField fx:id="dailyEnergyInput" promptText="Daily energy cost" styleClass="textInput"/>
+                    </HBox>
+                </VBox>
+                <VBox >
+                    <HBox>
+                        <TextField fx:id="initialEnergyInput" promptText="Initial animal energy" styleClass="textInput"/>
+                        <TextField fx:id="breedEnergyInput" promptText="Breed energy input" styleClass="textInput"/>
+                    </HBox>
+                </VBox>
+                <VBox styleClass="textInput">
+                    <Button fx:id="startButton" text="Start" onAction="#onSimulationStartClicked"/>
+                </VBox>
+            </VBox>
+        </children>
+        <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="80.0" prefWidth="100.0"/>
+        </columnConstraints>
+        <rowConstraints>
+            <RowConstraints vgrow="SOMETIMES" percentHeight="45.0" prefHeight="100.0" />
+
+        </rowConstraints>
+</GridPane>

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.scene.text.Text?>
+<GridPane xmlns="http://javafx.com/javafx"
+          xmlns:fx="http://javafx.com/fxml"
+          minHeight="550.0" minWidth="850.0"
+          stylesheets="styles.css"
+          fx:controller="oop.presenter.SimulationView"
+          fx:id="container">
+        <children>
+            <VBox GridPane.columnIndex="0" GridPane.rowIndex="0" styleClass="statsPane">
+                <Label fx:id="infoLabel" text="Statystyki mapy" textAlignment="CENTER"/>
+                <HBox styleClass="stats">
+                    <Label text="Number of animals: " textAlignment="CENTER"/>
+                    <Label fx:id="animalCount" textAlignment="CENTER"/>
+                </HBox>
+                <HBox styleClass="stats">
+                    <Label text="Number of plants: " textAlignment="CENTER"/>
+                    <Label fx:id="plantsCount" textAlignment="CENTER"/>
+                </HBox>
+                <HBox styleClass="stats">
+                    <Label text="Number of empty spaces: " textAlignment="CENTER"/>
+                    <Label fx:id="emptyCount" textAlignment="CENTER"/>
+                </HBox>
+                <HBox styleClass="stats">
+                    <Label text="Most popular gene type:" textAlignment="CENTER"/>
+                </HBox>
+                <HBox styleClass="stats">
+                    <Text fx:id="geneType" textAlignment="CENTER"/>
+                </HBox>
+                <HBox styleClass="stats">
+                    <Label text="Average energy: " textAlignment="CENTER"/>
+                    <Label fx:id="averageEnergy" textAlignment="CENTER"/>
+                </HBox>
+                <HBox styleClass="stats">
+                    <Label text="Average lifespan: " textAlignment="CENTER"/>
+                    <Label fx:id="averageLifespan" textAlignment="CENTER"/>
+                </HBox>
+                <HBox styleClass="stats">
+                    <Label text="Average children number: " textAlignment="CENTER"/>
+                    <Label fx:id="childrenCount" textAlignment="CENTER"/>
+                </HBox>
+
+                <HBox styleClass="stats">
+                    <Button text="Pause" onAction="#viewPause"/>
+                    <Button text="Resume" onAction="#viewResume"/>
+                </HBox>
+                <ScrollPane><VBox fx:id="animalList" styleClass="stats"></VBox></ScrollPane>
+            </VBox>
+            <GridPane fx:id="mapGridd" styleClass="gridPane" GridPane.rowIndex="0" GridPane.columnIndex="1" gridLinesVisible="true"/>
+        </children>
+        <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="35.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="65.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+            <RowConstraints minHeight="100.0" percentHeight="100.0" prefHeight="100.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+
+</GridPane>
